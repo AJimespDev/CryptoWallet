@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tvLogInTitle">Hola, bienvenido de nuevo</string>
+    <string name="tietEmailSignIn">Correo electrónico</string>
+    <string name="tietPasswordSignIn">Contraseña</string>
+    <string name="cbRememberPassword">Mantener sesion</string>
+    <string name="tvForgotPassword">He olvidado la contraseña</string>
+    <string name="btnLogIn">Iniciar Sesion</string>
+    <string name="otherLogIn">Iniciar Sesion con:</string>
+</resources>
