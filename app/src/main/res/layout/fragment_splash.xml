@@ -3,15 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/cryptowallet_fondo">
 
     <ImageView
         android:id="@+id/imvSplash"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/icon"
+        android:layout_width="380dp"
+        android:layout_height="380dp"
+        android:src="@drawable/cryptowallet_logo_rayo_amarillo_sin_fondo"
+        app:layout_constraintBottom_toTopOf="@+id/imvTitleSplash"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <ImageView
+        android:id="@+id/imvTitleSplash"
+        android:layout_width="350dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imvSplash"
+        app:srcCompat="@drawable/cryptowallet_title" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

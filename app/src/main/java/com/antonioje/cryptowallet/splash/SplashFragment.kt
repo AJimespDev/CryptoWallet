@@ -19,7 +19,7 @@ class SplashFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        (activity as MainActivity).setAppBarGone()
+        //(activity as MainActivity).setAppBarGone()
 
         var r = Runnable {
             findNavController().navigate(R.id.action_splashFragment_to_signInFragment)

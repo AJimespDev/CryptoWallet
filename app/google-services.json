@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1032483140804",
+    "project_id": "cryptowallet-f3acd",
+    "storage_bucket": "cryptowallet-f3acd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032483140804:android:c05d7d81b3db664e198591",
+        "android_client_info": {
+          "package_name": "com.antonioje.cryptowallet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrypcyAGk7uaGnkcicU5Zfvc1k9j9N7y8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

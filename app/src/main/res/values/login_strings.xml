@@ -3,8 +3,15 @@
     <string name="tvLogInTitle">Hola, bienvenido de nuevo</string>
     <string name="tietEmailSignIn">Correo electrónico</string>
     <string name="tietPasswordSignIn">Contraseña</string>
-    <string name="cbRememberPassword">Mantener sesion</string>
+    <string name="cbRememberPassword">Mantener sesión</string>
     <string name="tvForgotPassword">He olvidado la contraseña</string>
     <string name="btnLogIn">Iniciar Sesion</string>
     <string name="otherLogIn">Iniciar Sesion con:</string>
+    <string name="tvCreateAccountLogIn">¿Aún no tienes cuenta? Regístrate</string>
+    <string name="tvSignUpTitle">Crear una cuenta</string>
+    <string name="btnSignUp">Registrarse</string>
+    <string name="otherSignUp">Registrarse con:</string>
+    <string name="EmailIsEmptyError">No puede estar vacio</string>
+    <string name="EmailFormatError">Formato incorrecto</string>
+    <string name="PasswordIsEmptyError">No puede estar vacio</string>
 </resources>
