@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.antonioje.cryptowallet.register.ui.usecase.SignUpViewModel" />
+            type="com.antonioje.cryptowallet.register.usecase.SignUpViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,7 +17,7 @@
         tools:context=".register.ui.SignUpFragment">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/ivLogoSignIn"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginTop="50dp"
@@ -32,11 +32,11 @@
             android:id="@+id/ivSignUpTitle"
             android:layout_width="150dp"
             android:layout_height="50dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintBottom_toBottomOf="@+id/ivLogoSignIn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toTopOf="@+id/imageView"
+            app:layout_constraintStart_toEndOf="@+id/ivLogoSignIn"
+            app:layout_constraintTop_toTopOf="@+id/ivLogoSignIn"
             app:srcCompat="@drawable/cryptowallet_title" />
 
         <TextView
@@ -55,7 +55,7 @@
             android:textSize="32sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/ivLogoSignIn" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilSignUpEmail"
@@ -170,12 +170,6 @@
                 android:layout_margin="12dp"
                 android:background="@drawable/google" />
 
-            <ImageView
-                android:id="@+id/imvFacebookLogIn"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="12dp"
-                android:background="@drawable/facebook" />
         </LinearLayout>
 
 

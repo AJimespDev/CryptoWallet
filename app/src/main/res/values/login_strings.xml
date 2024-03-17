@@ -14,4 +14,6 @@
     <string name="EmailIsEmptyError">No puede estar vacio</string>
     <string name="EmailFormatError">Formato incorrecto</string>
     <string name="PasswordIsEmptyError">No puede estar vacio</string>
+    <string name="EmailOrPasswordIncorrect">Tu correo electrónico o contraseña no coinciden. Por favor, inténtalo de nuevo.</string>
+    <string name="PasswordFormatError">Debe contener letras y números, con una longitud mínima de 8 caracteres</string>
 </resources>

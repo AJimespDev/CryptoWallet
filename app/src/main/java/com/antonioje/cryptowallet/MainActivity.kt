@@ -38,7 +38,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -51,6 +50,20 @@ class MainActivity : AppCompatActivity() {
 
     fun setAppBarGone() {
         supportActionBar!!.hide()
+    }
+
+    fun setAppBarVisible() {
+        supportActionBar!!.show()
+
+        //OCULTO LA FLECHITA PARA RETROCEDER HACIA ATRAS
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+    }
+
+    companion object{
+        const val EMAIL = "email"
+        const val PROVIDER = "provider"
+        const val MANTENERSESION ="mantenersesion"
+        const val GOOGLE_SIGN_IN  = 100
     }
 
 }

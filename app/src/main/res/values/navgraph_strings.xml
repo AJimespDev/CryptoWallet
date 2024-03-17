@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="splashFragment">Splash</string>
+    <string name="signInFragment">Iniciar Sesion</string>
+    <string name="signUpFragment">Registrarse</string>
+    <string name="homeFragment">Mercados</string>
+</resources>

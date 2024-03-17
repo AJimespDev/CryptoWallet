@@ -57,4 +57,7 @@ dependencies {
     //FIREBASE
     implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
     implementation("com.google.firebase:firebase-analytics")
+
+    //INICIO DE SESION CON GOOGLE
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
 }
