@@ -4,4 +4,10 @@
     <string name="signInFragment">Iniciar Sesion</string>
     <string name="signUpFragment">Registrarse</string>
     <string name="homeFragment">Mercados</string>
+    <string name="buscarFragment">Buscar</string>
+    <string name="favoritosFragment">Lista Favoritos</string>
+    <string name="portfolioFragment">Portfolio</string>
+    <string name="settingsFragment">Configuración</string>
+
+
 </resources>

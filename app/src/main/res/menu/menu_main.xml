@@ -1,4 +1,40 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.antonioje.cryptowallet.MainActivity"/>
+    tools:context="com.antonioje.cryptowallet.MainActivity">
+
+    <item
+        android:id="@+id/nav_market"
+        android:icon="@drawable/mercados"
+        android:title="@string/nav_market"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/nav_favorite"
+        android:icon="@drawable/fav"
+        android:title="@string/nav_favorite"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/nav_buscar"
+        android:icon="@drawable/lupa"
+        android:title="@string/nav_buscar"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/nav_wallet"
+        android:icon="@drawable/wallet"
+        android:title="@string/nav_wallet"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/nav_config"
+        android:icon="@drawable/config"
+        android:title="@string/nav_config"
+        android:visible="false"/>
+
+
+
+
+
+</menu>

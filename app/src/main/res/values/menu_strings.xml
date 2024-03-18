@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_signout">Cerrar sesión</string>
+
+    <string name="nav_market">Mercado</string>
+    <string name="nav_favorite">Favoritos</string>
+    <string name="nav_buscar">Buscar</string>
+    <string name="nav_wallet">Portafolio</string>
+    <string name="nav_config">Más</string>
 </resources>

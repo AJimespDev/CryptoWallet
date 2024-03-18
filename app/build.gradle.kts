@@ -60,4 +60,10 @@ dependencies {
 
     //INICIO DE SESION CON GOOGLE
     implementation("com.google.android.gms:play-services-auth:21.0.0")
+
+    //NOTIFICACIONES FIREBASE
+    implementation("com.google.firebase:firebase-messaging:23.4.1")
+
+    //Bottom Navigation Bar
+    implementation("com.github.ismaeldivita:chip-navigation-bar:1.4.0")
 }

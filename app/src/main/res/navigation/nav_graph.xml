@@ -28,7 +28,9 @@
             app:destination="@id/signUpFragment" />
         <action
             android:id="@+id/action_signInFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/signInFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -38,7 +40,9 @@
         tools:layout="@layout/fragment_sign_up" >
         <action
             android:id="@+id/action_signUpFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/signUpFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
 
@@ -47,5 +51,29 @@
         android:name="com.antonioje.cryptowallet.home.ui.HomeFragment"
         android:label="@string/homeFragment"
         tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/favoriteListFragment"
+        android:name="com.antonioje.cryptowallet.home.ui.FavoriteListFragment"
+        android:label="@string/favoritosFragment"
+        tools:layout="@layout/fragment_favorite_list" />
+
+    <fragment
+        android:id="@+id/buscarFragment"
+        android:name="com.antonioje.cryptowallet.home.ui.BuscarFragment"
+        android:label="@string/buscarFragment"
+        tools:layout="@layout/fragment_buscar" />
+
+    <fragment
+        android:id="@+id/portfolioFragment"
+        android:name="com.antonioje.cryptowallet.home.ui.PortfolioFragment"
+        android:label="@string/portfolioFragment"
+        tools:layout="@layout/fragment_portfolio" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.antonioje.cryptowallet.home.ui.SettingsFragment"
+        android:label="@string/settingsFragment"
+        tools:layout="@layout/fragment_settings" />
 
 </navigation>
