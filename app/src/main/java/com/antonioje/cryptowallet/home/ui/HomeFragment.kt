@@ -20,6 +20,7 @@ import com.antonioje.cryptowallet.MainActivity
 import com.antonioje.cryptowallet.R
 import com.antonioje.cryptowallet.databinding.FragmentHomeBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.iid.FirebaseInstanceIdReceiver
 
 
 class HomeFragment : Fragment() {
@@ -36,6 +37,8 @@ class HomeFragment : Fragment() {
         setup()
         return binding.root
     }
+
+
 
 
     private fun setup() {
@@ -64,7 +67,6 @@ class HomeFragment : Fragment() {
 
             }
         }catch(e:IllegalStateException){
-
         }
 
     }

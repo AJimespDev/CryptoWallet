@@ -2,27 +2,25 @@ package com.antonioje.cryptowallet
 
 import android.content.Context
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
+import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import androidx.fragment.app.Fragment
-import androidx.navigation.NavOptions
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import com.antonioje.cryptowallet.databinding.ActivityMainBinding
 import com.antonioje.cryptowallet.home.ui.BuscarFragment
 import com.antonioje.cryptowallet.home.ui.FavoriteListFragment
 import com.antonioje.cryptowallet.home.ui.HomeFragment
 import com.antonioje.cryptowallet.home.ui.PortfolioFragment
 import com.antonioje.cryptowallet.home.ui.SettingsFragment
-import com.antonioje.cryptowallet.login.ui.SignInFragment
 import com.google.firebase.auth.FirebaseAuth
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -101,6 +99,8 @@ class MainActivity : AppCompatActivity() {
         //Obtener la instancia de SharedPreferences
         val sharedPreferences =
             this?.getSharedPreferences("usu_preferencias", Context.MODE_PRIVATE)
+
+
         //Editar las preferencias
         val editor = sharedPreferences?.edit()
         editor?.clear()
@@ -110,7 +110,13 @@ class MainActivity : AppCompatActivity() {
         setAppBarGone()
 
 
-        replaceFragment(SignInFragment())
+        val navOptions: NavOptions =
+            NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).setLaunchSingleTop(true).build()
+        findNavController(this, R.id.nav_host_fragment_content_main).navigate(
+            R.id.signInFragment,
+            null,
+            navOptions
+        )
     }
 
 

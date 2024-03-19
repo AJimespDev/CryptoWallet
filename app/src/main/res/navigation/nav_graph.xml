@@ -31,6 +31,9 @@
             app:destination="@id/homeFragment"
             app:popUpTo="@id/signInFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_signInFragment_to_resetPasswordFragment"
+            app:destination="@id/resetPasswordFragment" />
     </fragment>
 
     <fragment
@@ -75,5 +78,9 @@
         android:name="com.antonioje.cryptowallet.home.ui.SettingsFragment"
         android:label="@string/settingsFragment"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/resetPasswordFragment"
+        android:name="com.antonioje.cryptowallet.login.resetpassword.ui.ResetPasswordFragment"
+        android:label="ResetPasswordFragment" />
 
 </navigation>

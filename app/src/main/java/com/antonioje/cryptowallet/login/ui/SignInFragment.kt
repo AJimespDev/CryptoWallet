@@ -68,6 +68,10 @@ class SignInFragment : Fragment() {
             tvRegisterAccountSignIn.setOnClickListener {
                 findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
             }
+
+            tvForgotPassword.setOnClickListener{
+                findNavController().navigate(R.id.action_signInFragment_to_resetPasswordFragment)
+            }
         }
         configImvGoogleSignIn()
         _viewModel.getState().observe(viewLifecycleOwner, Observer {
