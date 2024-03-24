@@ -33,6 +33,7 @@ class SignInFragment : Fragment() {
         super.onStart()
         binding.linearLayout.visibility = View.VISIBLE
         (requireActivity() as MainActivity).setAppBarGone()
+        (requireActivity() as MainActivity).setBottomNavGone()
     }
 
     override fun onCreateView(
@@ -155,6 +156,9 @@ class SignInFragment : Fragment() {
         modoAcceso.putBoolean(MainActivity.MANTENERSESION, true)
 
         _viewModel.setCompleted()
+
+        (requireActivity() as MainActivity).bottomNavegationBar.setItemSelected(R.id.nav_market,true)
+
         findNavController().navigate(R.id.action_signInFragment_to_homeFragment, modoAcceso)
     }
     //endregion

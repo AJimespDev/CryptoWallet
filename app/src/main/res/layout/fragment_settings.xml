@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".home.ui.SettingsFragment">
 
-    <TextView
-        android:id="@+id/textView"
+    <Button
+        android:id="@+id/btnSettingsLogOut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SETTINGS"
+        android:text="@string/action_signout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

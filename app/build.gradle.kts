@@ -70,4 +70,10 @@ dependencies {
     //PETICIONES API
     implementation ("com.google.code.gson:gson:2.8.9")
     implementation ("com.squareup.okhttp3:okhttp:4.9.2")
+
+    //Insertar imagenes desde URL
+    implementation ("com.squareup.picasso:picasso:2.71828")
+
+    //LiveData
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.2.0")
 }

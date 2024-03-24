@@ -40,7 +40,6 @@ class ResetPasswordViewModel:ViewModel() {
                 state.value = ResetPasswordState.Error(it.exception?.message.toString())
             }
         }
-
     }
 
     fun isEmailValid(email: String): Boolean {
