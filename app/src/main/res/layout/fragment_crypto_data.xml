@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".home.crypto_data.ui.CryptoDataFragment">
+
+    <ImageView
+        android:id="@+id/ivCryptoImage"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvCryptoName"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/humatoheavy"
+        android:singleLine="true"
+        android:text="Bitcoin"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/ivCryptoImage"
+        app:layout_constraintTop_toTopOf="@+id/ivCryptoImage" />
+
+    <TextView
+        android:id="@+id/tvCryptoSymbol"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/humatoheavy"
+        android:singleLine="true"
+        android:text="BTC"
+        app:layout_constraintStart_toEndOf="@+id/ivCryptoImage"
+        app:layout_constraintTop_toBottomOf="@+id/tvCryptoName" />
+
+    <TextView
+        android:id="@+id/tvCryptoDataRank"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/uni_sans"
+        android:text="#100"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/ivCryptoImage"
+        app:layout_constraintStart_toEndOf="@+id/ivCryptoImage" />
+
+    <TextView
+        android:id="@+id/tvCryptoPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/uni_sans"
+        android:text="64.758,00€"
+        android:textSize="28dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivCryptoDataLast24h"
+        app:layout_constraintEnd_toStartOf="@+id/ivCryptoDataLast24h"
+        app:layout_constraintTop_toTopOf="@+id/ivCryptoDataLast24h" />
+
+
+
+    <ImageView
+        android:id="@+id/ivCryptoDataLast24h"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_last24h_up"
+        app:layout_constraintBottom_toBottomOf="@+id/tvCryptoDataLast24h"
+        app:layout_constraintEnd_toStartOf="@+id/tvCryptoDataLast24h"
+        app:layout_constraintTop_toTopOf="@+id/tvCryptoDataLast24h" />
+
+    <TextView
+        android:id="@+id/tvCryptoDataLast24h"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/uni_sans"
+        android:layout_marginTop="28dp"
+        android:text="13,6%"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvCryptoSymbol" />
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:fontFamily="@font/uni_sans"
+        android:text="Capitalización de mercado"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toTopOf="@+id/cardViewCapitalization"
+        app:layout_constraintStart_toStartOf="@+id/cardViewCapitalization" />
+
+
+    <ImageView
+        android:id="@+id/ivCapitalizationLast24h"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:src="@drawable/icon_last24h_up"
+        app:layout_constraintBottom_toBottomOf="@+id/tvCapitalizationLast24h"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/tvCapitalizationLast24h" />
+
+    <TextView
+        android:id="@+id/tvCapitalizationLast24h"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:fontFamily="@font/uni_sans"
+        android:text="13,6%"
+        app:layout_constraintBottom_toTopOf="@+id/cardViewCapitalization"
+        app:layout_constraintStart_toEndOf="@+id/ivCapitalizationLast24h" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewCapitalization"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="46dp"
+        android:layout_marginHorizontal="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardViewCryptoConverter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCryptoPrice">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvCapitalization"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="8.888.888.888.888,88€"
+                android:textSize="32sp"
+                android:fontFamily="@font/uni_sans"
+                android:gravity="center"
+                android:layout_marginVertical="8dp"
+                android:layout_marginHorizontal="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewCryptoConverter"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/cardViewFiatConverter"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardViewCapitalization">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/etCryptoValueConverter"
+                android:layout_width="85dp"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="8dp"
+                android:singleLine="true"
+                android:inputType="numberDecimal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/vSeparatorCrypto"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/vSeparatorCrypto"
+                android:layout_width="1dp"
+                android:layout_height="40dp"
+                android:background="#838383"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/ivCryptoDataConverter"
+                app:layout_constraintStart_toEndOf="@+id/etCryptoValueConverter"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivCryptoDataConverter"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="4dp"
+                tools:src="@tools:sample/avatars"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/vSeparatorCrypto"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewFiatConverter"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cardViewCryptoConverter"
+        app:layout_constraintTop_toBottomOf="@+id/cardViewCapitalization" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/etFiatValueConverter"
+                android:layout_width="85dp"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="8dp"
+                android:singleLine="true"
+                android:inputType="numberDecimal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/vSeparatorFiat"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/vSeparatorFiat"
+                android:layout_width="1dp"
+                android:layout_height="40dp"
+                android:background="#838383"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/spCryptoDataFiat"
+                app:layout_constraintStart_toEndOf="@+id/etFiatValueConverter"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Spinner
+                android:id="@+id/spCryptoDataFiat"
+                android:layout_width="64dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="4dp"
+                android:background="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/vSeparatorFiat"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+    <!--
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="350dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="42dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCryptoPrice">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+
+
+
+            <ImageView
+                android:id="@+id/ivCryptoDataConverter"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="10dp"
+                tools:src="@tools:sample/avatars" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilFiatCryptoData"
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="25dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tietFiatCryptoData"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content" />
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Spinner
+                android:id="@+id/spCryptoDataFiat"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="5dp" />
+
+            <EditText
+                android:id="@+id/editTextText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="text"
+                android:text="Name" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>-->
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="124dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardViewCryptoConverter">
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

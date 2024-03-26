@@ -1,24 +1,25 @@
-package com.antonioje.cryptowallet.home.list.ui
+package com.antonioje.cryptowallet.home.crypto_list.ui
 
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.antonioje.cryptowallet.MainActivity
+import com.antonioje.cryptowallet.R
+import com.antonioje.cryptowallet.data.CryptoCurrency
+import com.antonioje.cryptowallet.data.CryptoData
 import com.antonioje.cryptowallet.databinding.FragmentHomeBinding
-import com.antonioje.cryptowallet.home.list.adapter.CryptoListAdapter
-import com.antonioje.cryptowallet.home.list.usecase.CryptoListState
-import com.antonioje.cryptowallet.home.list.usecase.CryptoListViewModel
+import com.antonioje.cryptowallet.home.crypto_data.ui.CryptoDataFragment
+import com.antonioje.cryptowallet.home.crypto_list.adapter.CryptoListAdapter
+import com.antonioje.cryptowallet.home.crypto_list.usecase.CryptoListState
+import com.antonioje.cryptowallet.home.crypto_list.usecase.CryptoListViewModel
 
 
 class HomeFragment : Fragment() {
@@ -44,7 +45,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun initVariables() {
-        _adapter = CryptoListAdapter()
+        _adapter = CryptoListAdapter{onClickCrypto(it)}
 
         binding.tvListCapRank.setOnClickListener {
             _adapter.sortbyMarketCap()
@@ -84,6 +85,7 @@ class HomeFragment : Fragment() {
 
         _viewmodel.getList()
     }
+
 
     // Scrollea el RecyclerView a la primera posicion tras esperar X ms (1 en este caso)
     // La espera se hace para que al adapter le de tiempo a ordenar la lista previamente
@@ -131,5 +133,12 @@ class HomeFragment : Fragment() {
     private fun showNoData() {
 
     }
+
+    private fun onClickCrypto(crypto: CryptoCurrency) {
+        var bundle = Bundle()
+        bundle.putSerializable(CryptoData.CRYPTO_KEY, crypto)
+        findNavController().navigate(R.id.action_homeFragment_to_cryptoDataFragment,bundle)
+    }
+
 
 }

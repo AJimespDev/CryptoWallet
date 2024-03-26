@@ -8,6 +8,7 @@
     <string name="favoritosFragment">Lista Favoritos</string>
     <string name="portfolioFragment">Portfolio</string>
     <string name="settingsFragment">Configuración</string>
+    <string name="cryptoDataFragment">Información</string>
 
 
 </resources>

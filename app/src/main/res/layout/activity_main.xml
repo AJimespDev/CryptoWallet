@@ -21,14 +21,15 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <include
+        layout="@layout/content_main" />
 
 
-    <com.ismaeldivita.chipnavigation.ChipNavigationBar
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavegationBar"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        app:cnb_menuResource="@menu/menu_main"
+        android:layout_height="wrap_content"
+        app:menu="@menu/menu_main"
         android:layout_alignParentBottom="true"
         android:background="#FFF"/>
 

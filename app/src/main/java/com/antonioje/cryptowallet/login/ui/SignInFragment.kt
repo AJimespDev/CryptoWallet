@@ -157,8 +157,6 @@ class SignInFragment : Fragment() {
 
         _viewModel.setCompleted()
 
-        (requireActivity() as MainActivity).bottomNavegationBar.setItemSelected(R.id.nav_market,true)
-
         findNavController().navigate(R.id.action_signInFragment_to_homeFragment, modoAcceso)
     }
     //endregion

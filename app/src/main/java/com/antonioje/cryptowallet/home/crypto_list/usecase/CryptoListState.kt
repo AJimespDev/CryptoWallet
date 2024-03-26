@@ -1,4 +1,4 @@
-package com.antonioje.cryptowallet.home.list.usecase
+package com.antonioje.cryptowallet.home.crypto_list.usecase
 
 sealed class CryptoListState {
     data object NoDataError:CryptoListState()

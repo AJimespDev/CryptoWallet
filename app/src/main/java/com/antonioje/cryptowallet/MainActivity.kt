@@ -8,22 +8,12 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
-import androidx.navigation.Navigation
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.antonioje.cryptowallet.databinding.ActivityMainBinding
-import com.antonioje.cryptowallet.home.ui.BuscarFragment
-import com.antonioje.cryptowallet.home.ui.FavoriteListFragment
-import com.antonioje.cryptowallet.home.list.ui.HomeFragment
-import com.antonioje.cryptowallet.home.ui.PortfolioFragment
-import com.antonioje.cryptowallet.home.ui.SettingsFragment
-import com.antonioje.cryptowallet.login.ui.SignInFragment
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -45,44 +35,12 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
+        NavigationUI.setupWithNavController(binding.bottomNavegationBar, navController)
+
         setAppBarGone()
         setBottomNavGone()
-        setUpNavegationBar()
     }
 
-    private fun setUpNavegationBar() {
-        binding.bottomNavegationBar.setItemSelected(R.id.nav_market,true)
-        binding.bottomNavegationBar.setOnItemSelectedListener {
-            when(it){
-                R.id.nav_market ->{
-                    //binding.toolbar.title = getString(R.string.nav_market)
-                    binding.toolbar.title = ""
-                    setAppBarGone()
-                    replaceFragment(HomeFragment())
-                }
-                R.id.nav_favorite -> {
-                    binding.toolbar.title = getString(R.string.nav_favorite)
-                    setAppBarVisible()
-                    replaceFragment(FavoriteListFragment())
-                }
-                R.id.nav_buscar -> {
-                    binding.toolbar.title = getString(R.string.nav_buscar)
-                    setAppBarVisible()
-                    replaceFragment(BuscarFragment())
-                }
-                R.id.nav_wallet -> {
-                    binding.toolbar.title = getString(R.string.nav_wallet)
-                    setAppBarVisible()
-                    replaceFragment(PortfolioFragment())
-                }
-                R.id.nav_config -> {
-                    binding.toolbar.title = getString(R.string.nav_config)
-                    setAppBarVisible()
-                    replaceFragment(SettingsFragment())
-                }
-            }
-        }
-    }
 
     fun logOut() {
         //Obtener la instancia de SharedPreferences
@@ -102,13 +60,6 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(applicationContext, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
-    }
-
-    private fun replaceFragment(fragment: Fragment){
-        val fragmentManager = supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.constraintmain,fragment)
-        fragmentTransaction.commit()
     }
 
 

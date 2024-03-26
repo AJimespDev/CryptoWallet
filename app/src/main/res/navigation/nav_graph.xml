@@ -51,9 +51,13 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.antonioje.cryptowallet.home.list.ui.HomeFragment"
-        android:label=""
-        tools:layout="@layout/fragment_home" />
+        android:name="com.antonioje.cryptowallet.home.crypto_list.ui.HomeFragment"
+        android:label="@string/homeFragment"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_cryptoDataFragment"
+            app:destination="@id/cryptoDataFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/favoriteListFragment"
@@ -77,16 +81,15 @@
         android:id="@+id/settingsFragment"
         android:name="com.antonioje.cryptowallet.home.ui.SettingsFragment"
         android:label="@string/settingsFragment"
-        tools:layout="@layout/fragment_settings" >
-        <action
-            android:id="@+id/action_settingsFragment_to_signInFragment"
-            app:destination="@id/signInFragment"
-            app:popUpTo="@id/signInFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
+        tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/resetPasswordFragment"
         android:name="com.antonioje.cryptowallet.login.resetpassword.ui.ResetPasswordFragment"
         android:label="ResetPasswordFragment" />
+    <fragment
+        android:id="@+id/cryptoDataFragment"
+        android:name="com.antonioje.cryptowallet.home.crypto_data.ui.CryptoDataFragment"
+        android:label="@string/cryptoDataFragment"
+        tools:layout="@layout/fragment_crypto_data" />
 
 </navigation>

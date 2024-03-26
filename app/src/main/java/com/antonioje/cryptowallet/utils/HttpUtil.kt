@@ -26,6 +26,22 @@ class HttpUtil private constructor() {
         return Arrays.asList(*data)
     }
 
+
+    fun <T> getResponseData(httpRequest: String, type: Class<T>): T {
+        val httpTask = HttpTask(httpRequest)
+        var responseData = "[]"
+        try {
+            responseData = httpTask.execute().get().toString()
+        } catch (e: ExecutionException) {
+            e.printStackTrace()
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+        val gson = Gson()
+        return gson.fromJson(responseData, type)
+    }
+
+
     companion object {
         var instance: HttpUtil? = null
             get() {

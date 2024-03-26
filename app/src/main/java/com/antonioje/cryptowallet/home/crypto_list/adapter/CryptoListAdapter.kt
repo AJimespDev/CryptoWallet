@@ -1,7 +1,6 @@
-package com.antonioje.cryptowallet.home.list.adapter
+package com.antonioje.cryptowallet.home.crypto_list.adapter
 
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -12,7 +11,7 @@ import com.antonioje.cryptowallet.data.CryptoCurrency
 import com.antonioje.cryptowallet.databinding.ItemCryptoBinding
 import com.squareup.picasso.Picasso
 
-class CryptoListAdapter() :
+class CryptoListAdapter(val onClick:(CryptoCurrency) -> Unit) :
     ListAdapter<CryptoCurrency, CryptoListAdapter.HomeListViewHolder>(CRYPTO_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeListViewHolder {
@@ -80,6 +79,7 @@ class CryptoListAdapter() :
     inner class HomeListViewHolder(var binding: ItemCryptoBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun render(item: CryptoCurrency) {
+            itemView.setOnClickListener { onClick(item) }
             with(binding) {
                 Picasso.get().load(item.image).into(ivItemCrypto)
 
@@ -91,9 +91,9 @@ class CryptoListAdapter() :
 
                 tvItemCryptoSymbol.text = item.symbol.toUpperCase()
 
-                tvItemMarketCap.text = "€" + formatLargeNumber(item.market_cap)
+                tvItemMarketCap.text = "€" + CryptoCurrency.formatLargeNumber(item.market_cap)
 
-                tvItemCryptoPrice.text = formatPrice(item.current_price)
+                tvItemCryptoPrice.text = CryptoCurrency.formatPrice(item.current_price)
 
                 if (item.price_change_percentage_24h >= 0) {
                     tvItemCryptoLast24h.setTextColor(Color.GREEN)
@@ -110,37 +110,6 @@ class CryptoListAdapter() :
             }
         }
 
-        private fun formatLargeNumber(number: Long): String {
-            val suffixes = listOf("", "K", "M", "B", "T") // Sufijos para cada escala de magnitud
-            var value = number.toDouble()
-            var magnitude = 0
-
-            while (value >= 1000) {
-                value /= 1000
-                magnitude++
-            }
-
-            // Limita la precisión a dos decimales
-            val formattedValue = String.format("%.2f", value)
-
-            return if (magnitude < suffixes.size) {
-                "$formattedValue${suffixes[magnitude]}"
-            } else {
-                "Número demasiado grande"
-            }
-        }
-
-        private fun formatPrice(price: Double): String {
-            return if (price > 10) {
-                String.format("%.2f€", price)
-            } else if (price < 10 && price > 1) {
-                String.format("%.3f€", price)
-            } else if (price < 1 && price > 0.001) {
-                String.format("%.4f€", price)
-            } else {
-                String.format("%.8f€", price)
-            }
-        }
 
     }
 }
