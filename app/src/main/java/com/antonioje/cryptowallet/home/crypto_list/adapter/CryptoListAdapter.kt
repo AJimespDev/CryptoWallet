@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.antonioje.cryptowallet.R
-import com.antonioje.cryptowallet.data.CryptoCurrency
+import com.antonioje.cryptowallet.data.model.CryptoCurrency
 import com.antonioje.cryptowallet.databinding.ItemCryptoBinding
 import com.squareup.picasso.Picasso
 
@@ -93,7 +93,7 @@ class CryptoListAdapter(val onClick:(CryptoCurrency) -> Unit) :
 
                 tvItemMarketCap.text = "€" + CryptoCurrency.formatLargeNumber(item.market_cap)
 
-                tvItemCryptoPrice.text = CryptoCurrency.formatPrice(item.current_price)
+                tvItemCryptoPrice.text = CryptoCurrency.formatPrice(item.current_price) + "€"
 
                 if (item.price_change_percentage_24h >= 0) {
                     tvItemCryptoLast24h.setTextColor(Color.GREEN)

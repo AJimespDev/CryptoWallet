@@ -1,4 +1,4 @@
-package com.antonioje.cryptowallet.data
+package com.antonioje.cryptowallet.data.model
 
 data class CryptoData(
     val id: String,
@@ -25,14 +25,21 @@ data class CryptoData(
     val watchlist_portfolio_users: Int,
     val market_cap_rank: Int,
     val status_updates: List<Any>,
-    val last_updated: String
-
+    val last_updated: String,
+    val market_data: MarketData
 
 ){
     companion object{
         const val CRYPTO_KEY = "CRYPTODATA"
     }
 }
+
+
+data class MarketData(
+    val current_price: Fiat,
+    val ath: Fiat
+)
+
 
 data class DetailPlatform(
     val decimal_place: String?,

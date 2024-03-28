@@ -1,5 +1,5 @@
 package com.antonioje.cryptowallet.data.enum
 
 enum class DIVISAS {
-    EUR,USD,YEN
+    EUR,USD,JPY
 }

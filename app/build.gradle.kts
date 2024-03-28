@@ -73,4 +73,8 @@ dependencies {
 
     //LiveData
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.2.0")
+
+    //Gráfica para visualizar el cambio de la Crypto
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
 }

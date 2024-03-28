@@ -13,10 +13,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.antonioje.cryptowallet.MainActivity
 import com.antonioje.cryptowallet.R
-import com.antonioje.cryptowallet.data.CryptoCurrency
-import com.antonioje.cryptowallet.data.CryptoData
+import com.antonioje.cryptowallet.data.model.CryptoCurrency
+import com.antonioje.cryptowallet.data.model.CryptoData
 import com.antonioje.cryptowallet.databinding.FragmentHomeBinding
-import com.antonioje.cryptowallet.home.crypto_data.ui.CryptoDataFragment
 import com.antonioje.cryptowallet.home.crypto_list.adapter.CryptoListAdapter
 import com.antonioje.cryptowallet.home.crypto_list.usecase.CryptoListState
 import com.antonioje.cryptowallet.home.crypto_list.usecase.CryptoListViewModel
@@ -94,7 +93,7 @@ class HomeFragment : Fragment() {
             kotlin.run {
                 binding.rvHomeFragment.scrollToPosition(0)
             }
-        }, 100)
+        }, 300)
     }
 
     private fun setup() {

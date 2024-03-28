@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="250dp" />
+        app:layout_constraintGuide_begin="290dp" />
 
 
     <ImageView
@@ -51,8 +51,9 @@
         android:id="@+id/tvItemCryptoSymbol"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:singleLine="true"
         android:layout_marginStart="8dp"
-        android:text="BTC"
+        android:text="BABYDOGE"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/ivItemCrypto"
@@ -63,7 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="€1,19 T"
+        android:text="€350.67M"
         android:textSize="10sp"
         app:layout_constraintStart_toEndOf="@+id/ivItemCrypto"
         app:layout_constraintTop_toBottomOf="@+id/tvItemCryptoSymbol"
@@ -84,7 +85,7 @@
         android:id="@+id/tvItemCryptoPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="65.302,16€"
+        android:text="0.00000000€"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/tvItemMarketCap"

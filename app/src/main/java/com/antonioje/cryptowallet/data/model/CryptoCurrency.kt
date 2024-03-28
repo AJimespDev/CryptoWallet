@@ -1,4 +1,4 @@
-package com.antonioje.cryptowallet.data
+package com.antonioje.cryptowallet.data.model
 
 import java.io.Serializable
 import java.text.NumberFormat
@@ -13,7 +13,7 @@ data class CryptoCurrency(
     val market_cap: Long,
     val market_cap_rank: Int,
     val fully_diluted_valuation: Long?,
-    val total_volume: Long,
+    val total_volume: Double,
     val high_24h: Double,
     val low_24h: Double,
     val price_change_24h: Double,
@@ -35,13 +35,13 @@ data class CryptoCurrency(
     companion object{
         fun formatPrice(price: Double): String {
             return if (price > 10) {
-                String.format("%.2f€", price)
+                String.format("%.2f", price)
             } else if (price < 10 && price > 1) {
-                String.format("%.3f€", price)
+                String.format("%.3f", price)
             } else if (price < 1 && price > 0.001) {
-                String.format("%.4f€", price)
+                String.format("%.4f", price)
             } else {
-                String.format("%.8f€", price)
+                String.format("%.8f", price)
             }
 
         }
