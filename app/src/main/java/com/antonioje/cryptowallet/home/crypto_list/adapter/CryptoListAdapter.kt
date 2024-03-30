@@ -8,10 +8,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.antonioje.cryptowallet.R
 import com.antonioje.cryptowallet.data.model.CryptoCurrency
+import com.antonioje.cryptowallet.data.repository.CryptoRepository
 import com.antonioje.cryptowallet.databinding.ItemCryptoBinding
 import com.squareup.picasso.Picasso
 
-class CryptoListAdapter(val onClick:(CryptoCurrency) -> Unit) :
+class CryptoListAdapter(val onClick:(CryptoCurrency) -> Unit,val onFavoriteClick:(CryptoCurrency) -> Unit) :
     ListAdapter<CryptoCurrency, CryptoListAdapter.HomeListViewHolder>(CRYPTO_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeListViewHolder {
@@ -86,7 +87,21 @@ class CryptoListAdapter(val onClick:(CryptoCurrency) -> Unit) :
                 tvItemRank.text = item.market_cap_rank.toString() + "."
 
                 ivFavourite.setOnClickListener {
+                    if(item.favorite){
+                        ivFavourite.setImageResource(R.drawable.action_favourite_off)
+                        item.favorite = false
+                    }else{
+                        ivFavourite.setImageResource(R.drawable.action_favourite_on)
+                        item.favorite = true
+                    }
+
+                    onFavoriteClick(item)
+                }
+
+                if(CryptoRepository.favouritesCrypto.map{it.id}.contains(item.id)){
                     ivFavourite.setImageResource(R.drawable.action_favourite_on)
+                }else{
+                    ivFavourite.setImageResource(R.drawable.action_favourite_off)
                 }
 
                 tvItemCryptoSymbol.text = item.symbol.toUpperCase()

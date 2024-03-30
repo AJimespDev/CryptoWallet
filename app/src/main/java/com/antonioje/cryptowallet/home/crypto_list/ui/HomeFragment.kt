@@ -3,6 +3,7 @@ package com.antonioje.cryptowallet.home.crypto_list.ui
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,18 +16,23 @@ import com.antonioje.cryptowallet.MainActivity
 import com.antonioje.cryptowallet.R
 import com.antonioje.cryptowallet.data.model.CryptoCurrency
 import com.antonioje.cryptowallet.data.model.CryptoData
+import com.antonioje.cryptowallet.data.repository.CryptoRepository
 import com.antonioje.cryptowallet.databinding.FragmentHomeBinding
+import com.antonioje.cryptowallet.databinding.ItemCryptoBinding
 import com.antonioje.cryptowallet.home.crypto_list.adapter.CryptoListAdapter
 import com.antonioje.cryptowallet.home.crypto_list.usecase.CryptoListState
 import com.antonioje.cryptowallet.home.crypto_list.usecase.CryptoListViewModel
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.runBlocking
 
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var provider: String
-    private lateinit var _adapter : CryptoListAdapter
-    private val _viewmodel : CryptoListViewModel by viewModels()
+    private lateinit var _adapter: CryptoListAdapter
+    private val _viewmodel: CryptoListViewModel by viewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,12 +45,11 @@ class HomeFragment : Fragment() {
         setup()
 
         initVariables()
-
         return binding.root
     }
 
     private fun initVariables() {
-        _adapter = CryptoListAdapter{onClickCrypto(it)}
+        _adapter = CryptoListAdapter({ onClickCrypto(it) }, { onFavoriteCrypto(it) })
 
         binding.tvListCapRank.setOnClickListener {
             _adapter.sortbyMarketCap()
@@ -66,23 +71,49 @@ class HomeFragment : Fragment() {
             scrollToTop()
         }
 
-        with(binding.rvHomeFragment){
+        with(binding.rvHomeFragment) {
             adapter = _adapter
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
         }
 
         _viewmodel.getState().observe(viewLifecycleOwner, Observer {
-            when(it){
+            when (it) {
                 CryptoListState.NoDataError -> showNoData()
-                else ->{
+                is CryptoListState.Loading -> showLoading(it.value)
+                else -> {
                     _adapter.submitList(_viewmodel.listCrypto)
                     onSuccess()
                 }
             }
         })
 
-        _viewmodel.getList()
+        _viewmodel.initFavoriteList()
+    }
+
+    private fun showLoading(value: Boolean) {
+        if (value) {
+            with(binding) {
+                llTexts.visibility = View.GONE
+                rvHomeFragment.visibility = View.GONE
+                animLoading.visibility = View.VISIBLE
+            }
+        } else {
+            with(binding) {
+                rvHomeFragment.visibility = View.VISIBLE
+                llTexts.visibility = View.VISIBLE
+                animLoading.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun onFavoriteCrypto(crypto: CryptoCurrency) {
+        if (!crypto.favorite) {
+            CryptoRepository.deleteFavouriteCrypto(crypto)
+        } else {
+            CryptoRepository.addFavouriteCrypto(crypto)
+        }
+
     }
 
 
@@ -99,7 +130,7 @@ class HomeFragment : Fragment() {
     private fun setup() {
         try {
             //RECOJO EL EMAIL Y EL TIPO DE PROVEEDOR
-            var email = requireArguments().getString(MainActivity.EMAIL)
+            var email = requireArguments().getString(MainActivity.EMAIL).toString()
             var provider = requireArguments().getString(MainActivity.PROVIDER)
             var mantenerSesion = requireArguments().getBoolean(MainActivity.MANTENERSESION)
 
@@ -121,14 +152,15 @@ class HomeFragment : Fragment() {
             } else {
 
             }
-        }catch(e:IllegalStateException){
+        } catch (e: IllegalStateException) {
         }
 
     }
 
-    private fun onSuccess(){
+    private fun onSuccess() {
 
     }
+
     private fun showNoData() {
 
     }
@@ -136,7 +168,7 @@ class HomeFragment : Fragment() {
     private fun onClickCrypto(crypto: CryptoCurrency) {
         var bundle = Bundle()
         bundle.putSerializable(CryptoData.CRYPTO_KEY, crypto)
-        findNavController().navigate(R.id.action_homeFragment_to_cryptoDataFragment,bundle)
+        findNavController().navigate(R.id.action_homeFragment_to_cryptoDataFragment, bundle)
     }
 
 

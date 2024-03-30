@@ -30,6 +30,7 @@
         app:layout_constraintStart_toEndOf="@+id/ivCryptoImage"
         app:layout_constraintTop_toTopOf="@+id/ivCryptoImage" />
 
+
     <TextView
         android:id="@+id/tvCryptoSymbol"
         android:layout_width="240dp"

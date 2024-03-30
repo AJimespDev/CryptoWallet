@@ -19,7 +19,6 @@ data class CryptoData(
     val image: Image,
     val country_origin: String,
     val genesis_date: String,
-
     val sentiment_votes_up_percentage: Double,
     val sentiment_votes_down_percentage: Double,
     val watchlist_portfolio_users: Int,

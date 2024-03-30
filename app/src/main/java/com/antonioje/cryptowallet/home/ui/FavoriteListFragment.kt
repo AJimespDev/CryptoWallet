@@ -5,13 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.antonioje.cryptowallet.R
 import com.antonioje.cryptowallet.databinding.FragmentFavoriteListBinding
 
 
 class FavoriteListFragment : Fragment() {
     private var _binding:FragmentFavoriteListBinding? = null
     private val binding get() = _binding!!
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
