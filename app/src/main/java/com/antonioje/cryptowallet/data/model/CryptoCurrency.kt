@@ -33,6 +33,46 @@ data class CryptoCurrency(
     val roi: ROI? = null,
     val last_updated: String = ""
 ):Serializable{
+
+    constructor(
+        id: String,
+        symbol: String,
+        name: String,
+        image: String,
+        market_cap: Long,
+        current_price: Double,
+        price_change_percentage_24h: Double,
+        market_cap_rank: Int
+    ) : this(
+        id = id,
+        symbol = symbol,
+        name = name,
+        image = image,
+        market_cap = market_cap,
+        current_price = current_price,
+        price_change_percentage_24h = price_change_percentage_24h,
+        market_cap_rank = market_cap_rank,
+        fully_diluted_valuation = null,
+        total_volume = 0.0,
+        high_24h = 0.0,
+        low_24h = 0.0,
+        price_change_24h = 0.0,
+        market_cap_change_24h = 0.0,
+        market_cap_change_percentage_24h = 0.0,
+        circulating_supply = 0.0,
+        total_supply = 0.0,
+        max_supply = null,
+        ath = 0.0,
+        ath_change_percentage = 0.0,
+        ath_date = "",
+        favorite = false,
+        atl = 0.0,
+        atl_change_percentage = 0.0,
+        atl_date = "",
+        roi = null,
+        last_updated = ""
+    )
+
     companion object{
         fun formatPrice(price: Double): String {
             return if (price > 10) {

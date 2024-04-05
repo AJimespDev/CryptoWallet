@@ -91,8 +91,11 @@ class FavouriteListAdapter(
             with(binding) {
                 Picasso.get().load(item.image).into(ivItemCrypto)
 
-                tvItemRank.text = item.market_cap_rank.toString() + "."
-
+                if(item.market_cap_rank == 0){
+                    tvItemRank.text = "-"
+                }else{
+                    tvItemRank.text = item.market_cap_rank.toString() + "."
+                }
 
                 ivFavourite.setImageResource(R.drawable.action_favourite_on)
 

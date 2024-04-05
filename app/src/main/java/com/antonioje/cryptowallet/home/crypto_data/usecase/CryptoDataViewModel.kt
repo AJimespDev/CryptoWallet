@@ -3,7 +3,9 @@ package com.antonioje.cryptowallet.home.crypto_data.usecase
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.antonioje.cryptowallet.data.model.CryptoChange
+import com.antonioje.cryptowallet.data.model.CryptoCurrency
 import com.antonioje.cryptowallet.data.model.CryptoData
+import com.antonioje.cryptowallet.data.repository.CryptoRepository
 import com.antonioje.cryptowallet.utils.HttpUtil
 import okhttp3.Request
 
@@ -34,6 +36,18 @@ class CryptoDataViewModel:ViewModel() {
         var url = "https://api.coingecko.com/api/v3/coins/${cryptoData.id}/market_chart?vs_currency=eur&days=7"
 
         return HttpUtil.instance?.getResponseData(url, CryptoChange::class.java)!!
+    }
+
+    fun isFavorite(id: String): Boolean {
+        return CryptoRepository.isCryptoFavourite(id)
+    }
+
+    fun deleteFavourite(crypto: CryptoData) {
+        CryptoRepository.deleteFavouriteCrypto(crypto) {}
+    }
+
+    fun addFavourite(crypto: CryptoData) {
+        CryptoRepository.addFavouriteCrypto(crypto)
     }
 
 

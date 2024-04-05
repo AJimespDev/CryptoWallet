@@ -71,19 +71,23 @@
 
     <fragment
         android:id="@+id/buscarFragment"
-        android:name="com.antonioje.cryptowallet.home.ui.BuscarFragment"
+        android:name="com.antonioje.cryptowallet.home.search.ui.SearchFragment"
         android:label="@string/buscarFragment"
-        tools:layout="@layout/fragment_buscar" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_buscarFragment_to_cryptoDataFragment"
+            app:destination="@id/cryptoDataFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/portfolioFragment"
-        android:name="com.antonioje.cryptowallet.home.ui.PortfolioFragment"
+        android:name="com.antonioje.cryptowallet.home.portfolio.ui.PortfolioFragment"
         android:label="@string/portfolioFragment"
         tools:layout="@layout/fragment_portfolio" />
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.antonioje.cryptowallet.home.ui.SettingsFragment"
+        android:name="com.antonioje.cryptowallet.home.settings.ui.SettingsFragment"
         android:label="@string/settingsFragment"
         tools:layout="@layout/fragment_settings" />
     <fragment

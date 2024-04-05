@@ -36,7 +36,10 @@ data class CryptoData(
 
 data class MarketData(
     val current_price: Fiat,
-    val ath: Fiat
+    val ath: Fiat,
+    val market_cap:Fiat,
+    var price_change_percentage_24h:Double,
+    val market_cap_change_percentage_24h:Double
 )
 
 

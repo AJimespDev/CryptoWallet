@@ -115,7 +115,7 @@ class FavouriteListFragment : Fragment() {
 
     private fun onClick(crypto: CryptoCurrency) {
         var bundle = Bundle()
-        bundle.putSerializable(CryptoData.CRYPTO_KEY, crypto)
+        bundle.putString(CryptoData.CRYPTO_KEY, crypto.id)
         findNavController().navigate(R.id.action_favoriteListFragment_to_cryptoDataFragment, bundle)
     }
 

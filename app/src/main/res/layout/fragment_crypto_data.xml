@@ -45,10 +45,10 @@
 
     <TextView
         android:id="@+id/tvCryptoDataRank"
-        android:layout_width="30dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/uni_sans"
-        android:text="#100"
+        android:text="#250"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/ivCryptoImage"
         app:layout_constraintStart_toEndOf="@+id/ivCryptoImage" />
@@ -359,6 +359,18 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/ivFavouriteCrytoData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/action_favourite_off"
+        app:layout_constraintBottom_toTopOf="@+id/tvCryptoName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvCryptoName"
+        app:layout_constraintTop_toTopOf="@+id/ivCryptoImage"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

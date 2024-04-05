@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tvFavouriteNoData">No tienes criptomonedas marcadas como favorito</string>
+    <string name="CryptoDataNotRank">NOT RANKED</string>
+    <string name="CryptoDataNotMarketCap">NOT TRACKED</string>
+
+</resources>

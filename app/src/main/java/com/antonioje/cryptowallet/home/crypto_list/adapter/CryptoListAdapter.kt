@@ -12,7 +12,10 @@ import com.antonioje.cryptowallet.data.repository.CryptoRepository
 import com.antonioje.cryptowallet.databinding.ItemCryptoBinding
 import com.squareup.picasso.Picasso
 
-class CryptoListAdapter(val onClick:(CryptoCurrency) -> Unit,val onFavoriteClick:(CryptoCurrency) -> Unit) :
+class CryptoListAdapter(
+    val onClick: (CryptoCurrency) -> Unit,
+    val onFavoriteClick: (CryptoCurrency) -> Unit
+) :
     ListAdapter<CryptoCurrency, CryptoListAdapter.HomeListViewHolder>(CRYPTO_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeListViewHolder {
@@ -37,7 +40,7 @@ class CryptoListAdapter(val onClick:(CryptoCurrency) -> Unit,val onFavoriteClick
         if (currentList == currentList.sortedBy { it.name }) {
             submitList(currentList.sortedBy { it.name }.reversed())
         } else {
-            submitList(currentList.sortedBy { it.name})
+            submitList(currentList.sortedBy { it.name })
         }
     }
 
@@ -84,13 +87,16 @@ class CryptoListAdapter(val onClick:(CryptoCurrency) -> Unit,val onFavoriteClick
             with(binding) {
                 Picasso.get().load(item.image).into(ivItemCrypto)
 
+
                 tvItemRank.text = item.market_cap_rank.toString() + "."
 
+
+
                 ivFavourite.setOnClickListener {
-                    if(item.favorite){
+                    if (item.favorite) {
                         ivFavourite.setImageResource(R.drawable.action_favourite_off)
                         item.favorite = false
-                    }else{
+                    } else {
                         ivFavourite.setImageResource(R.drawable.action_favourite_on)
                         item.favorite = true
                     }
@@ -98,9 +104,9 @@ class CryptoListAdapter(val onClick:(CryptoCurrency) -> Unit,val onFavoriteClick
                     onFavoriteClick(item)
                 }
 
-                if(CryptoRepository.favouritesCrypto.map{it.id}.contains(item.id)){
+                if (CryptoRepository.favouritesCrypto.map { it.id }.contains(item.id)) {
                     ivFavourite.setImageResource(R.drawable.action_favourite_on)
-                }else{
+                } else {
                     ivFavourite.setImageResource(R.drawable.action_favourite_off)
                 }
 

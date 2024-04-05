@@ -1,4 +1,4 @@
-package com.antonioje.cryptowallet.home.ui
+package com.antonioje.cryptowallet.home.settings.ui
 
 
 import android.content.Context

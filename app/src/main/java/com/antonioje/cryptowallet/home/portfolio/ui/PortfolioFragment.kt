@@ -1,4 +1,4 @@
-package com.antonioje.cryptowallet.home.ui
+package com.antonioje.cryptowallet.home.portfolio.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

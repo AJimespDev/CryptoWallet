@@ -40,7 +40,6 @@ class CryptoDataFragment : Fragment() {
     private var _binding: FragmentCryptoDataBinding? = null
     private val binding get() = _binding!!
     private val _viewmodel: CryptoDataViewModel by viewModels()
-    private lateinit var cryptoCurrency: CryptoCurrency
     private lateinit var cryptoData: CryptoData
     private lateinit var lineChart: LineChart
     private var isUpdatingEditText = false
@@ -121,7 +120,7 @@ class CryptoDataFragment : Fragment() {
 
     private fun initVariables() {
 
-        cryptoCurrency = requireArguments().getSerializable(CryptoData.CRYPTO_KEY) as CryptoCurrency
+        val cryptoID: String = requireArguments().getString(CryptoData.CRYPTO_KEY)!!
 
         _viewmodel.getState().observe(viewLifecycleOwner, Observer {
             when (it) {
@@ -134,7 +133,7 @@ class CryptoDataFragment : Fragment() {
         var adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, divisas)
         binding.spCryptoDataFiat.adapter = adapter
 
-        _viewmodel.getCrypto(cryptoCurrency.id)
+        _viewmodel.getCrypto(cryptoID)
 
         configEditText()
 
@@ -230,7 +229,8 @@ class CryptoDataFragment : Fragment() {
                         }
 
                         var crypto =
-                            binding.etCryptoValueConverter.text.toString().replace(",",".").toDoubleOrNull() ?: 0.0
+                            binding.etCryptoValueConverter.text.toString().replace(",", ".")
+                                .toDoubleOrNull() ?: 0.0
 
                         var total = (cantidad * crypto)
 
@@ -263,18 +263,34 @@ class CryptoDataFragment : Fragment() {
     private fun initLayout(data: CryptoData) {
         with(binding) {
             tvCryptoName.text = data.name
-            tvCryptoSymbol.text = cryptoCurrency.symbol.toUpperCase()
-            tvCryptoDataRank.text = "#" + cryptoCurrency.market_cap_rank.toString()
+            tvCryptoSymbol.text = cryptoData.symbol.toUpperCase()
+            if (data.market_cap_rank == 0) {
+                tvCryptoDataRank.text = "#" + getString(R.string.CryptoDataNotRank)
+            } else {
+                tvCryptoDataRank.text = "#" + cryptoData.market_cap_rank.toString()
+            }
             tvCryptoPrice.text =
                 CryptoCurrency.formatPrice(cryptoData.market_data.current_price.eur) + "€"
-            tvCapitalization.text =
-                CryptoCurrency.getFormattedNumber(cryptoCurrency.market_cap) + "€"
 
+            if (cryptoData.market_data.market_cap.eur <= 0) {
+                tvCapitalization.text = getString(R.string.CryptoDataNotMarketCap)
+            } else {
+                tvCapitalization.text =
+                    CryptoCurrency.getFormattedNumber(cryptoData.market_data.market_cap.eur.toLong()) + "€"
+            }
 
-            Picasso.get().load(cryptoCurrency.image).into(ivCryptoImage)
-            Picasso.get().load(cryptoCurrency.image).into(ivCryptoDataConverter)
+            if (_viewmodel.isFavorite(data.id)) {
+                ivFavouriteCrytoData.setImageResource(R.drawable.action_favourite_on)
+            } else {
+                ivFavouriteCrytoData.setImageResource(R.drawable.action_favourite_off)
+            }
 
-            if (cryptoCurrency.price_change_percentage_24h >= 0) {
+            ivFavouriteCrytoData.setOnClickListener { onFavoriteCrypto(data) }
+
+            Picasso.get().load(cryptoData.image.large).into(ivCryptoImage)
+            Picasso.get().load(cryptoData.image.large).into(ivCryptoDataConverter)
+
+            if (cryptoData.market_data.price_change_percentage_24h >= 0) {
                 tvCryptoDataLast24h.setTextColor(Color.GREEN)
                 ivCryptoDataLast24h.setImageResource(R.drawable.icon_last24h_up)
 
@@ -283,12 +299,12 @@ class CryptoDataFragment : Fragment() {
                 ivCryptoDataLast24h.setImageResource(R.drawable.icon_last24h_down)
             }
             tvCryptoDataLast24h.text =
-                String.format("%.2f", cryptoCurrency.price_change_percentage_24h)
+                String.format("%.2f", cryptoData.market_data.price_change_percentage_24h)
                     .replace("-", "") + "%"
 
 
 
-            if (cryptoCurrency.market_cap_change_percentage_24h >= 0) {
+            if (cryptoData.market_data.market_cap_change_percentage_24h >= 0) {
                 tvCapitalizationLast24h.setTextColor(Color.GREEN)
                 ivCapitalizationLast24h.setImageResource(R.drawable.icon_last24h_up)
 
@@ -297,10 +313,19 @@ class CryptoDataFragment : Fragment() {
                 ivCapitalizationLast24h.setImageResource(R.drawable.icon_last24h_down)
             }
             tvCapitalizationLast24h.text =
-                String.format("%.2f", cryptoCurrency.market_cap_change_percentage_24h)
+                String.format("%.2f", cryptoData.market_data.market_cap_change_percentage_24h)
                     .replace("-", "") + "%"
+        }
 
+    }
 
+    private fun onFavoriteCrypto(crypto: CryptoData) {
+        if (_viewmodel.isFavorite(crypto.id)) {
+            _viewmodel.deleteFavourite(crypto)
+            binding.ivFavouriteCrytoData.setImageResource(R.drawable.action_favourite_off)
+        } else {
+            _viewmodel.addFavourite(crypto)
+            binding.ivFavouriteCrytoData.setImageResource(R.drawable.action_favourite_on)
         }
 
     }

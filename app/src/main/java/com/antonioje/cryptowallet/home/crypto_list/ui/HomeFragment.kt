@@ -167,7 +167,7 @@ class HomeFragment : Fragment() {
 
     private fun onClickCrypto(crypto: CryptoCurrency) {
         var bundle = Bundle()
-        bundle.putSerializable(CryptoData.CRYPTO_KEY, crypto)
+        bundle.putString(CryptoData.CRYPTO_KEY, crypto.id)
         findNavController().navigate(R.id.action_homeFragment_to_cryptoDataFragment, bundle)
     }
 
