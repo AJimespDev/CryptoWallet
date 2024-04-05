@@ -13,7 +13,7 @@ class CryptoRepository private constructor(){
     companion object{
         private val db = FirebaseFirestore.getInstance()
 
-        var favouritesCrypto = mutableListOf<CryptoCurrency>()
+        var favouritesCrypto = mutableSetOf<CryptoCurrency>()
 
 
         fun addFavouriteCrypto(crypto:CryptoCurrency){
@@ -34,7 +34,7 @@ class CryptoRepository private constructor(){
         }
 
         fun getFavouritesCryptos(onSuccess: () -> Unit) {
-            favouritesCrypto = mutableListOf()
+            favouritesCrypto = mutableSetOf()
             val currentUser = FirebaseAuth.getInstance().currentUser
             currentUser?.email?.let { userEmail ->
                 db.collection("users").document(userEmail)
@@ -54,7 +54,7 @@ class CryptoRepository private constructor(){
             }
         }
 
-        fun deleteFavouriteCrypto(crypto: CryptoCurrency) {
+        fun deleteFavouriteCrypto(crypto: CryptoCurrency, onDelete:() -> Unit) {
             val currentUser = FirebaseAuth.getInstance().currentUser
             currentUser?.email.let { userEmail ->
                 val userFavoritesRef = db.collection("users").document(userEmail.toString())
@@ -62,11 +62,11 @@ class CryptoRepository private constructor(){
 
                 userFavoritesRef.delete()
                     .addOnSuccessListener {
-                        favouritesCrypto.remove(crypto)
+                        favouritesCrypto.removeIf {it.id == crypto.id}
+                        onDelete()
                         Log.d("TAG", "Favorite deleted from Firestore for user: $currentUser")
                     }
                     .addOnFailureListener { e ->
-                        //onFailure(e)
                         Log.w("TAG", "Error deleting favorite from Firestore for user: $currentUser", e)
                     }
             }

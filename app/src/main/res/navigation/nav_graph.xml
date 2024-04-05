@@ -61,9 +61,13 @@
 
     <fragment
         android:id="@+id/favoriteListFragment"
-        android:name="com.antonioje.cryptowallet.home.ui.FavoriteListFragment"
+        android:name="com.antonioje.cryptowallet.home.favourites.ui.FavouriteListFragment"
         android:label="@string/favoritosFragment"
-        tools:layout="@layout/fragment_favorite_list" />
+        tools:layout="@layout/fragment_favourite_list" >
+        <action
+            android:id="@+id/action_favoriteListFragment_to_cryptoDataFragment"
+            app:destination="@id/cryptoDataFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/buscarFragment"

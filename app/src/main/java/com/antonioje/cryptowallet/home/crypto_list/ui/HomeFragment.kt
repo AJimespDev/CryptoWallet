@@ -109,9 +109,9 @@ class HomeFragment : Fragment() {
 
     private fun onFavoriteCrypto(crypto: CryptoCurrency) {
         if (!crypto.favorite) {
-            CryptoRepository.deleteFavouriteCrypto(crypto)
+            _viewmodel.deleteFavourite(crypto)
         } else {
-            CryptoRepository.addFavouriteCrypto(crypto)
+            _viewmodel.addFavourite(crypto)
         }
 
     }

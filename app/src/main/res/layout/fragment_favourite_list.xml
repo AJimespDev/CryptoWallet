@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home.crypto_list.ui.HomeFragment">
-
+    tools:context=".home.favourites.ui.FavouriteListFragment">
 
     <LinearLayout
         android:id="@+id/llTexts"
@@ -70,25 +69,8 @@
 
     </LinearLayout>
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/animLoading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/loading" />
-
-
-
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvHomeFragment"
+        android:id="@+id/rvFavoriteListFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="75dp"
@@ -97,5 +79,37 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/llTexts" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animNoData"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintBottom_toTopOf="@+id/tvNoDataFavourite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/nodatafavourite" />
+
+    <TextView
+        android:id="@+id/tvNoDataFavourite"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/uni_sans"
+        android:layout_marginBottom="75dp"
+        android:gravity="center"
+        android:text="@string/tvFavouriteNoData"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/animNoData"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/animNoData"
+        app:layout_constraintTop_toBottomOf="@+id/animNoData" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

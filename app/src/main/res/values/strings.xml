@@ -3,5 +3,6 @@
     <string name="action_settings">Settings</string>
 
     <string name="default_web_client_id">1032483140804-v3a5sat75o9td8b3ktn456p4onrrh9g3.apps.googleusercontent.com</string>
+    <string name="tvFavouriteNoData">No tienes criptomonedas marcadas como favorito</string>
 
 </resources>

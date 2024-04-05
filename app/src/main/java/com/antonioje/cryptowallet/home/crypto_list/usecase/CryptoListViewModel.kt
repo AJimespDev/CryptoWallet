@@ -42,4 +42,12 @@ class CryptoListViewModel : ViewModel() {
             CryptoRepository.getFavouritesCryptos{getList()}
         }
     }
+
+    fun deleteFavourite(crypto: CryptoCurrency) {
+        CryptoRepository.deleteFavouriteCrypto(crypto) {}
+    }
+
+    fun addFavourite(crypto: CryptoCurrency) {
+        CryptoRepository.addFavouriteCrypto(crypto)
+    }
 }
