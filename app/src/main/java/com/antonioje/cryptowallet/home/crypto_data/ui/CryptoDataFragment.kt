@@ -279,7 +279,7 @@ class CryptoDataFragment : Fragment() {
                     CryptoCurrency.getFormattedNumber(cryptoData.market_data.market_cap.eur.toLong()) + "€"
             }
 
-            if (_viewmodel.isFavorite(data.id)) {
+            if (_viewmodel.isFavorite(data)) {
                 ivFavouriteCrytoData.setImageResource(R.drawable.action_favourite_on)
             } else {
                 ivFavouriteCrytoData.setImageResource(R.drawable.action_favourite_off)
@@ -320,7 +320,7 @@ class CryptoDataFragment : Fragment() {
     }
 
     private fun onFavoriteCrypto(crypto: CryptoData) {
-        if (_viewmodel.isFavorite(crypto.id)) {
+        if (_viewmodel.isFavorite(crypto)) {
             _viewmodel.deleteFavourite(crypto)
             binding.ivFavouriteCrytoData.setImageResource(R.drawable.action_favourite_off)
         } else {

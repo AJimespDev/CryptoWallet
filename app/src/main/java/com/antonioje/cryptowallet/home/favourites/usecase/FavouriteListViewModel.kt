@@ -22,7 +22,7 @@ class FavouriteListViewModel:ViewModel() {
     }
 
     fun deleteFavourite(crypto: CryptoCurrency, onDelete:() -> Unit) {
-        CryptoRepository.deleteFavouriteCrypto(crypto) {onDelete()}
+        CryptoRepository.deleteFavouriteCrypto(crypto.name) {onDelete()}
     }
 
     fun updateList() {

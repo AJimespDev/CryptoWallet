@@ -103,6 +103,11 @@ class FavouriteListFragment : Fragment() {
         }, 300)
     }
 
+    override fun onResume() {
+        super.onResume()
+        _viewModel.updateList()
+        _viewModel.getFavourites()
+    }
 
     private fun onFavouriteClick(crypto: CryptoCurrency) {
         _viewModel.deleteFavourite(crypto) { onDelete() }

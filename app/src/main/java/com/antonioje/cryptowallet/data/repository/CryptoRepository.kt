@@ -22,7 +22,6 @@ class CryptoRepository private constructor() {
             currentUser?.email?.let { userEmail ->
                 val userFavoritesRef = db.collection("users").document(userEmail)
                     .collection("favourites").document(crypto.name)
-
                 userFavoritesRef.set(crypto)
                     .addOnSuccessListener {
                         favouritesCrypto.add(crypto)
@@ -84,19 +83,19 @@ class CryptoRepository private constructor() {
             }
         }
 
-        fun isCryptoFavourite(id: String): Boolean {
-            return favouritesCrypto.map { it.id }.contains(id)
+        fun isCryptoFavourite(name: String): Boolean {
+            return favouritesCrypto.map { it.name }.contains(name)
         }
 
-        fun deleteFavouriteCrypto(crypto: CryptoCurrency, onDelete: () -> Unit) {
+        fun deleteFavouriteCrypto(crypto: String, onDelete: () -> Unit) {
             val currentUser = FirebaseAuth.getInstance().currentUser
             currentUser?.email.let { userEmail ->
                 val userFavoritesRef = db.collection("users").document(userEmail.toString())
-                    .collection("favourites").document(crypto.name)
+                    .collection("favourites").document(crypto)
 
                 userFavoritesRef.delete()
                     .addOnSuccessListener {
-                        favouritesCrypto.removeIf { it.id == crypto.id }
+                        favouritesCrypto.removeIf { it.name == crypto}
                         onDelete()
                         Log.d("TAG", "Favorite deleted from Firestore for user: $currentUser")
                     }
@@ -110,30 +109,5 @@ class CryptoRepository private constructor() {
             }
 
         }
-
-        fun deleteFavouriteCrypto(crypto: CryptoData, onDelete: () -> Unit) {
-            val currentUser = FirebaseAuth.getInstance().currentUser
-            currentUser?.email.let { userEmail ->
-                val userFavoritesRef = db.collection("users").document(userEmail.toString())
-                    .collection("favourites").document(crypto.name)
-
-                userFavoritesRef.delete()
-                    .addOnSuccessListener {
-                        favouritesCrypto.removeIf { it.id == crypto.id }
-                        onDelete()
-                        Log.d("TAG", "Favorite deleted from Firestore for user: $currentUser")
-                    }
-                    .addOnFailureListener { e ->
-                        Log.w(
-                            "TAG",
-                            "Error deleting favorite from Firestore for user: $currentUser",
-                            e
-                        )
-                    }
-            }
-
-        }
-
-
     }
 }

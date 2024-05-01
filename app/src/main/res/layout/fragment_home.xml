@@ -31,7 +31,7 @@
             android:textSize="18sp" />
 
         <View
-            android:layout_width="17dp"
+            android:layout_width="12dp"
             android:layout_height="0dp" />
 
         <TextView

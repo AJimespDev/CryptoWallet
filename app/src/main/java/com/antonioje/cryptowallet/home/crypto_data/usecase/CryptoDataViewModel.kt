@@ -38,12 +38,19 @@ class CryptoDataViewModel:ViewModel() {
         return HttpUtil.instance?.getResponseData(url, CryptoChange::class.java)!!
     }
 
-    fun isFavorite(id: String): Boolean {
-        return CryptoRepository.isCryptoFavourite(id)
+    fun isFavorite(crypto: CryptoData): Boolean {
+        val isFavorite =  CryptoRepository.isCryptoFavourite(crypto.name)
+        if(isFavorite) {
+            CryptoRepository.deleteFavouriteCrypto(crypto.name) {
+                CryptoRepository.addFavouriteCrypto(crypto)
+            }
+        }
+
+        return isFavorite
     }
 
     fun deleteFavourite(crypto: CryptoData) {
-        CryptoRepository.deleteFavouriteCrypto(crypto) {}
+        CryptoRepository.deleteFavouriteCrypto(crypto.name) {}
     }
 
     fun addFavourite(crypto: CryptoData) {

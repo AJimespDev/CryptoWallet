@@ -25,7 +25,7 @@ class SearchViewModel:ViewModel() {
             val listAllCryptos = HttpUtil.instance?.getResponseData(URL, Array<CryptoSearch>::class.java)
             when{
                 listAllCryptos.isNullOrEmpty() -> state.value = SearchState.NoData
-                else ->  state.value = SearchState.Success(listAllCryptos.toList() as ArrayList<CryptoSearch>)
+                else ->  state.value = SearchState.Success(listAllCryptos.toList().shuffled() as ArrayList<CryptoSearch>)
             }
         }
     }
