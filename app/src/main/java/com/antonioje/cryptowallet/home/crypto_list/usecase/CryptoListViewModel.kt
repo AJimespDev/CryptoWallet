@@ -39,7 +39,9 @@ class CryptoListViewModel : ViewModel() {
     fun initFavoriteList() {
         viewModelScope.launch {
             state.value = CryptoListState.Loading(true)
-            CryptoRepository.getFavouritesCryptos{getList()}
+            CryptoRepository.getFavouritesCryptos{
+                getList()
+            }
         }
     }
 

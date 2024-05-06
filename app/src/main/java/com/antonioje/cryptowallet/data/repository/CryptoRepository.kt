@@ -3,6 +3,7 @@ package com.antonioje.cryptowallet.data.repository
 import android.util.Log
 import com.antonioje.cryptowallet.data.model.CryptoCurrency
 import com.antonioje.cryptowallet.data.model.CryptoData
+import com.antonioje.cryptowallet.data.model.Portfolio
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.GlobalScope
@@ -15,7 +16,7 @@ class CryptoRepository private constructor() {
         private val db = FirebaseFirestore.getInstance()
 
         var favouritesCrypto = mutableSetOf<CryptoCurrency>()
-
+        var portfolioCrypto = mutableSetOf<Portfolio>()
 
         fun addFavouriteCrypto(crypto: CryptoCurrency) {
             val currentUser = FirebaseAuth.getInstance().currentUser
@@ -82,6 +83,43 @@ class CryptoRepository private constructor() {
                     }
             }
         }
+
+        fun getPortfolioCrypto(onSuccess: () -> Unit) {
+            portfolioCrypto = mutableSetOf()
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            currentUser?.email?.let { userEmail ->
+                db.collection("users").document(userEmail)
+                    .collection("portfolio")
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        for (document in documents) {
+                            val portfolio = document.toObject(Portfolio::class.java)
+                            portfolioCrypto.add(portfolio)
+                        }
+                        onSuccess()
+                    }
+                    .addOnFailureListener { exception ->
+
+                    }
+            }
+        }
+
+        fun addPortfolioCrypto(portfolio: Portfolio) {
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            currentUser?.email?.let { userEmail ->
+
+                val userPortfolioRef = db.collection("users").document(userEmail)
+                    .collection("portfolio").document(portfolio.name)
+                    userPortfolioRef.set(portfolio)
+                    .addOnSuccessListener {
+
+                    }
+                    .addOnFailureListener { e ->
+
+                    }
+            }
+        }
+
 
         fun isCryptoFavourite(name: String): Boolean {
             return favouritesCrypto.map { it.name }.contains(name)

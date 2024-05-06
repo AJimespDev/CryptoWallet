@@ -1,9 +1,9 @@
 package com.antonioje.cryptowallet.data.model
 
 data class Fiat(
-    val usd: Double,
-    val jpy: Double,
-    val eur: Double
+    val usd: Double = 0.0,
+    val jpy: Double = 0.0,
+    val eur: Double = 0.0
 ){
     companion object{
     fun formatDouble(value: Double): String {

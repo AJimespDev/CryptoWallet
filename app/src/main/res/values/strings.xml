@@ -5,7 +5,11 @@
     <string name="default_web_client_id">1032483140804-v3a5sat75o9td8b3ktn456p4onrrh9g3.apps.googleusercontent.com</string>
     <string name="CryptoSearchHint">Buscar criptomoneda</string>
     <string name="CryptoSearchNoData">API NOT WORKING</string>
-
+    <string name="tvPortfolio24HChange">Cambio en 24 h</string>
+    <string name="tvPortfolioAllTimeProfit">Total de ganancias/perdidas</string>
+    <string name="tvListTotal">Total</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
