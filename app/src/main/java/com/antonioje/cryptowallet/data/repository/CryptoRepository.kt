@@ -1,8 +1,10 @@
 package com.antonioje.cryptowallet.data.repository
 
 import android.util.Log
+import com.antonioje.cryptowallet.data.model.Crypto
 import com.antonioje.cryptowallet.data.model.CryptoCurrency
 import com.antonioje.cryptowallet.data.model.CryptoData
+import com.antonioje.cryptowallet.data.model.CryptoTransaction
 import com.antonioje.cryptowallet.data.model.Portfolio
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -16,7 +18,7 @@ class CryptoRepository private constructor() {
         private val db = FirebaseFirestore.getInstance()
 
         var favouritesCrypto = mutableSetOf<CryptoCurrency>()
-        var portfolioCrypto = mutableSetOf<Portfolio>()
+        var portfolioCrypto = Portfolio()
 
         fun addFavouriteCrypto(crypto: CryptoCurrency) {
             val currentUser = FirebaseAuth.getInstance().currentUser
@@ -85,7 +87,6 @@ class CryptoRepository private constructor() {
         }
 
         fun getPortfolioCrypto(onSuccess: () -> Unit) {
-            portfolioCrypto = mutableSetOf()
             val currentUser = FirebaseAuth.getInstance().currentUser
             currentUser?.email?.let { userEmail ->
                 db.collection("users").document(userEmail)
@@ -94,7 +95,7 @@ class CryptoRepository private constructor() {
                     .addOnSuccessListener { documents ->
                         for (document in documents) {
                             val portfolio = document.toObject(Portfolio::class.java)
-                            portfolioCrypto.add(portfolio)
+                            portfolioCrypto = portfolio
                         }
                         onSuccess()
                     }
@@ -107,7 +108,6 @@ class CryptoRepository private constructor() {
         fun addPortfolioCrypto(portfolio: Portfolio) {
             val currentUser = FirebaseAuth.getInstance().currentUser
             currentUser?.email?.let { userEmail ->
-
                 val userPortfolioRef = db.collection("users").document(userEmail)
                     .collection("portfolio").document(portfolio.name)
                     userPortfolioRef.set(portfolio)
@@ -146,6 +146,41 @@ class CryptoRepository private constructor() {
                     }
             }
 
+        }
+
+        fun addTransaction(crypto: CryptoData, transaction: CryptoTransaction) {
+            var portfolio = portfolioCrypto
+
+            val index = portfolio.coinList.indexOfFirst { it.cryptoSymbol == crypto.symbol }
+
+            if (index != -1) {
+                // Si el Crypto ya existe en la lista, añadir la transacción al Crypto existente
+                val existingCrypto = portfolio.coinList[index]
+                val updatedCrypto = existingCrypto.copy(
+                    transactions = existingCrypto.transactions.toMutableList().apply { add(transaction) }
+                )
+                portfolio =   portfolio.copy(
+                    coinList = portfolio.coinList.toMutableList().apply { set(index, updatedCrypto) }
+                )
+            } else {
+                // Si el Crypto no existe en la lista, añadir un nuevo Crypto con la transacción
+                val newCrypto = Crypto(cryptoSymbol = crypto.symbol, cryptoName = crypto.name , image = crypto.image,
+                    price_change_percentage_24h = crypto.market_data.price_change_percentage_24h  ,
+                    transactions = mutableListOf(transaction), totalCoins = transaction.coinCuantity,
+                    totalValue = (transaction.coinCuantity * crypto.market_data.current_price.eur),
+                    initialCost = transaction.cost)
+                newCrypto.averageCost = newCrypto.totalValue / newCrypto.totalCoins
+                newCrypto.profitOrLossPorcentage = ((newCrypto.totalValue - newCrypto.initialCost) / newCrypto.initialCost) * 100
+                newCrypto.totalCoins = transaction.coinCuantity
+
+                portfolio = portfolio.copy(
+                    coinList = portfolio.coinList.toMutableList().apply { add(newCrypto) }
+                )
+
+                portfolio.totalValue += newCrypto.totalValue
+
+            }
+            addPortfolioCrypto(portfolio)
         }
     }
 }

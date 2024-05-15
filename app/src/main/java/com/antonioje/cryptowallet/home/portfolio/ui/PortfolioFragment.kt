@@ -48,8 +48,8 @@ class PortfolioFragment : Fragment() {
             when(it){
                 PortfolioListState.NoDataError -> showNoData()
                 else -> {
-                    _adapter.submitList(_viewmodel.portfolioCrypto[0].coinList)
-                    onSuccess(_viewmodel.portfolioCrypto[0])
+                    _adapter.submitList(_viewmodel.portfolioCrypto.coinList)
+                    onSuccess(_viewmodel.portfolioCrypto)
                 }
             }
         })

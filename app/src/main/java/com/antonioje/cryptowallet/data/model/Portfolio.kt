@@ -3,7 +3,7 @@ package com.antonioje.cryptowallet.data.model
 import java.util.Date
 
 data class Portfolio(
-    var name: String = "",
+    var name: String = "My Portfolio",
     var coinList: List<Crypto> = mutableListOf(),
     var totalValue: Double = 0.0,
     var valueChange24H: Double = 0.0,
@@ -14,7 +14,11 @@ data class Portfolio(
 }
 
 data class Crypto(
-    var cryptoData: CryptoData = CryptoData(),
+    var cryptoSymbol: String = "",
+    var cryptoName: String = "",
+    val image: Image = Image(),
+    var currentPrice: Double = 0.0,
+    var price_change_percentage_24h: Double = 0.0,
     var totalValue: Double = 0.0,
     var totalCoins: Double = 0.0,
     var initialCost: Double = 0.0,

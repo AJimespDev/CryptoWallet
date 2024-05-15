@@ -77,6 +77,7 @@ class HomeFragment : Fragment() {
             setHasFixedSize(true)
         }
 
+
         _viewmodel.getState().observe(viewLifecycleOwner, Observer {
             when (it) {
                 CryptoListState.NoDataError -> showNoData()

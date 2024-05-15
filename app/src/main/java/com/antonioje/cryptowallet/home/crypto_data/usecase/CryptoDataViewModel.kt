@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.antonioje.cryptowallet.data.model.CryptoChange
 import com.antonioje.cryptowallet.data.model.CryptoCurrency
 import com.antonioje.cryptowallet.data.model.CryptoData
+import com.antonioje.cryptowallet.data.model.CryptoTransaction
 import com.antonioje.cryptowallet.data.repository.CryptoRepository
 import com.antonioje.cryptowallet.utils.HttpUtil
 import okhttp3.Request
@@ -55,6 +56,10 @@ class CryptoDataViewModel:ViewModel() {
 
     fun addFavourite(crypto: CryptoData) {
         CryptoRepository.addFavouriteCrypto(crypto)
+    }
+
+    fun addTransaction(crypto: CryptoData,transaction: CryptoTransaction) {
+        CryptoRepository.addTransaction(crypto,transaction)
     }
 
 

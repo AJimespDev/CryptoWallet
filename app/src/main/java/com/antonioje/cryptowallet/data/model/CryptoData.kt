@@ -5,14 +5,14 @@ data class CryptoData(
     val symbol: String = "",
     val name: String = "",
     val web_slug: String = "",
-    val asset_platform_id: String? = null,
+    var asset_platform_id: String = "",
     val platforms: Map<String, String> = mapOf(),
     val detail_platforms: Map<String, DetailPlatform> = mapOf(),
     val block_time_in_minutes: Int = 0,
     val hashing_algorithm: String = "",
     val categories: List<String> = listOf(),
-    val preview_listing: Boolean = false,
-    val public_notice: Any? = null,
+    var preview_listing: Boolean = false,
+    val public_notice: Any? = "",
     val additional_notices: List<Any> = listOf(),
     val description: Description = Description(),
     val links: Links = Links(),
@@ -41,7 +41,7 @@ data class MarketData(
 )
 
 data class DetailPlatform(
-    val decimal_place: String? = null,
+    val decimal_place: String? = "",
     val contract_address: String = ""
 )
 
@@ -58,7 +58,7 @@ data class Links(
     val announcement_url: List<String> = listOf(),
     val twitter_screen_name: String = "",
     val facebook_username: String = "",
-    val bitcointalk_thread_identifier: String? = null,
+    val bitcointalk_thread_identifier: String? = "",
     val telegram_channel_identifier: String = "",
     val subreddit_url: String = "",
     val repos_url: ReposUrl = ReposUrl()

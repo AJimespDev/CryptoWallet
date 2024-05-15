@@ -19,19 +19,12 @@ class PortfolioViewModel:ViewModel() {
         return state
     }
 
-    var portfolioCrypto = listOf<Portfolio>()
+    var portfolioCrypto = Portfolio()
 
     fun getPortfolio(){
         viewModelScope.launch {
-            portfolioCrypto = CryptoRepository.portfolioCrypto.toList()
-
-            when{
-                portfolioCrypto.isEmpty() ->  {
-                    CryptoRepository.addPortfolioCrypto(Portfolio("My Portfolio",listOf<Crypto>(),0.0,0.0,0.0,0.0,0.0))
-                    state.value = PortfolioListState.NoDataError
-                }
-                else -> state.value = PortfolioListState.onSuccess
-            }
+            portfolioCrypto = CryptoRepository.portfolioCrypto
+            state.value = PortfolioListState.onSuccess
         }
     }
 

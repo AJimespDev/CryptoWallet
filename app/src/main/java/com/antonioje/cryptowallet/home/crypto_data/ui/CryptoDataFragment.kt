@@ -1,5 +1,7 @@
 package com.antonioje.cryptowallet.home.crypto_data.ui
 
+import android.app.DatePickerDialog
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
@@ -10,6 +12,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.RadioButton
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.antonioje.cryptowallet.R
@@ -17,6 +24,8 @@ import com.antonioje.cryptowallet.data.model.CryptoChange
 import com.antonioje.cryptowallet.data.model.CryptoCurrency
 import com.antonioje.cryptowallet.data.model.CryptoData
 import com.antonioje.cryptowallet.data.enum.DIVISAS
+import com.antonioje.cryptowallet.data.model.CryptoTransaction
+import com.antonioje.cryptowallet.data.model.TRANSACTIONTYPE
 import com.antonioje.cryptowallet.databinding.FragmentCryptoDataBinding
 import com.antonioje.cryptowallet.home.crypto_data.usecase.CryptoDataState
 import com.antonioje.cryptowallet.home.crypto_data.usecase.CryptoDataViewModel
@@ -29,10 +38,14 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import okhttp3.*
 import java.io.IOException
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 
 
@@ -122,6 +135,10 @@ class CryptoDataFragment : Fragment() {
 
         val cryptoID: String = requireArguments().getString(CryptoData.CRYPTO_KEY)!!
 
+        binding.ivAddTransaction.setOnClickListener {
+            showTransactionDialog()
+        }
+
         _viewmodel.getState().observe(viewLifecycleOwner, Observer {
             when (it) {
                 CryptoDataState.NoDataError -> showNoData()
@@ -140,6 +157,141 @@ class CryptoDataFragment : Fragment() {
         initSpinners()
 
 
+    }
+
+    private fun showTransactionDialog() {
+        val builder = MaterialAlertDialogBuilder(requireContext())
+        val inflater = LayoutInflater.from(requireContext())
+        val dialogView = inflater.inflate(R.layout.alert_crypto_transaction, null)
+
+        builder.setView(dialogView)
+        val alertDialog = builder.create()
+
+
+        builder.setView(dialogView)
+
+        val edtFecha = dialogView.findViewById<EditText>(R.id.edtFecha)
+        val tietPrice = dialogView.findViewById<TextInputEditText>(R.id.precioEditText)
+        val tietTotalCoins = dialogView.findViewById<TextInputEditText>(R.id.cantidadEditText)
+        val tietTotalValue = dialogView.findViewById<TextInputEditText>(R.id.totalEditText)
+        val tilTextBuyOrSell = dialogView.findViewById<TextInputLayout>(R.id.totalTextInputLayout)
+        val rdComprar = dialogView.findViewById<RadioButton>(R.id.comprarRadioButton)
+        val rdVender = dialogView.findViewById<RadioButton>(R.id.venderRadioButton)
+        val btnAddTransaction = dialogView.findViewById<Button>(R.id.btnAddTransaction)
+        val colorAmarillo = ContextCompat.getColor(requireContext(), R.color.yellow)
+        rdComprar.buttonTintList = ColorStateList.valueOf(colorAmarillo)
+        rdVender.buttonTintList = ColorStateList.valueOf(colorAmarillo)
+
+        rdComprar.setOnClickListener {
+            tilTextBuyOrSell.hint = "Total gastado"
+        }
+
+        rdVender.setOnClickListener {
+            tilTextBuyOrSell.hint = "Total recibido"
+        }
+
+
+        tietPrice.setText(CryptoCurrency.formatPrice(cryptoData.market_data.current_price.eur))
+        tietTotalCoins.setText("1")
+        tietTotalValue.setText(CryptoCurrency.formatPrice(cryptoData.market_data.current_price.eur))
+
+
+        tietPrice.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                actualizarValorTotal(tietPrice, tietTotalCoins, tietTotalValue)
+                tilTextBuyOrSell.isErrorEnabled = false
+                tilTextBuyOrSell.setEndIconDrawable(R.drawable.icon_euro)
+
+            }
+        })
+
+
+        tietTotalCoins.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                actualizarValorTotal(tietPrice, tietTotalCoins, tietTotalValue)
+                tilTextBuyOrSell.setEndIconDrawable(R.drawable.icon_euro)
+                tilTextBuyOrSell.isErrorEnabled = false
+            }
+        })
+
+        val currentDate = Calendar.getInstance().time
+
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val formattedDate = dateFormat.format(currentDate)
+
+        edtFecha.setText(formattedDate)
+
+
+        edtFecha.setOnClickListener {
+            showDatapickerDialog(edtFecha)
+        }
+
+        btnAddTransaction.setOnClickListener {
+            val cost = tietTotalValue.text.toString().replace(',','.').toDoubleOrNull() ?: 0.0
+            if (cost == 0.0) {
+                tilTextBuyOrSell.endIconDrawable = null
+                tilTextBuyOrSell.error = "NO PUEDE SER 0€"
+                tilTextBuyOrSell.requestFocus()
+            } else {
+                val type = if (rdComprar.isChecked) TRANSACTIONTYPE.COMPRAR else TRANSACTIONTYPE.VENDER
+                val date = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(edtFecha.text.toString())
+                val coinPrice = tietPrice.text.toString().replace(',','.').toDoubleOrNull() ?: 0.0
+                val coinQuantity = tietTotalCoins.text.toString().replace(',','.').toDoubleOrNull() ?: 0.0
+
+
+                val transaction = CryptoTransaction(type, date, coinPrice, coinQuantity, cost)
+
+                //AÑADIR A LA FIREBASE
+                _viewmodel.addTransaction(cryptoData,transaction)
+                alertDialog.dismiss()
+            }
+        }
+
+        alertDialog.show()
+    }
+
+    fun showDatapickerDialog(edtFecha : EditText){
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, yearSelected, monthOfYear, dayOfMonth ->
+                val fechaSeleccionada = "$dayOfMonth/${monthOfYear + 1}/$yearSelected"
+                edtFecha.setText(fechaSeleccionada)
+
+                edtFecha.clearFocus()
+            },
+            year,
+            month,
+            day
+        )
+
+        datePickerDialog.show()
+    }
+
+    private fun actualizarValorTotal(
+        tietPrice: TextInputEditText,
+        tietTotalCoins: TextInputEditText,
+        tietTotalValue: TextInputEditText
+    ) {
+        val precioText = tietPrice.text.toString().replace(',', '.')
+        val cantidadText = tietTotalCoins.text.toString().replace(',', '.')
+
+        val precio = if (precioText.isNotEmpty()) precioText.toDouble() else 0.0
+        val cantidad = if (cantidadText.isNotEmpty()) cantidadText.toDouble() else 0.0
+        val total = precio * cantidad
+        tietTotalValue.setText(CryptoCurrency.formatPrice(total))
     }
 
     private fun configEditText() {

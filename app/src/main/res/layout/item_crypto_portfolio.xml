@@ -12,13 +12,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.625" />
+        app:layout_constraintGuide_percent="0.65" />
 
 
     <ImageView
         android:id="@+id/ivItemCrypto"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -26,12 +26,12 @@
 
     <TextView
         android:id="@+id/tvItemCryptoSymbol"
-        android:layout_width="wrap_content"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:singleLine="true"
         android:text="BABYDOGE"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/ivItemCrypto"
         app:layout_constraintStart_toEndOf="@+id/ivItemCrypto"

@@ -329,10 +329,11 @@
     </androidx.cardview.widget.CardView>-->
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="45dp"
         android:layout_marginBottom="124dp"
         app:cardCornerRadius="16dp"
         app:cardElevation="4dp"
@@ -371,6 +372,25 @@
         app:layout_constraintStart_toEndOf="@+id/tvCryptoName"
         app:layout_constraintTop_toTopOf="@+id/ivCryptoImage"
         app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tvAddTransaction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/tvAddTransaction"
+        app:layout_constraintEnd_toStartOf="@+id/ivAddTransaction"
+        app:layout_constraintTop_toBottomOf="@+id/cardViewFiatConverter" />
+
+    <ImageView
+        android:id="@+id/ivAddTransaction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_add"
+        app:layout_constraintBottom_toBottomOf="@+id/tvAddTransaction"
+        app:layout_constraintEnd_toEndOf="@+id/cardView2"
+        app:layout_constraintTop_toTopOf="@+id/tvAddTransaction" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

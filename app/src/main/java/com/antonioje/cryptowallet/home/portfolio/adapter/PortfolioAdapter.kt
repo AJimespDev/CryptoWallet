@@ -17,7 +17,7 @@ class PortfolioAdapter(private val onClick: (crypto: Crypto) -> Unit) :
     companion object {
         val PORTFOLIO_COMPARATOR = object : DiffUtil.ItemCallback<Crypto>() {
             override fun areItemsTheSame(oldItem: Crypto, newItem: Crypto): Boolean {
-                return oldItem.cryptoData.id == newItem.cryptoData.id
+                return oldItem.cryptoSymbol  == newItem.cryptoSymbol
             }
 
             override fun areContentsTheSame(oldItem: Crypto, newItem: Crypto): Boolean {
@@ -45,9 +45,9 @@ class PortfolioAdapter(private val onClick: (crypto: Crypto) -> Unit) :
         fun render(crypto: Crypto) {
             itemView.setOnClickListener { onClick(crypto) }
             with(binding){
-                Picasso.get().load(crypto.cryptoData.image.large).into(ivItemCrypto)
-                tvItemCryptoSymbol.text = crypto.cryptoData.name
-                if (crypto.cryptoData.market_data.price_change_percentage_24h >= 0) {
+                Picasso.get().load(crypto.image.large).into(ivItemCrypto)
+                tvItemCryptoSymbol.text = crypto.cryptoName
+                if (crypto.price_change_percentage_24h >= 0) {
                     tvItemCryptoLast24h.setTextColor(Color.GREEN)
                     ivItemLast24H.setImageResource(R.drawable.icon_last24h_up)
 
@@ -56,10 +56,10 @@ class PortfolioAdapter(private val onClick: (crypto: Crypto) -> Unit) :
                     ivItemLast24H.setImageResource(R.drawable.icon_last24h_down)
                 }
                 tvItemCryptoLast24h.text =
-                    String.format("%.2f", crypto.cryptoData.market_data.price_change_percentage_24h).replace("-", "") + "%"
+                    String.format("%.2f", crypto.price_change_percentage_24h).replace("-", "") + "%"
 
                 tvTotalPrice.text = String.format("%.2f€", crypto.totalValue)
-                tvTotalCoins.text = String.format("%.2f %s", crypto.totalCoins,crypto.cryptoData.symbol)
+                tvTotalCoins.text = String.format("%.2f %s", crypto.totalCoins,crypto.cryptoSymbol.toUpperCase())
             }
         }
     }
