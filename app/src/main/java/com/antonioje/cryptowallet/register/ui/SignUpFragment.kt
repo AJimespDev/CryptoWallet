@@ -13,14 +13,13 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.antonioje.cryptowallet.MainActivity
 import com.antonioje.cryptowallet.R
-import com.antonioje.cryptowallet.data.enum.ProviderType
+import com.antonioje.cryptowallet.data.enum.PROVIDERTYPE
 import com.antonioje.cryptowallet.databinding.FragmentSignUpBinding
 import com.antonioje.cryptowallet.register.usecase.SignUpState
 import com.antonioje.cryptowallet.register.usecase.SignUpViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 class SignUpFragment : Fragment() {
@@ -83,7 +82,7 @@ class SignUpFragment : Fragment() {
     private fun showHome(){
         var modoAcceso = Bundle()
         modoAcceso.putString(MainActivity.EMAIL,_viewModel.email.value)
-        modoAcceso.putString(MainActivity.PROVIDER,ProviderType.BASIC.name)
+        modoAcceso.putString(MainActivity.PROVIDER,PROVIDERTYPE.BASIC.name)
         modoAcceso.putBoolean(MainActivity.MANTENERSESION,_viewModel.mantenerSesion.value as Boolean)
 
         findNavController().navigate(R.id.action_signUpFragment_to_homeFragment,modoAcceso)
@@ -126,7 +125,7 @@ class SignUpFragment : Fragment() {
     private fun showHomeWithGoogle() {
         var modoAcceso = Bundle()
         modoAcceso.putString(MainActivity.EMAIL,_viewModel.email.value)
-        modoAcceso.putString(MainActivity.PROVIDER, ProviderType.GOOGLE.name)
+        modoAcceso.putString(MainActivity.PROVIDER, PROVIDERTYPE.GOOGLE.name)
         modoAcceso.putBoolean(MainActivity.MANTENERSESION,true)
 
         findNavController().navigate(R.id.action_signUpFragment_to_homeFragment,modoAcceso)

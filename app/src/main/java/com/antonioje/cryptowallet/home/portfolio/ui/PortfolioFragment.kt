@@ -9,9 +9,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.antonioje.cryptowallet.R
 import com.antonioje.cryptowallet.data.model.Crypto
+import com.antonioje.cryptowallet.data.model.CryptoData
 import com.antonioje.cryptowallet.data.model.Portfolio
 import com.antonioje.cryptowallet.databinding.FragmentPortfolioBinding
 import com.antonioje.cryptowallet.home.portfolio.adapter.PortfolioAdapter
@@ -57,7 +59,10 @@ class PortfolioFragment : Fragment() {
         _viewmodel.initPortfolio()
     }
     private fun onClick(crypto: Crypto) {
+        var bundle = Bundle()
+        bundle.putSerializable(CryptoData.CRYPTO_KEY,crypto)
 
+        findNavController().navigate(R.id.action_portfolioFragment_to_cryptoTransactionFragment,bundle)
     }
 
     private fun onSuccess(portfolio: Portfolio) {
@@ -65,14 +70,14 @@ class PortfolioFragment : Fragment() {
             tvPortfolioName.text = portfolio.name
             tvPortfolioTotalPrice.text =  String.format("%.2f€", portfolio.totalValue)
             if(portfolio.valueChange24H >= 0){
-                tvPortfolio24HChange.text = String.format("+%.2f€", portfolio.valueChange24H)
+                tvPortfolio24HChange.text = String.format("%.2f", portfolio.valueChange24H) + "%"
             }else{
-                tvPortfolio24HChange.text = String.format("-%.2f€", portfolio.valueChange24H)
+                tvPortfolio24HChange.text = String.format("%.2f", portfolio.valueChange24H) + "%"
             }
             if(portfolio.allTimePrice >= 0){
-                tvPortfolioAllProfit.text = String.format("+%.2f€", portfolio.allTimePrice)
+                tvPortfolioAllProfit.text = String.format("%.2f€", portfolio.allTimePrice)
             }else{
-                tvPortfolioAllProfit.text = String.format("-%.2f€", portfolio.allTimePrice)
+                tvPortfolioAllProfit.text = String.format("%.2f€", portfolio.allTimePrice)
             }
         }
     }

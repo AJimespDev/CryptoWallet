@@ -1,6 +1,6 @@
 package com.antonioje.cryptowallet.data.enum
 
-enum class ProviderType {
+enum class PROVIDERTYPE {
     BASIC,
     GOOGLE,
 }

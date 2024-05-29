@@ -14,7 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.antonioje.cryptowallet.MainActivity
 import com.antonioje.cryptowallet.R
-import com.antonioje.cryptowallet.data.enum.ProviderType
+import com.antonioje.cryptowallet.data.enum.PROVIDERTYPE
 import com.antonioje.cryptowallet.databinding.FragmentSignInBinding
 import com.antonioje.cryptowallet.login.usecase.SignInState
 import com.antonioje.cryptowallet.login.usecase.SignInViewModel
@@ -118,7 +118,7 @@ class SignInFragment : Fragment() {
     private fun showHome() {
         var modoAcceso = Bundle()
         modoAcceso.putString(MainActivity.EMAIL, _viewModel.email.value)
-        modoAcceso.putString(MainActivity.PROVIDER, ProviderType.BASIC.name)
+        modoAcceso.putString(MainActivity.PROVIDER, PROVIDERTYPE.BASIC.name)
         modoAcceso.putBoolean(
             MainActivity.MANTENERSESION,
             _viewModel.mantenerSesion.value as Boolean
@@ -152,7 +152,7 @@ class SignInFragment : Fragment() {
     private fun showHomeWithGoogle() {
         var modoAcceso = Bundle()
         modoAcceso.putString(MainActivity.EMAIL, _viewModel.email.value)
-        modoAcceso.putString(MainActivity.PROVIDER, ProviderType.GOOGLE.name)
+        modoAcceso.putString(MainActivity.PROVIDER, PROVIDERTYPE.GOOGLE.name)
         modoAcceso.putBoolean(MainActivity.MANTENERSESION, true)
 
         _viewModel.setCompleted()

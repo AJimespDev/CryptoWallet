@@ -20,12 +20,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.antonioje.cryptowallet.R
-import com.antonioje.cryptowallet.data.model.CryptoChange
 import com.antonioje.cryptowallet.data.model.CryptoCurrency
 import com.antonioje.cryptowallet.data.model.CryptoData
 import com.antonioje.cryptowallet.data.enum.DIVISAS
+import com.antonioje.cryptowallet.data.enum.TRANSACTIONTYPE
 import com.antonioje.cryptowallet.data.model.CryptoTransaction
-import com.antonioje.cryptowallet.data.model.TRANSACTIONTYPE
 import com.antonioje.cryptowallet.databinding.FragmentCryptoDataBinding
 import com.antonioje.cryptowallet.home.crypto_data.usecase.CryptoDataState
 import com.antonioje.cryptowallet.home.crypto_data.usecase.CryptoDataViewModel
@@ -41,9 +40,6 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.google.gson.Gson
-import okhttp3.*
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date

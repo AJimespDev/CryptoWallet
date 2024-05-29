@@ -6,55 +6,51 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.antonioje.cryptowallet.R
+import com.antonioje.cryptowallet.data.model.Crypto
+import com.antonioje.cryptowallet.data.model.CryptoCurrency
+import com.antonioje.cryptowallet.data.model.CryptoData
+import com.antonioje.cryptowallet.databinding.FragmentCryptoTransactionBinding
+import com.squareup.picasso.Picasso
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [CryptoTransactionFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CryptoTransactionFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var _binding:FragmentCryptoTransactionBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var crypto: Crypto
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_crypto_transaction, container, false)
+        _binding = FragmentCryptoTransactionBinding.inflate(inflater,container,false)
+
+        crypto = requireArguments().getSerializable(CryptoData.CRYPTO_KEY) as Crypto
+
+        initVariables()
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CryptoTransactionFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CryptoTransactionFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    private fun initVariables() {
+        with(binding){
+            Picasso.get().load(crypto.image.large).into(imCryptoTransaction)
+            tvCryptoName.text = crypto.cryptoName
+            tvTotalCoinsTransaction.text = crypto.totalCoins.toString() + crypto.cryptoSymbol.toUpperCase()
+            tvTotalCostTransaction.text = crypto.initialCost.toString() + "€"
+
+            tvTotalValueTransaction.text = (crypto.currentPrice * crypto.totalCoins).toString()  + "€"
+            tvAverageCostTransaction.text = crypto.transactions.map { it.cost }.average().toString() + "€"
+
+
+            val profitOrLossMoney = (crypto.currentPrice * crypto.totalCoins) - crypto.initialCost
+
+            if(profitOrLossMoney >= 0){
+                tvAllTimeProfitLossTransaction.text = CryptoCurrency.formatPrice(profitOrLossMoney) + "€"
+            }else{
+                tvAllTimeProfitLossTransaction.text = CryptoCurrency.formatPrice(profitOrLossMoney) + "€"
             }
+        }
     }
+
+
 }

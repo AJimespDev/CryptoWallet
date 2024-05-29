@@ -169,6 +169,7 @@ class CryptoRepository private constructor() {
                     transactions = mutableListOf(transaction), totalCoins = transaction.coinCuantity,
                     totalValue = (transaction.coinCuantity * crypto.market_data.current_price.eur),
                     initialCost = transaction.cost)
+                newCrypto.currentPrice = crypto.market_data.current_price.eur
                 newCrypto.averageCost = newCrypto.totalValue / newCrypto.totalCoins
                 newCrypto.profitOrLossPorcentage = ((newCrypto.totalValue - newCrypto.initialCost) / newCrypto.initialCost) * 100
                 newCrypto.totalCoins = transaction.coinCuantity
@@ -178,6 +179,17 @@ class CryptoRepository private constructor() {
                 )
 
                 portfolio.totalValue += newCrypto.totalValue
+                portfolio.valueChange24H = portfolio.coinList.map { it.price_change_percentage_24h }.average()
+
+                // Calcula el porcentaje de ganancia o pérdida desde el inicio de la cartera
+                val initialValue = portfolio.coinList.sumByDouble { it.totalValue }
+                val currentValue = portfolio.totalValue
+                val allTimePricePorcentage = if (initialValue != 0.0) {
+                    ((currentValue - initialValue) / initialValue) * 100
+                } else {
+                    0.0
+                }
+                portfolio.allTimePricePorcentage = allTimePricePorcentage
 
             }
             addPortfolioCrypto(portfolio)

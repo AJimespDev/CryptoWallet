@@ -29,17 +29,19 @@
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:id="@+id/imCryptoTransaction"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:src="@color/md_theme_dark_error"/>
+                    android:src="@color/md_theme_dark_error" />
 
                 <TextView
+                    android:id="@+id/tvCryptoName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_gravity="center_vertical"
-                    android:fontFamily="@font/humatoheavy"
                     android:layout_marginStart="3dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/humatoheavy"
                     android:text="DOGECOIN"
                     android:textSize="24dp" />
 
@@ -71,21 +73,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/uni_sans"
-                    android:text="98,08€"
-                    android:textSize="24dp"/>
 
                 <TextView
+                    android:id="@+id/tvTotalValueTransaction"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/uni_sans"
+                    android:text="98,08€"
+                    android:textSize="24dp" />
+
+                <TextView
+                    android:id="@+id/tvTotalCoinsTransaction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/uni_sans"
                     android:layout_marginRight="80dp"
+                    android:fontFamily="@font/uni_sans"
                     android:text="15 dot"
-                    android:textSize="24dp"/>
+                    android:textSize="24dp" />
 
             </LinearLayout>
 
@@ -116,21 +121,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/uni_sans"
-                    android:text="30€"
-                    android:textSize="24dp"/>
 
                 <TextView
+                    android:id="@+id/tvTotalCostTransaction"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/uni_sans"
+                    android:text="30€"
+                    android:textSize="24dp" />
+
+                <TextView
+                    android:id="@+id/tvAverageCostTransaction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="80dp"
                     android:fontFamily="@font/uni_sans"
                     android:text="3,4€"
-                    android:textSize="24dp"/>
+                    android:textSize="24dp" />
 
             </LinearLayout>
 
@@ -148,12 +156,14 @@
                     android:text="Ganancias/Pérdidas"
                     android:fontFamily="@font/humatoheavy"/>
             </LinearLayout>
+
             <TextView
+                android:id="@+id/tvAllTimeProfitLossTransaction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/uni_sans"
                 android:text="48,08€"
-                android:textSize="24dp"/>
+                android:textSize="24dp" />
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="10dp" />

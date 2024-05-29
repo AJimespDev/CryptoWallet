@@ -1,5 +1,7 @@
 package com.antonioje.cryptowallet.data.model
 
+import com.antonioje.cryptowallet.data.enum.TRANSACTIONTYPE
+import java.io.Serializable
 import java.util.Date
 
 data class Portfolio(
@@ -10,8 +12,7 @@ data class Portfolio(
     var valueChange24HPorcentage: Double = 0.0,
     var allTimePrice: Double = 0.0,
     var allTimePricePorcentage: Double = 0.0
-) {
-}
+)
 
 data class Crypto(
     var cryptoSymbol: String = "",
@@ -25,7 +26,7 @@ data class Crypto(
     var averageCost: Double = 0.0,
     var profitOrLossPorcentage: Double = 0.0,
     var transactions: List<CryptoTransaction> = mutableListOf()
-)
+) : Serializable
 
 data class CryptoTransaction(
     val type: TRANSACTIONTYPE = TRANSACTIONTYPE.COMPRAR,
@@ -34,8 +35,3 @@ data class CryptoTransaction(
     val coinCuantity: Double = 0.0,
     val cost: Double = 0.0
 )
-
-enum class TRANSACTIONTYPE{
-    COMPRAR,
-    VENDER
-}

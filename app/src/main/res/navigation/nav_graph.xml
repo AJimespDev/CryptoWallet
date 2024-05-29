@@ -83,7 +83,11 @@
         android:id="@+id/portfolioFragment"
         android:name="com.antonioje.cryptowallet.home.portfolio.ui.PortfolioFragment"
         android:label="@string/portfolioFragment"
-        tools:layout="@layout/fragment_portfolio" />
+        tools:layout="@layout/fragment_portfolio" >
+        <action
+            android:id="@+id/action_portfolioFragment_to_cryptoTransactionFragment"
+            app:destination="@id/cryptoTransactionFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/settingsFragment"
@@ -99,5 +103,9 @@
         android:name="com.antonioje.cryptowallet.home.crypto_data.ui.CryptoDataFragment"
         android:label="@string/cryptoDataFragment"
         tools:layout="@layout/fragment_crypto_data" />
+    <fragment
+        android:id="@+id/cryptoTransactionFragment"
+        android:name="com.antonioje.cryptowallet.home.portfolio.ui.CryptoTransactionFragment"
+        android:label="CryptoTransactionFragment" />
 
 </navigation>
