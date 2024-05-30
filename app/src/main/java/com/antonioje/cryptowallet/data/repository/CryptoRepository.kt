@@ -6,6 +6,7 @@ import com.antonioje.cryptowallet.data.model.CryptoCurrency
 import com.antonioje.cryptowallet.data.model.CryptoData
 import com.antonioje.cryptowallet.data.model.CryptoTransaction
 import com.antonioje.cryptowallet.data.model.Portfolio
+import com.antonioje.cryptowallet.utils.HttpUtil
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.GlobalScope
@@ -148,51 +149,90 @@ class CryptoRepository private constructor() {
 
         }
 
+        fun getCurrentCrypto(cryptoID: String): CryptoData {
+            var url = "https://api.coingecko.com/api/v3/coins/" + cryptoID + "?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false"
+
+            var crypto = HttpUtil.instance?.getResponseData(url, CryptoData::class.java)
+
+            return  crypto!!
+        }
+
         fun addTransaction(crypto: CryptoData, transaction: CryptoTransaction) {
-            var portfolio = portfolioCrypto
+            getPortfolioCrypto {
+                var portfolio = portfolioCrypto
 
-            val index = portfolio.coinList.indexOfFirst { it.cryptoSymbol == crypto.symbol }
+                val index = portfolio.coinList.indexOfFirst { it.cryptoSymbol == crypto.symbol }
 
-            if (index != -1) {
-                // Si el Crypto ya existe en la lista, añadir la transacción al Crypto existente
-                val existingCrypto = portfolio.coinList[index]
-                val updatedCrypto = existingCrypto.copy(
-                    transactions = existingCrypto.transactions.toMutableList().apply { add(transaction) }
-                )
-                portfolio =   portfolio.copy(
-                    coinList = portfolio.coinList.toMutableList().apply { set(index, updatedCrypto) }
-                )
-            } else {
-                // Si el Crypto no existe en la lista, añadir un nuevo Crypto con la transacción
-                val newCrypto = Crypto(cryptoSymbol = crypto.symbol, cryptoName = crypto.name , image = crypto.image,
-                    price_change_percentage_24h = crypto.market_data.price_change_percentage_24h  ,
-                    transactions = mutableListOf(transaction), totalCoins = transaction.coinCuantity,
-                    totalValue = (transaction.coinCuantity * crypto.market_data.current_price.eur),
-                    initialCost = transaction.cost)
-                newCrypto.currentPrice = crypto.market_data.current_price.eur
-                newCrypto.averageCost = newCrypto.totalValue / newCrypto.totalCoins
-                newCrypto.profitOrLossPorcentage = ((newCrypto.totalValue - newCrypto.initialCost) / newCrypto.initialCost) * 100
-                newCrypto.totalCoins = transaction.coinCuantity
+                if (index != -1) {
+                    // Si el Crypto ya existe en la lista, añadir la transacción al Crypto existente
+                    val existingCrypto = portfolio.coinList[index]
+                    existingCrypto.transactions.toMutableList().add(transaction)
+                    existingCrypto.initialCost = existingCrypto.transactions.map { it.cost }.sum()
+                    existingCrypto.totalCoins = existingCrypto.transactions.map { it.coinCuantity }.sum()
+                    existingCrypto.averageCost = existingCrypto.transactions.map { it.coinPrice }.average()
 
-                portfolio = portfolio.copy(
-                    coinList = portfolio.coinList.toMutableList().apply { add(newCrypto) }
-                )
+                    existingCrypto.currentPrice = crypto.market_data.current_price.eur
+                    existingCrypto.price_change_percentage_24h = crypto.market_data.price_change_percentage_24h
+                    existingCrypto.totalValue = existingCrypto.currentPrice * existingCrypto.totalCoins
+                    existingCrypto.profitOrLossPorcentage = if (existingCrypto.initialCost > 0) ((existingCrypto.totalValue - existingCrypto.initialCost) / existingCrypto.initialCost) * 100 else 0.0
 
-                portfolio.totalValue += newCrypto.totalValue
-                portfolio.valueChange24H = portfolio.coinList.map { it.price_change_percentage_24h }.average()
+                    portfolio =   portfolio.copy(
+                        coinList = portfolio.coinList.toMutableList().apply { set(index, existingCrypto) }
+                    )
 
-                // Calcula el porcentaje de ganancia o pérdida desde el inicio de la cartera
-                val initialValue = portfolio.coinList.sumByDouble { it.totalValue }
-                val currentValue = portfolio.totalValue
-                val allTimePricePorcentage = if (initialValue != 0.0) {
-                    ((currentValue - initialValue) / initialValue) * 100
+                    portfolio.totalValue = portfolio.coinList.sumByDouble { it.totalValue }
+                    portfolio.valueChange24H = portfolio.coinList.sumByDouble { it.price_change_percentage_24h * it.totalCoins }
+                    portfolio.valueChange24HPorcentage =  if (portfolio.totalValue > 0) (portfolio.valueChange24H / portfolio.totalValue) * 100 else 0.0
+                    portfolio.allTimePrice = portfolio.coinList.sumByDouble { it.initialCost }
+                    portfolio.allTimePricePorcentage = if (portfolio.totalValue > 0) (portfolio.allTimePrice / portfolio.totalValue) * 100 else 0.0
+
                 } else {
-                    0.0
-                }
-                portfolio.allTimePricePorcentage = allTimePricePorcentage
+                    // Si el Crypto no existe en la lista, añadir un nuevo Crypto con la transacción
+                    val newCrypto = Crypto(cryptoSymbol = crypto.symbol, cryptoName = crypto.name , image = crypto.image,
+                        price_change_percentage_24h = crypto.market_data.price_change_percentage_24h  ,
+                        transactions = mutableListOf(transaction), totalCoins = transaction.coinCuantity,
+                        totalValue = transaction.cost,
+                        initialCost = transaction.cost)
+                    newCrypto.currentPrice = crypto.market_data.current_price.eur
+                    newCrypto.averageCost = transaction.coinPrice
+                    newCrypto.profitOrLossPorcentage = 0.0
+                    newCrypto.totalCoins = transaction.coinCuantity
 
+                    portfolio = portfolio.copy(
+                        coinList = portfolio.coinList.toMutableList().apply { add(newCrypto) }
+                    )
+
+                    portfolio.totalValue = portfolio.coinList.sumByDouble { it.totalValue }
+                    portfolio.valueChange24H = portfolio.coinList.sumByDouble { it.price_change_percentage_24h * it.totalCoins }
+                    portfolio.valueChange24HPorcentage =  if (portfolio.totalValue > 0) (portfolio.valueChange24H / portfolio.totalValue) * 100 else 0.0
+                    portfolio.allTimePrice = portfolio.coinList.sumByDouble { it.initialCost }
+                    portfolio.allTimePricePorcentage = if (portfolio.totalValue > 0) (portfolio.allTimePrice / portfolio.totalValue) * 100 else 0.0
+
+                }
+                addPortfolioCrypto(portfolio)
             }
-            addPortfolioCrypto(portfolio)
+
+
+        }
+
+
+        fun actualizarPortfolio():Portfolio {
+            var newPortfolio = portfolioCrypto
+            for (crypto in newPortfolio.coinList){
+                crypto.currentPrice = getCurrentCrypto(crypto.cryptoName).market_data.price_change_percentage_24h
+
+                crypto.price_change_percentage_24h = crypto.price_change_percentage_24h
+                crypto.totalValue = crypto.currentPrice * crypto.totalCoins
+                crypto.profitOrLossPorcentage = if (crypto.initialCost > 0) ((crypto.totalValue - crypto.initialCost) / crypto.initialCost) * 100 else 0.0
+            }
+
+            portfolioCrypto.totalValue = portfolioCrypto.coinList.sumByDouble { it.totalValue }
+            portfolioCrypto.valueChange24H = portfolioCrypto.coinList.sumByDouble { it.price_change_percentage_24h * it.totalCoins }
+            portfolioCrypto.valueChange24HPorcentage =  if (portfolioCrypto.totalValue > 0) (portfolioCrypto.valueChange24H / portfolioCrypto.totalValue) * 100 else 0.0
+            portfolioCrypto.allTimePrice = portfolioCrypto.coinList.sumByDouble { it.initialCost }
+            portfolioCrypto.allTimePricePorcentage = if (portfolioCrypto.totalValue > 0) (portfolioCrypto.allTimePrice / portfolioCrypto.totalValue) * 100 else 0.0
+
+            return  portfolioCrypto
         }
     }
 }

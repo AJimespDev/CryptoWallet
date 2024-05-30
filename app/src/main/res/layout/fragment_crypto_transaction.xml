@@ -87,9 +87,18 @@
                     android:id="@+id/tvTotalCoinsTransaction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="80dp"
+                    android:layout_marginRight="5dp"
                     android:fontFamily="@font/uni_sans"
-                    android:text="15 dot"
+                    android:text="15"
+                    android:textSize="24dp" />
+
+                <TextView
+                    android:id="@+id/tvCoinSymbol"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/uni_sans"
+                    android:layout_marginRight="30dp"
+                    android:text="dot"
                     android:textSize="24dp" />
 
             </LinearLayout>
@@ -105,7 +114,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="Coste total"
+                    android:text="Coste inicial"
                     android:fontFamily="@font/humatoheavy"/>
 
                 <TextView
