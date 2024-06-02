@@ -16,6 +16,7 @@ data class Portfolio(
 
 data class Crypto(
     var cryptoSymbol: String = "",
+    var cryptoID:String = "",
     var cryptoName: String = "",
     val image: Image = Image(),
     var currentPrice: Double = 0.0,

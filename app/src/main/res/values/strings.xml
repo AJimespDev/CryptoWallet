@@ -8,8 +8,6 @@
     <string name="tvPortfolio24HChange">Cambio en 24 h</string>
     <string name="tvPortfolioAllTimeProfit">Total de ganancias/perdidas</string>
     <string name="tvListTotal">Total</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tvAddTransaction">Añadir transacción</string>
 
 

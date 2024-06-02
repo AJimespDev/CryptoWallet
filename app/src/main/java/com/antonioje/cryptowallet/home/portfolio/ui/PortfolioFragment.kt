@@ -75,9 +75,9 @@ class PortfolioFragment : Fragment() {
                 tvPortfolio24HChange.text = String.format("%.2f", portfolio.valueChange24H) + "%"
             }
             if(portfolio.allTimePrice >= 0){
-                tvPortfolioAllProfit.text = String.format("%.2f€", portfolio.allTimePrice)
+                tvPortfolioAllProfit.text = String.format("+%.2f€",portfolio.totalValue - portfolio.allTimePrice)
             }else{
-                tvPortfolioAllProfit.text = String.format("%.2f€", portfolio.allTimePrice)
+                tvPortfolioAllProfit.text = String.format("-%.2f€", portfolio.totalValue - portfolio.allTimePrice)
             }
         }
     }
