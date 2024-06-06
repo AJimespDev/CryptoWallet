@@ -57,10 +57,10 @@ class CryptoTransactionAdapter(private var cryptoSymbol:String, private val onCl
                 tvType.text = transaction.type.toString()
                 if(transaction.type == TRANSACTIONTYPE.COMPRAR){
                     tvTypePrice.text = "Pagado:"
-                    imvArrow.setImageResource(R.drawable.icon_last24h_up)
+                    imvArrow.setImageResource(R.drawable.add_transaction)
                 }else{
                     tvTypePrice.text = "Recibido:"
-                    imvArrow.setImageResource(R.drawable.icon_last24h_down)
+                    imvArrow.setImageResource(R.drawable.sell_transaction)
                 }
 
                 val formatter = DateTimeFormatter.ofPattern("d 'de' MMMM 'de' yyyy", Locale("es", "ES"))

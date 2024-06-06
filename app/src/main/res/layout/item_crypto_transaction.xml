@@ -6,13 +6,13 @@
 
     <ImageView
         android:id="@+id/imvArrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon_last24h_down" />
+        app:srcCompat="@drawable/add_transaction" />
 
     <TextView
         android:id="@+id/tvType"

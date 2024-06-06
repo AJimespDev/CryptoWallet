@@ -5,5 +5,6 @@ import com.antonioje.cryptowallet.home.crypto_list.usecase.CryptoListState
 
 sealed class PortfolioListState {
     data object NoDataError:PortfolioListState()
+    data class Loading(var value:Boolean):PortfolioListState()
     data object onSuccess:PortfolioListState()
 }

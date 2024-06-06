@@ -39,6 +39,31 @@ class PortfolioAdapter(private val onClick: (crypto: Crypto) -> Unit) :
         holder.render(currentList[position])
     }
 
+    fun sortByName() {
+        if (currentList == currentList.sortedBy { it.cryptoName }) {
+            submitList(currentList.sortedBy { it.cryptoName }.reversed())
+        } else{
+            submitList(currentList.sortedBy { it.cryptoName })
+        }
+    }
+
+    fun sortBy24H() {
+        if (currentList == currentList.sortedBy { it.price_change_percentage_24h }) {
+            submitList(currentList.sortedBy { it.price_change_percentage_24h }.reversed())
+        } else{
+            submitList(currentList.sortedBy { it.price_change_percentage_24h })
+        }
+
+    }
+
+    fun sortByTotal() {
+        if (currentList == currentList.sortedBy { it.totalValue }) {
+            submitList(currentList.sortedBy { it.totalValue }.reversed())
+        } else {
+            submitList(currentList.sortedBy { it.totalValue })
+        }
+    }
+
     inner class PortfolioViewHolder(private val binding: ItemCryptoPortfolioBinding) :
         RecyclerView.ViewHolder(binding.root) {
 

@@ -1,5 +1,6 @@
 package com.antonioje.cryptowallet.home.portfolio.ui
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -49,6 +50,7 @@ class PortfolioFragment : Fragment() {
         _viewmodel.getState().observe(viewLifecycleOwner, Observer {
             when(it){
                 PortfolioListState.NoDataError -> showNoData()
+                is PortfolioListState.Loading -> showLoading(it.value)
                 else -> {
                     _adapter.submitList(_viewmodel.portfolioCrypto.coinList)
                     onSuccess(_viewmodel.portfolioCrypto)
@@ -58,6 +60,21 @@ class PortfolioFragment : Fragment() {
 
         _viewmodel.initPortfolio()
     }
+
+    private fun showLoading(value: Boolean) {
+        if(value){
+            binding.cardViewPortfolio.visibility = View.GONE
+            binding.llTexts.visibility = View.GONE
+            binding.rvCryptos.visibility = View.GONE
+            binding.portfolioLottie.visibility = View.VISIBLE
+        }else{
+            binding.cardViewPortfolio.visibility = View.VISIBLE
+            binding.llTexts.visibility = View.VISIBLE
+            binding.rvCryptos.visibility = View.VISIBLE
+            binding.portfolioLottie.visibility = View.GONE
+        }
+    }
+
     private fun onClick(crypto: Crypto) {
         var bundle = Bundle()
         bundle.putSerializable(CryptoData.CRYPTO_KEY,crypto)
@@ -69,15 +86,31 @@ class PortfolioFragment : Fragment() {
         with(binding){
             tvPortfolioName.text = portfolio.name
             tvPortfolioTotalPrice.text =  String.format("%.2f€", portfolio.totalValue)
-            if(portfolio.valueChange24H >= 0){
-                tvPortfolio24HChange.text = String.format("%.2f", portfolio.valueChange24H) + "%"
-            }else{
-                tvPortfolio24HChange.text = String.format("%.2f", portfolio.valueChange24H) + "%"
-            }
             if(portfolio.allTimePrice >= 0){
                 tvPortfolioAllProfit.text = String.format("+%.2f€",portfolio.totalValue - portfolio.allTimePrice)
+                tvPortfolioAllProfit.setTextColor(Color.GREEN)
+                imvLast24H.setImageResource(R.drawable.icon_last24h_up)
+                tvPortfolioAllProfitPorcentage.text = String.format("%.2f%%",portfolio.allTimePricePorcentage)
+                tvPortfolioAllProfitPorcentage.setTextColor(Color.GREEN)
             }else{
-                tvPortfolioAllProfit.text = String.format("-%.2f€", portfolio.totalValue - portfolio.allTimePrice)
+                tvPortfolioAllProfit.text = String.format("-%.2f€",portfolio.totalValue - portfolio.allTimePrice)
+                tvPortfolioAllProfit.setTextColor(Color.RED)
+                imvLast24H.setImageResource(R.drawable.icon_last24h_down)
+                tvPortfolioAllProfitPorcentage.text = String.format("%.2f%%",portfolio.allTimePricePorcentage)
+                tvPortfolioAllProfitPorcentage.setTextColor(Color.RED)
+            }
+
+            tvListMonedas.setOnClickListener {
+
+                _adapter.sortByName()
+            }
+
+            tvListLast24h.setOnClickListener {
+                _adapter.sortBy24H()
+            }
+
+            tvTotalPrice.setOnClickListener {
+                _adapter.sortByTotal()
             }
         }
     }

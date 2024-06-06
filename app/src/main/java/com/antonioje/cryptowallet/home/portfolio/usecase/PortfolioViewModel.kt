@@ -23,13 +23,16 @@ class PortfolioViewModel:ViewModel() {
 
     fun getPortfolio(){
         viewModelScope.launch {
+            state.value = PortfolioListState.Loading(false)
             portfolioCrypto = CryptoRepository.portfolioCrypto
+
             state.value = PortfolioListState.onSuccess
         }
     }
 
     fun initPortfolio() {
         viewModelScope.launch {
+            state.value = PortfolioListState.Loading(true)
             CryptoRepository.getPortfolioCrypto {
                 getPortfolio()
             }

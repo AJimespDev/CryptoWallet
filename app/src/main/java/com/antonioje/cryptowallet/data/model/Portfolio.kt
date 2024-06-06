@@ -8,8 +8,6 @@ data class Portfolio(
     var name: String = "My Portfolio",
     var coinList: List<Crypto> = mutableListOf(),
     var totalValue: Double = 0.0,
-    var valueChange24H: Double = 0.0,
-    var valueChange24HPorcentage: Double = 0.0,
     var allTimePrice: Double = 0.0,
     var allTimePricePorcentage: Double = 0.0
 )

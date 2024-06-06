@@ -192,8 +192,6 @@ class CryptoRepository private constructor() {
 
                 portfolioCrypto.totalValue = portfolioCrypto.coinList.sumByDouble { it.totalValue }
                 portfolioCrypto.allTimePrice = portfolioCrypto.coinList.sumByDouble { it.initialCost }
-                portfolioCrypto.valueChange24H = portfolioCrypto.coinList.sumByDouble { it.price_change_percentage_24h / 100 * it.totalValue }
-                portfolioCrypto.valueChange24HPorcentage = if (portfolioCrypto.totalValue > 0) (portfolioCrypto.valueChange24H / portfolioCrypto.totalValue) * 100 else 0.0
                 portfolioCrypto.allTimePricePorcentage = if (portfolioCrypto.totalValue > 0) (portfolioCrypto.allTimePrice / portfolioCrypto.totalValue) * 100 else 0.0
 
                 addPortfolioCrypto(portfolio)
@@ -214,8 +212,6 @@ class CryptoRepository private constructor() {
 
             portfolioCrypto.totalValue = portfolioCrypto.coinList.sumByDouble { it.totalValue }
             portfolioCrypto.allTimePrice = portfolioCrypto.coinList.sumByDouble { it.initialCost }
-            portfolioCrypto.valueChange24H = portfolioCrypto.coinList.sumByDouble { it.price_change_percentage_24h / 100 * it.totalValue }
-            portfolioCrypto.valueChange24HPorcentage = if (portfolioCrypto.totalValue > 0) (portfolioCrypto.valueChange24H / portfolioCrypto.totalValue) * 100 else 0.0
             portfolioCrypto.allTimePricePorcentage = if (portfolioCrypto.totalValue > 0) (portfolioCrypto.allTimePrice / portfolioCrypto.totalValue) * 100 else 0.0
         }
 

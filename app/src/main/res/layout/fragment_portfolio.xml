@@ -42,6 +42,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
+                    android:rotation="90"
                     android:src="@drawable/config" />
             </LinearLayout>
 
@@ -68,47 +69,44 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/uni_sans"
-                    android:text="@string/tvPortfolio24HChange"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvPortfolio24HChange"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:text="" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="10dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/uni_sans"
                     android:text="@string/tvPortfolioAllTimeProfit"
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tvPortfolioAllProfit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:text="" />
+
 
             </LinearLayout>
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal">
+               <TextView
+                   android:id="@+id/tvPortfolioAllProfit"
+                   android:fontFamily="@font/uni_sans"
+                   android:textSize="18dp"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="80€" />
+               <View
+                   android:layout_width="5dp"
+                   android:layout_height="wrap_content"/>
 
 
+               <ImageView
+                   android:id="@+id/imvLast24H"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:src= "@drawable/icon_last24h_up"/>
+
+               <TextView
+                   android:id="@+id/tvPortfolioAllProfitPorcentage"
+                   android:fontFamily="@font/uni_sans"
+                   android:textSize="18dp"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="2400%" />
+
+           </LinearLayout>
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
@@ -160,6 +158,21 @@
 
 
     </LinearLayout>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/portfolioLottie"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/portfolio_loading" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCryptos"

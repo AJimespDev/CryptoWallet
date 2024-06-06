@@ -6,7 +6,7 @@
     <string name="CryptoSearchHint">Buscar criptomoneda</string>
     <string name="CryptoSearchNoData">API NOT WORKING</string>
     <string name="tvPortfolio24HChange">Cambio en 24 h</string>
-    <string name="tvPortfolioAllTimeProfit">Total de ganancias/perdidas</string>
+    <string name="tvPortfolioAllTimeProfit">Total de ganancias/pérdidas</string>
     <string name="tvListTotal">Total</string>
     <string name="tvAddTransaction">Añadir transacción</string>
 
