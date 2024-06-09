@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.65" />
+        app:layout_constraintGuide_percent="0.6935443" />
 
 
     <ImageView
@@ -30,8 +30,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:singleLine="true"
-        android:text="BABYDOGE"
-        android:textSize="14sp"
+        android:text="CAT IN A DOGS WORLD"
+        android:fontFamily="@font/uni_sans"
+        android:textSize="13sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/ivItemCrypto"
         app:layout_constraintStart_toEndOf="@+id/ivItemCrypto"
@@ -42,6 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0.4%"
+        android:fontFamily="@font/uni_sans"
         android:textSize="16sp"
         android:textStyle="bold"
         android:layout_marginStart="30dp"
@@ -65,15 +67,18 @@
         android:layout_height="wrap_content"
         android:text="100,43€"
         android:textStyle="bold"
+        android:fontFamily="@font/uni_sans"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvTotalCoins"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
+        android:gravity="right"
         android:layout_height="wrap_content"
         android:text="15 DOT"
-
+        android:fontFamily="@font/uni_sans"
+        android:textColor="@color/md_theme_light_outline"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTotalPrice" />

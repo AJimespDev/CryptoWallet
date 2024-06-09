@@ -1,94 +1,87 @@
 package com.antonioje.cryptowallet.home.search.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.SearchView
-import android.widget.Toast
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
+import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
+import androidx.viewpager2.widget.ViewPager2
 import com.antonioje.cryptowallet.R
-import com.antonioje.cryptowallet.data.model.CryptoData
-import com.antonioje.cryptowallet.data.model.CryptoSearch
 import com.antonioje.cryptowallet.databinding.FragmentSearchBinding
-import com.antonioje.cryptowallet.home.search.usecase.SearchState
-import com.antonioje.cryptowallet.home.search.usecase.SearchViewModel
-import kotlin.collections.ArrayList
+import com.antonioje.cryptowallet.home.search.adapter.SearchPagerAdapter
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
 
 class SearchFragment : Fragment() {
-    private var _binding : FragmentSearchBinding? = null
+    private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
-    private val _viewmodel:SearchViewModel by viewModels()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentSearchBinding.inflate(inflater,container,false)
-        initVariables()
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    private fun initVariables() {
-        _viewmodel.getState().observe(viewLifecycleOwner, Observer {
-            when(it){
-                SearchState.NoData -> showNoData()
-                is SearchState.Success -> onSuccess(it.data)
-            }
-        })
-        _viewmodel.getList()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        configTabView()
     }
 
-    private fun showNoData() {
-        binding.searchView.visibility = View.GONE
-        binding.searchView.visibility = View.GONE
-        Toast.makeText(requireContext(),getString(R.string.CryptoSearchNoData),Toast.LENGTH_SHORT).show()
-    }
+    private fun configTabView(){
+        val viewPager = binding.viewPager
+        val customFont = ResourcesCompat.getFont(requireContext(), R.font.humatoheavy)
 
-    private fun onSuccess(data: ArrayList<CryptoSearch>) {
-        binding.searchView.visibility = View.VISIBLE
-        binding.searchView.visibility = View.VISIBLE
+        viewPager.adapter = SearchPagerAdapter(requireActivity())
 
-
-        val adapter : ArrayAdapter<String> = ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1,data.map { it.name })
-        binding.cryptoSeachList.adapter = adapter
-
-        binding.searchView.setOnQueryTextListener(object  : SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                binding.searchView.clearFocus()
-                if(data.map { it.name }.contains(query)){
-                    adapter.filter.filter(query)
-                }
-                return false
+        val tabLayout = binding.tabLayout
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = when (position) {
+                0 -> getString(R.string.search_crypto_tab)
+                1 -> getString(R.string.search_portfolio_tab)
+                else -> null
             }
+        }.attach()
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                adapter.filter.filter(newText)
-                return false
-            }
-
-        })
-
-
-        binding.cryptoSeachList.setOnItemClickListener { _, _, position, _ ->
-            val selectedItem = adapter.getItem(position)
-            selectedItem?.let {
-                var bundle = Bundle()
-                Log.d("_________",position.toString())
-                val id = data.map { it.id }[data.map { it.name }.indexOf(it)]
-                bundle.putString(CryptoData.CRYPTO_KEY,id)
-                findNavController().navigate(R.id.action_buscarFragment_to_cryptoDataFragment, bundle)
+        // Método para aplicar la fuente a todas las pestañas
+        fun applyCustomFontToTabs() {
+            for (i in 0 until tabLayout.tabCount) {
+                val tab = tabLayout.getTabAt(i)
+                val tabTextView = tab?.view?.getChildAt(1) as? TextView
+                tabTextView?.typeface = customFont
             }
         }
-    }
 
+        // Aplicar la fuente personalizada inicialmente
+        applyCustomFontToTabs()
+
+        // Listener para aplicar la fuente cuando se selecciona/desselecciona una pestaña
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                applyCustomFontToTabs()
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                applyCustomFontToTabs()
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                applyCustomFontToTabs()
+            }
+        })
+
+        // Listener para aplicar la fuente cuando se cambia de página mediante deslizamiento
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                applyCustomFontToTabs()
+            }
+        })
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.antonioje.cryptowallet.R
 import com.antonioje.cryptowallet.data.model.Crypto
+import com.antonioje.cryptowallet.data.model.CryptoCurrency.Companion.formatLargeNumber
+import com.antonioje.cryptowallet.data.model.CryptoCurrency.Companion.formatPrice
 import com.antonioje.cryptowallet.databinding.ItemCryptoPortfolioBinding
 import com.squareup.picasso.Picasso
 
@@ -83,9 +85,14 @@ class PortfolioAdapter(private val onClick: (crypto: Crypto) -> Unit) :
                 tvItemCryptoLast24h.text =
                     String.format("%.2f", crypto.price_change_percentage_24h).replace("-", "") + "%"
 
-                tvTotalPrice.text = String.format("%.2f€", crypto.totalValue)
-                tvTotalCoins.text = String.format("%.2f %s", crypto.totalCoins,crypto.cryptoSymbol.toUpperCase())
-            }
+                if(crypto.totalCoins > 1000000.0){
+                    tvTotalCoins.text = String.format("%s %s", formatLargeNumber(crypto.totalCoins.toLong()),crypto.cryptoSymbol.toUpperCase())
+                } else {
+                    tvTotalCoins.text = String.format("%s %s", formatPrice(crypto.totalCoins),crypto.cryptoSymbol.toUpperCase())
+                }
+
+                 tvTotalPrice.text = String.format("%.2f€", crypto.totalValue)
+              }
         }
     }
 }

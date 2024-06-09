@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.antonioje.cryptowallet.R
 import com.antonioje.cryptowallet.data.enum.TRANSACTIONTYPE
+import com.antonioje.cryptowallet.data.model.CryptoCurrency
 import com.antonioje.cryptowallet.data.model.CryptoTransaction
 import com.antonioje.cryptowallet.databinding.ItemCryptoTransactionBinding
 import java.time.ZoneId
@@ -70,7 +71,17 @@ class CryptoTransactionAdapter(private var cryptoSymbol:String, private val onCl
 
                 tvDate.text = localDate.format(formatter)
                 tvPrice.text = String.format("%s€", transaction.cost.toString())
-                tvNCoins.text = String.format("%s %s", transaction.coinCuantity.toString(), cryptoSymbol)
+
+
+
+                if(transaction.coinCuantity > 1000000.0){
+                    tvNCoins.text = String.format("%s %s",
+                        CryptoCurrency.formatLargeNumber(transaction.coinCuantity.toLong()),cryptoSymbol)
+                } else {
+                    tvNCoins.text = String.format("%s %s",
+                        CryptoCurrency.formatPrice(transaction.coinCuantity),cryptoSymbol)
+                }
+
             }
         }
     }

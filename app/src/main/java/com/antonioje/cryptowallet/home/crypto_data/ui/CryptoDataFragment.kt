@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -163,9 +164,11 @@ class CryptoDataFragment : Fragment() {
         builder.setView(dialogView)
         val alertDialog = builder.create()
 
+        alertDialog.setCancelable(false)
 
         builder.setView(dialogView)
 
+        val tvCancelAlert = dialogView.findViewById<TextView>(R.id.tvCancelAlert)
         val edtFecha = dialogView.findViewById<EditText>(R.id.edtFecha)
         val tietPrice = dialogView.findViewById<TextInputEditText>(R.id.precioEditText)
         val tietTotalCoins = dialogView.findViewById<TextInputEditText>(R.id.cantidadEditText)
@@ -186,6 +189,10 @@ class CryptoDataFragment : Fragment() {
             tilTextBuyOrSell.hint = "Total recibido"
         }
 
+
+        tvCancelAlert.setOnClickListener{
+            alertDialog.dismiss()
+        }
 
         tietPrice.setText(CryptoCurrency.formatPrice(cryptoData.market_data.current_price.eur))
         tietTotalCoins.setText("1")

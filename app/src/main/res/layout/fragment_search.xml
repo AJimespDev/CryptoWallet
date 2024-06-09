@@ -7,23 +7,14 @@
     android:orientation="vertical"
     tools:context=".home.search.ui.SearchFragment" >
 
-    <SearchView
-        android:id="@+id/searchView"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:queryHint="@string/CryptoSearchHint"
-        android:iconifiedByDefault="false"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/searchview_background"
-        android:queryBackground="@android:color/transparent"/>
+        android:layout_height="wrap_content" />
 
-    <ListView
-        android:id="@+id/cryptoSeachList"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="75dp"/>
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 </LinearLayout>

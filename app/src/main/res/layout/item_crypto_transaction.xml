@@ -32,7 +32,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:textStyle="italic"
+        android:textSize="12dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/uni_sans"
         android:text="3 de mayo de 2024"
+        android:textColor="@color/md_theme_light_outline"
         app:layout_constraintStart_toEndOf="@+id/imvArrow"
         app:layout_constraintTop_toBottomOf="@+id/tvType" />
 
@@ -52,8 +56,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="3dp"
-        android:textStyle="italic"
+
         android:text="Pagada:"
+        android:textSize="12dp"
+        android:fontFamily="@font/uni_sans"
         app:layout_constraintBottom_toBottomOf="@+id/tvPrice"
         app:layout_constraintEnd_toStartOf="@+id/tvPrice"
         app:layout_constraintTop_toTopOf="@+id/tvPrice" />
@@ -65,6 +71,7 @@
         android:layout_marginTop="3dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="3dp"
+        android:fontFamily="@font/uni_sans"
         android:textStyle="italic"
         android:text="6,5585€"
         app:layout_constraintBottom_toBottomOf="parent"

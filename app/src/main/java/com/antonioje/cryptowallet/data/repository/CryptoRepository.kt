@@ -9,6 +9,7 @@ import com.antonioje.cryptowallet.data.model.Portfolio
 import com.antonioje.cryptowallet.utils.HttpUtil
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlin.properties.Delegates
 
 class CryptoRepository private constructor() {
 
@@ -17,6 +18,7 @@ class CryptoRepository private constructor() {
         private val db = FirebaseFirestore.getInstance()
 
         var favouritesCrypto = mutableSetOf<CryptoCurrency>()
+        var allPublicPortfolios = mutableSetOf<Portfolio>()
         var portfolioCrypto = Portfolio()
 
         fun addFavouriteCrypto(crypto: CryptoCurrency) {
@@ -85,6 +87,26 @@ class CryptoRepository private constructor() {
             }
         }
 
+        fun getAllPortfolios(onSuccess: () -> Unit) {
+            allPublicPortfolios = mutableSetOf()
+
+            db.collection("portfolios")
+                .get()
+                .addOnSuccessListener { documents ->
+                    Log.d("_____", documents.size().toString())
+
+                    for (document in documents) {
+                        val portfolio = document.toObject(Portfolio::class.java)
+                        allPublicPortfolios.add(portfolio)
+                    }
+                    onSuccess()
+                }
+                .addOnFailureListener { exception ->
+                    // FALLA EL OBTENER LISTA
+                }
+        }
+
+
         fun getPortfolioCrypto(onSuccess: () -> Unit) {
             val currentUser = FirebaseAuth.getInstance().currentUser
             currentUser?.email?.let { userEmail ->
@@ -109,8 +131,22 @@ class CryptoRepository private constructor() {
             val currentUser = FirebaseAuth.getInstance().currentUser
             currentUser?.email?.let { userEmail ->
                 val userPortfolioRef = db.collection("users").document(userEmail)
-                    .collection("portfolio").document(portfolio.name)
-                    userPortfolioRef.set(portfolio)
+                    .collection("portfolio").document("My Portfolio")
+                userPortfolioRef.set(portfolio)
+                    .addOnSuccessListener {
+
+                    }
+                    .addOnFailureListener { e ->
+
+                    }
+            }
+        }
+
+        private fun addPublicPortfolioCrypto(portfolio: Portfolio) {
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            currentUser?.email?.let { userEmail ->
+                val userPortfolioRef = db.collection("portfolios").document(userEmail)
+                userPortfolioRef.set(portfolio)
                     .addOnSuccessListener {
 
                     }
@@ -133,7 +169,7 @@ class CryptoRepository private constructor() {
 
                 userFavoritesRef.delete()
                     .addOnSuccessListener {
-                        favouritesCrypto.removeIf { it.name == crypto}
+                        favouritesCrypto.removeIf { it.name == crypto }
                         onDelete()
                         Log.d("TAG", "Favorite deleted from Firestore for user: $currentUser")
                     }
@@ -148,53 +184,88 @@ class CryptoRepository private constructor() {
 
         }
 
+        private fun deletePublicPortfolioCrypto() {
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            currentUser?.email.let { userEmail ->
+                val userFavoritesRef = db.collection("portfolios").document(userEmail.toString())
+                userFavoritesRef.delete()
+                    .addOnSuccessListener {
+
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w(
+                            "TAG",
+                            "Error deleting your public portfolio from Firestore for user: $currentUser",
+                            e
+                        )
+                    }
+            }
+        }
 
 
         fun addTransaction(crypto: CryptoData, transaction: CryptoTransaction) {
             getPortfolioCrypto {
-                var portfolio = portfolioCrypto
-
-                val index = portfolio.coinList.indexOfFirst { it.cryptoSymbol == crypto.symbol }
+                val index =
+                    portfolioCrypto.coinList.indexOfFirst { it.cryptoSymbol == crypto.symbol }
 
                 if (index != -1) {
                     // Si el Crypto ya existe en la lista, añadir la transacción al Crypto existente
-                    val existingCrypto = portfolio.coinList[index]
+                    val existingCrypto = portfolioCrypto.coinList[index]
                     val newTransactions = existingCrypto.transactions.toMutableList()
                     newTransactions.add(transaction)
                     existingCrypto.transactions = newTransactions
                     existingCrypto.initialCost = existingCrypto.transactions.map { it.cost }.sum()
-                    existingCrypto.totalCoins = existingCrypto.transactions.map { it.coinCuantity }.sum()
-                    existingCrypto.averageCost = existingCrypto.transactions.map { it.coinPrice }.average()
+                    existingCrypto.totalCoins =
+                        existingCrypto.transactions.map { it.coinCuantity }.sum()
+                    existingCrypto.averageCost =
+                        existingCrypto.transactions.map { it.coinPrice }.average()
                     existingCrypto.cryptoID = crypto.id
                     existingCrypto.currentPrice = crypto.market_data.current_price.eur
-                    existingCrypto.price_change_percentage_24h = crypto.market_data.price_change_percentage_24h
-                    existingCrypto.totalValue = existingCrypto.currentPrice * existingCrypto.totalCoins
-                    existingCrypto.profitOrLossPorcentage = if (existingCrypto.initialCost > 0) ((existingCrypto.totalValue - existingCrypto.initialCost) / existingCrypto.initialCost) * 100 else 0.0
+                    existingCrypto.price_change_percentage_24h =
+                        crypto.market_data.price_change_percentage_24h
+                    existingCrypto.totalValue =
+                        existingCrypto.currentPrice * existingCrypto.totalCoins
+                    existingCrypto.profitOrLossPorcentage =
+                        if (existingCrypto.initialCost > 0) ((existingCrypto.totalValue - existingCrypto.initialCost) / existingCrypto.initialCost) * 100 else 0.0
 
 
-                    portfolio.coinList = portfolio.coinList.toMutableList().apply { set(index, existingCrypto) }
+                    portfolioCrypto.coinList =
+                        portfolioCrypto.coinList.toMutableList()
+                            .apply { set(index, existingCrypto) }
 
                 } else {
                     // Si el Crypto no existe en la lista, añadir un nuevo Crypto con la transacción
-                    val newCrypto = Crypto(cryptoSymbol = crypto.symbol, cryptoName = crypto.name , image = crypto.image,
-                        price_change_percentage_24h = crypto.market_data.price_change_percentage_24h  ,
-                        transactions = mutableListOf(transaction), totalCoins = transaction.coinCuantity,
+                    val newCrypto = Crypto(
+                        cryptoSymbol = crypto.symbol,
+                        cryptoName = crypto.name,
+                        image = crypto.image,
+                        price_change_percentage_24h = crypto.market_data.price_change_percentage_24h,
+                        transactions = mutableListOf(transaction),
+                        totalCoins = transaction.coinCuantity,
                         totalValue = transaction.cost,
-                        initialCost = transaction.cost)
+                        initialCost = transaction.cost
+                    )
                     newCrypto.cryptoID = crypto.id
                     newCrypto.currentPrice = crypto.market_data.current_price.eur
                     newCrypto.averageCost = transaction.coinPrice
                     newCrypto.profitOrLossPorcentage = 0.0
                     newCrypto.totalCoins = transaction.coinCuantity
 
-                    portfolio.coinList = portfolio.coinList.toMutableList().apply { add(newCrypto) }
+                    portfolioCrypto.coinList =
+                        portfolioCrypto.coinList.toMutableList().apply { add(newCrypto) }
                 }
 
                 portfolioCrypto.totalValue = portfolioCrypto.coinList.sumByDouble { it.totalValue }
-                portfolioCrypto.allTimePrice = portfolioCrypto.coinList.sumByDouble { it.initialCost }
-                portfolioCrypto.allTimePricePorcentage = if (portfolioCrypto.totalValue > 0) (portfolioCrypto.allTimePrice / portfolioCrypto.totalValue) * 100 else 0.0
+                portfolioCrypto.allTimePrice =
+                    portfolioCrypto.coinList.sumByDouble { it.initialCost }
+                portfolioCrypto.allTimePricePorcentage =
+                    if (portfolioCrypto.allTimePrice > 0) ((portfolioCrypto.totalValue - portfolioCrypto.allTimePrice) / portfolioCrypto.allTimePrice) * 100 else 0.0
 
-                addPortfolioCrypto(portfolio)
+                addPortfolioCrypto(portfolioCrypto)
+
+                if (portfolioCrypto.visibilityPublic) {
+                    addPublicPortfolioCrypto(portfolioCrypto)
+                }
             }
 
 
@@ -202,30 +273,47 @@ class CryptoRepository private constructor() {
 
 
         fun actualizarPortfolio() {
-            for (crypto in portfolioCrypto.coinList){
+            for (crypto in portfolioCrypto.coinList) {
                 val newCrypto = getCurrentCrypto(crypto.cryptoID)
                 crypto.currentPrice = newCrypto.market_data.current_price.eur
-                crypto.price_change_percentage_24h = newCrypto.market_data.price_change_percentage_24h
+                crypto.price_change_percentage_24h =
+                    newCrypto.market_data.price_change_percentage_24h
                 crypto.totalValue = crypto.currentPrice * crypto.totalCoins
-                crypto.profitOrLossPorcentage = crypto.totalValue - crypto.initialCost
+                crypto.profitOrLossPorcentage =
+                    if (crypto.initialCost > 0) ((crypto.totalValue - crypto.initialCost) / crypto.initialCost) * 100 else 0.0
             }
 
             portfolioCrypto.totalValue = portfolioCrypto.coinList.sumByDouble { it.totalValue }
             portfolioCrypto.allTimePrice = portfolioCrypto.coinList.sumByDouble { it.initialCost }
-            portfolioCrypto.allTimePricePorcentage = if (portfolioCrypto.totalValue > 0) (portfolioCrypto.allTimePrice / portfolioCrypto.totalValue) * 100 else 0.0
+            portfolioCrypto.allTimePricePorcentage =
+                if (portfolioCrypto.allTimePrice > 0) ((portfolioCrypto.totalValue - portfolioCrypto.allTimePrice) / portfolioCrypto.allTimePrice) * 100 else 0.0
         }
 
         fun getCurrentCrypto(cryptoID: String): CryptoData {
-            var url = "https://api.coingecko.com/api/v3/coins/" + cryptoID + "?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false"
+            var url =
+                "https://api.coingecko.com/api/v3/coins/" + cryptoID + "?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false"
             var crypto = HttpUtil.instance?.getResponseData(url, CryptoData::class.java)
 
-            return  crypto!!
+            return crypto!!
         }
 
-        fun getCrypto(cryptoID: String): Crypto {
-            val index = portfolioCrypto.coinList.indexOfFirst { it.cryptoID == cryptoID }
+        fun addNewPortfolioConfig(newName: String, public: Boolean) {
+            getPortfolioCrypto {
+                portfolioCrypto.name = newName
 
-            return portfolioCrypto.coinList[index]
+                if (portfolioCrypto.visibilityPublic && !public) {
+                    deletePublicPortfolioCrypto()
+                }
+
+                portfolioCrypto.visibilityPublic = public
+                if (portfolioCrypto.visibilityPublic) {
+                    addPublicPortfolioCrypto(portfolioCrypto)
+                }
+
+                addPortfolioCrypto(portfolioCrypto)
+            }
         }
+
+
     }
 }

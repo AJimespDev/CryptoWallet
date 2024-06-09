@@ -39,6 +39,15 @@
                     android:textSize="18dp" />
 
                 <ImageView
+                    android:id="@+id/imvSeeGraphic"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="5dp"
+                    android:src="@drawable/icon_graphic" />
+
+                <ImageView
+                    android:id="@+id/imvConfigPortfolio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
@@ -51,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/uni_sans"
-                android:text=""
+                android:text="100000000000000000000000000"
                 android:textSize="32dp"
                 android:textStyle="bold" />
 
@@ -131,7 +140,7 @@
             android:textSize="16sp" />
 
         <View
-            android:layout_width="100dp"
+            android:layout_width="120dp"
             android:layout_height="0dp" />
 
 
@@ -154,7 +163,8 @@
             android:text="@string/tvListTotal"
             android:layout_gravity="end"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_marginEnd="3dp"/>
 
 
     </LinearLayout>
@@ -178,7 +188,7 @@
         android:id="@+id/rvCryptos"
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

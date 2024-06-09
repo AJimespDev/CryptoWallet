@@ -1,33 +1,64 @@
 package com.antonioje.cryptowallet.home.portfolio.ui
 
+import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.RadioButton
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.antonioje.cryptowallet.R
+import com.antonioje.cryptowallet.data.enum.TRANSACTIONTYPE
 import com.antonioje.cryptowallet.data.model.Crypto
+import com.antonioje.cryptowallet.data.model.CryptoCurrency
 import com.antonioje.cryptowallet.data.model.CryptoData
+import com.antonioje.cryptowallet.data.model.CryptoTransaction
 import com.antonioje.cryptowallet.data.model.Portfolio
 import com.antonioje.cryptowallet.databinding.FragmentPortfolioBinding
 import com.antonioje.cryptowallet.home.portfolio.adapter.PortfolioAdapter
 import com.antonioje.cryptowallet.home.portfolio.usecase.PortfolioListState
 import com.antonioje.cryptowallet.home.portfolio.usecase.PortfolioViewModel
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.LegendEntry
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import java.net.URL
 import org.json.JSONObject
+import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class PortfolioFragment : Fragment() {
     private var _binding:FragmentPortfolioBinding? = null
     private val binding get() = _binding!!
     private val _viewmodel:PortfolioViewModel by viewModels()
     private lateinit var _adapter:PortfolioAdapter
+    private lateinit var portfolio:Portfolio
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +69,7 @@ class PortfolioFragment : Fragment() {
         return binding.root
     }
 
+
     private fun initVariables() {
         _adapter = PortfolioAdapter { onClick(it) }
 
@@ -45,6 +77,14 @@ class PortfolioFragment : Fragment() {
             adapter = _adapter
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
+        }
+
+        binding.imvConfigPortfolio.setOnClickListener {
+            showConfigDialog()
+        }
+
+        binding.imvSeeGraphic.setOnClickListener {
+            showGraphicDialog(portfolio)
         }
 
         _viewmodel.getState().observe(viewLifecycleOwner, Observer {
@@ -59,6 +99,180 @@ class PortfolioFragment : Fragment() {
         })
 
         _viewmodel.initPortfolio()
+    }
+
+    private fun showGraphicDialog(portfolio: Portfolio) {
+        val builder = MaterialAlertDialogBuilder(requireContext())
+        val inflater = LayoutInflater.from(requireContext())
+        val dialogView = inflater.inflate(R.layout.alert_portfolio_graphic, null)
+        val typeface = ResourcesCompat.getFont(requireContext(), R.font.uni_sans)
+
+        builder.setView(dialogView)
+        val alertDialog = builder.create()
+
+        val pieChart = dialogView.findViewById<PieChart>(R.id.pieChart)
+        pieChart.setEntryLabelTypeface(typeface)
+        pieChart.setCenterTextTypeface(typeface)
+
+        val entries = portfolio.coinList.map { crypto ->
+            PieEntry(crypto.totalValue.toFloat(), crypto.cryptoSymbol.toUpperCase())
+        }
+
+        val totalValue = entries.sumByDouble { it.value.toDouble() }
+        val dataSet = PieDataSet(entries, "Crypto Distribution")
+        dataSet.colors = generateColors()
+        dataSet.setDrawValues(false)
+
+        val data = PieData(dataSet)
+        pieChart.data = data
+        pieChart.invalidate()
+
+        pieChart.setUsePercentValues(true)
+        pieChart.description.isEnabled = false
+        pieChart.legend.isEnabled = false
+
+        pieChart.setDrawCenterText(true)
+        pieChart.centerText = "Selecciona un segmento"
+        pieChart.setEntryLabelColor(Color.TRANSPARENT)
+
+        pieChart.isRotationEnabled = false
+        pieChart.isHighlightPerTapEnabled = true
+
+        val legend = pieChart.legend
+        legend.form = Legend.LegendForm.CIRCLE
+        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
+        legend.verticalAlignment = Legend.LegendVerticalAlignment.CENTER
+        legend.orientation = Legend.LegendOrientation.VERTICAL
+        legend.setDrawInside(false)
+        legend.isEnabled = true
+
+
+        val legendEntries = entries.mapIndexed { index, entry ->
+            val percentage = entry.value / totalValue * 100
+            LegendEntry().apply {
+                formColor = dataSet.getColor(index)
+                label = "${entry.label} (${String.format("%.2f", percentage)}%)"
+            }
+        }
+
+        legend.setCustom(legendEntries)
+        legend.typeface = typeface
+
+        val decimalFormat = DecimalFormat("#.##")
+
+        pieChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+            override fun onValueSelected(entry: Entry?, highlight: Highlight?) {
+                if (highlight != null) {
+                    val index = highlight.x.toInt()
+                    if (index >= 0 && index < entries.size) {
+                        val selectedEntry = entries[index]
+                        val selectedCrypto = portfolio.coinList[index] // Obtener la criptomoneda seleccionada
+                        val totalValue = decimalFormat.format(selectedCrypto.totalValue) // Redondear totalValue a dos decimales
+
+                        pieChart.centerText = "${selectedEntry.label}\n${totalValue}€"
+                    }
+                }
+            }
+
+            override fun onNothingSelected() {
+                pieChart.centerText = "Selecciona un segmento"
+            }
+        })
+
+        alertDialog.show()
+    }
+    private fun generateColors(): List<Int> {
+        return listOf(
+            Color.rgb(244, 164, 96),  // Pastel orange
+            Color.rgb(176, 224, 230), // Light blue
+            Color.rgb(240, 128, 128), // Light coral
+            Color.rgb(216, 191, 216), // Thistle
+            Color.rgb(255, 182, 193), // Light pink
+            Color.rgb(255, 228, 181), // Moccasin
+            Color.rgb(221, 160, 221), // Plum
+            Color.rgb(144, 238, 144), // Light green
+            Color.rgb(173, 216, 230), // Light blue
+            Color.rgb(255, 239, 213), // Papaya whip
+            Color.rgb(211, 211, 211), // Light gray
+            Color.rgb(255, 218, 185), // Peach puff
+            Color.rgb(230, 230, 250), // Lavender
+            Color.rgb(250, 235, 215), // Antique white
+            Color.rgb(240, 255, 240), // Honeydew
+            Color.rgb(255, 250, 205), // Lemon chiffon
+            Color.rgb(245, 245, 220), // Beige
+            Color.rgb(255, 228, 225), // Misty rose
+            Color.rgb(245, 222, 179), // Wheat
+            Color.rgb(224, 255, 255), // Light cyan
+            Color.rgb(255, 228, 196), // Bisque
+            Color.rgb(255, 240, 245), // Lavender blush
+            Color.rgb(220, 220, 220), // Gainsboro
+            Color.rgb(248, 248, 255), // Ghost white
+            Color.rgb(255, 235, 205), // Blanched almond
+            Color.rgb(240, 248, 255), // Alice blue
+            Color.rgb(255, 250, 240), // Floral white
+            Color.rgb(253, 245, 230), // Old lace
+            Color.rgb(255, 245, 238)  // Seashell
+        )
+    }
+
+    private fun showConfigDialog() {
+        val builder = MaterialAlertDialogBuilder(requireContext())
+        val inflater = LayoutInflater.from(requireContext())
+        val dialogView = inflater.inflate(R.layout.alert_config_portfolio, null)
+        var public = portfolio.visibilityPublic
+
+        builder.setView(dialogView)
+        val alertDialog = builder.create()
+
+        alertDialog.setCancelable(false)
+
+        builder.setView(dialogView)
+
+        val tvCancelAlert = dialogView.findViewById<TextView>(R.id.tvPortfolioConfigCancelAlert)
+        val edtName = dialogView.findViewById<EditText>(R.id.edtPortfolioName)
+        val rdPrivate = dialogView.findViewById<RadioButton>(R.id.privateRadioButton)
+        val rdPublic = dialogView.findViewById<RadioButton>(R.id.publicRadioButton)
+        val btnAddNewConfig = dialogView.findViewById<Button>(R.id.btnAddNewConfig)
+
+        val colorAmarillo = ContextCompat.getColor(requireContext(), R.color.yellow)
+        rdPrivate.buttonTintList = ColorStateList.valueOf(colorAmarillo)
+        rdPublic.buttonTintList = ColorStateList.valueOf(colorAmarillo)
+
+        edtName.setText(portfolio.name)
+        if(portfolio.visibilityPublic){
+            rdPublic.isChecked = true
+            rdPrivate.isChecked = false
+        } else {
+            rdPrivate.isChecked = true
+            rdPublic.isChecked = false
+        }
+
+        rdPrivate.setOnClickListener {
+            public = false
+        }
+
+        rdPublic.setOnClickListener {
+            public = true
+        }
+
+        tvCancelAlert.setOnClickListener{
+            alertDialog.dismiss()
+        }
+
+
+        btnAddNewConfig.setOnClickListener {
+            if(public && _viewmodel.portfolioNameAlreadyExist(edtName.text.toString(), portfolio)) {
+                edtName.setError("Este nombre ya exist")
+                edtName.requestFocus()
+            } else {
+                _viewmodel.addNewPortfolioConfig(edtName.text.toString(), public)
+                initVariables()
+                alertDialog.dismiss()
+            }
+        }
+
+
+        alertDialog.show()
     }
 
     private fun showLoading(value: Boolean) {
@@ -83,20 +297,36 @@ class PortfolioFragment : Fragment() {
     }
 
     private fun onSuccess(portfolio: Portfolio) {
+        this.portfolio = portfolio
         with(binding){
             tvPortfolioName.text = portfolio.name
             tvPortfolioTotalPrice.text =  String.format("%.2f€", portfolio.totalValue)
-            if(portfolio.allTimePrice >= 0){
-                tvPortfolioAllProfit.text = String.format("+%.2f€",portfolio.totalValue - portfolio.allTimePrice)
+
+
+            if(portfolio.totalValue > portfolio.allTimePrice){
+                imvLast24H.visibility = View.VISIBLE
+                tvPortfolioAllProfitPorcentage.visibility = View.VISIBLE
+                imvSeeGraphic.visibility = View.VISIBLE
+                tvPortfolioAllProfit.text = String.format("%.2f€",portfolio.totalValue - portfolio.allTimePrice)
                 tvPortfolioAllProfit.setTextColor(Color.GREEN)
                 imvLast24H.setImageResource(R.drawable.icon_last24h_up)
-                tvPortfolioAllProfitPorcentage.text = String.format("%.2f%%",portfolio.allTimePricePorcentage)
+                tvPortfolioAllProfitPorcentage.text = String.format("%.2f%%",portfolio.allTimePricePorcentage).replace("+","")
                 tvPortfolioAllProfitPorcentage.setTextColor(Color.GREEN)
-            }else{
-                tvPortfolioAllProfit.text = String.format("-%.2f€",portfolio.totalValue - portfolio.allTimePrice)
+            } else if(portfolio.totalValue == portfolio.allTimePrice){
+                tvPortfolioAllProfit.text = String.format("%.2f€",portfolio.totalValue - portfolio.allTimePrice)
+                if (portfolio.allTimePrice == 0.0) {
+                    imvSeeGraphic.visibility = View.GONE
+                }
+                imvLast24H.visibility = View.GONE
+                tvPortfolioAllProfitPorcentage.visibility = View.GONE
+            } else {
+                imvLast24H.visibility = View.VISIBLE
+                tvPortfolioAllProfitPorcentage.visibility = View.VISIBLE
+                imvSeeGraphic.visibility = View.VISIBLE
+                tvPortfolioAllProfit.text = String.format("%.2f€",portfolio.totalValue - portfolio.allTimePrice)
                 tvPortfolioAllProfit.setTextColor(Color.RED)
                 imvLast24H.setImageResource(R.drawable.icon_last24h_down)
-                tvPortfolioAllProfitPorcentage.text = String.format("%.2f%%",portfolio.allTimePricePorcentage)
+                tvPortfolioAllProfitPorcentage.text = String.format("%.2f%%",portfolio.allTimePricePorcentage).replace("-","")
                 tvPortfolioAllProfitPorcentage.setTextColor(Color.RED)
             }
 

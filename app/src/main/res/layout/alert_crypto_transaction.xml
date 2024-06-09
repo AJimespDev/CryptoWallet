@@ -129,6 +129,19 @@
             android:text="Añadir transacción"
             android:textSize="16sp"/>
 
+        <TextView
+            android:id="@+id/tvCancelAlert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Cancelar"
+            android:layout_gravity="center"
+            android:textSize="16sp"
+            android:fontFamily="@font/humatoheavy"/>
+
+
+
+
 
     </LinearLayout>
 </ScrollView>

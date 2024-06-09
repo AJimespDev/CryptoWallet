@@ -9,6 +9,9 @@
     <string name="tvPortfolioAllTimeProfit">Total de ganancias/pérdidas</string>
     <string name="tvListTotal">Total</string>
     <string name="tvAddTransaction">Añadir transacción</string>
+    <string name="search_crypto_tab">Cryptomonedas</string>
+    <string name="search_portfolio_tab">Portfolios</string>
+    <string name="PortfolioSearchHint">Buscar portfolio</string>
 
 
 </resources>

@@ -9,7 +9,8 @@ data class Portfolio(
     var coinList: List<Crypto> = mutableListOf(),
     var totalValue: Double = 0.0,
     var allTimePrice: Double = 0.0,
-    var allTimePricePorcentage: Double = 0.0
+    var allTimePricePorcentage: Double = 0.0,
+    var visibilityPublic: Boolean = false
 )
 
 data class Crypto(

@@ -12,7 +12,7 @@ import com.antonioje.cryptowallet.utils.HttpUtil
 import kotlinx.coroutines.launch
 
 
-class PortfolioViewModel:ViewModel() {
+class PortfolioViewModel : ViewModel() {
     private var state = MutableLiveData<PortfolioListState>()
 
     fun getState(): MutableLiveData<PortfolioListState> {
@@ -21,7 +21,7 @@ class PortfolioViewModel:ViewModel() {
 
     var portfolioCrypto = Portfolio()
 
-    fun getPortfolio(){
+    fun getPortfolio() {
         viewModelScope.launch {
             state.value = PortfolioListState.Loading(false)
             portfolioCrypto = CryptoRepository.portfolioCrypto
@@ -34,11 +34,26 @@ class PortfolioViewModel:ViewModel() {
         viewModelScope.launch {
             state.value = PortfolioListState.Loading(true)
             CryptoRepository.getPortfolioCrypto {
-                getPortfolio()
+                CryptoRepository.getAllPortfolios {
+                    getPortfolio()
+                }
             }
         }
     }
 
+    fun addNewPortfolioConfig(newName: String, isPublic: Boolean) {
+        CryptoRepository.addNewPortfolioConfig(newName, isPublic)
+    }
+
+    fun portfolioNameAlreadyExist(newName: String, portfolio: Portfolio): Boolean {
+        portfolio.name = newName
+        portfolio.visibilityPublic = true
+        if (CryptoRepository.allPublicPortfolios.map { it.name }
+                .contains(newName) && !CryptoRepository.allPublicPortfolios.contains(portfolio)) {
+            return true
+        }
+        return false
+    }
 
 
 }

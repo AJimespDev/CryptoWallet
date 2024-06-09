@@ -2,6 +2,7 @@ package com.antonioje.cryptowallet.home.portfolio.ui
 
 import android.app.DatePickerDialog
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,19 +13,24 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.antonioje.cryptowallet.R
 import com.antonioje.cryptowallet.data.enum.TRANSACTIONTYPE
 import com.antonioje.cryptowallet.data.model.Crypto
 import com.antonioje.cryptowallet.data.model.CryptoCurrency
+import com.antonioje.cryptowallet.data.model.CryptoCurrency.Companion.formatPrice
 import com.antonioje.cryptowallet.data.model.CryptoData
 import com.antonioje.cryptowallet.data.model.CryptoTransaction
 import com.antonioje.cryptowallet.databinding.FragmentCryptoTransactionBinding
+import com.antonioje.cryptowallet.home.crypto_list.usecase.CryptoListState
 import com.antonioje.cryptowallet.home.portfolio.adapter.CryptoTransactionAdapter
 import com.antonioje.cryptowallet.home.portfolio.usecase.CryptoTransactionViewModel
+import com.antonioje.cryptowallet.home.portfolio.usecase.PortfolioListState
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -49,10 +55,9 @@ class CryptoTransactionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentCryptoTransactionBinding.inflate(inflater,container,false)
-
         crypto = requireArguments().getSerializable(CryptoData.CRYPTO_KEY) as Crypto
-
         initVariables()
+
         return binding.root
     }
 
@@ -67,21 +72,35 @@ class CryptoTransactionFragment : Fragment() {
 
             Picasso.get().load(crypto.image.large).into(imCryptoTransaction)
             tvCryptoName.text = crypto.cryptoName
-            tvTotalCoinsTransaction.text = String.format("%.2f", crypto.totalCoins)
-            tvTotalCostTransaction.text = String.format("%.2f€", crypto.initialCost)
+            val epsilon = 1E-10
 
+            if(crypto.totalCoins > 1000000.0){
+                tvTotalCoinsTransaction.text = String.format("%s",
+                    CryptoCurrency.formatLargeNumber(crypto.totalCoins.toLong())
+                )
+            } else {
+                tvTotalCoinsTransaction.text = String.format("%s", formatPrice(crypto.totalCoins))
+            }
+
+            tvTotalCostTransaction.text = String.format("%.2f€", crypto.initialCost)
             tvTotalValueTransaction.text =    String.format("%.2f€", crypto.currentPrice * crypto.totalCoins)
             tvAverageCostTransaction.text =  String.format("%s€", CryptoCurrency.formatPrice(crypto.transactions.map { it.coinPrice }.average()))
             tvCoinSymbol.text = crypto.cryptoSymbol.toUpperCase()
 
             val profitOrLossMoney = (crypto.currentPrice * crypto.totalCoins) - crypto.initialCost
 
-            if(profitOrLossMoney > 0){
+            if(profitOrLossMoney >= 0){
                 tvAllTimeProfitLossTransaction.text =  String.format("%.2f€",profitOrLossMoney)
-            }else if(profitOrLossMoney < 0){
+                tvAllTimeProfitLossTransaction.setTextColor(Color.GREEN)
+                imvLast24H.setImageResource(R.drawable.icon_last24h_up)
+                tvAllTimeProfitLossTransactionPorcentage.text = String.format("%.2f%%",crypto.profitOrLossPorcentage).replace("+","")
+                tvAllTimeProfitLossTransactionPorcentage.setTextColor(Color.GREEN)
+            } else {
                 tvAllTimeProfitLossTransaction.text =  String.format("%.2f€",profitOrLossMoney)
-            }else{
-                tvAllTimeProfitLossTransaction.text = "0€"
+                tvAllTimeProfitLossTransaction.setTextColor(Color.RED)
+                imvLast24H.setImageResource(R.drawable.icon_last24h_down)
+                tvAllTimeProfitLossTransactionPorcentage.text = String.format("%.2f%%",crypto.profitOrLossPorcentage).replace("-","")
+                tvAllTimeProfitLossTransactionPorcentage.setTextColor(Color.RED)
             }
 
             btnAddCryptoTransaction.setOnClickListener {
@@ -89,6 +108,7 @@ class CryptoTransactionFragment : Fragment() {
             }
         }
     }
+
     private fun showTransactionDialog() {
         val builder = MaterialAlertDialogBuilder(requireContext())
         val inflater = LayoutInflater.from(requireContext())
@@ -97,9 +117,11 @@ class CryptoTransactionFragment : Fragment() {
         builder.setView(dialogView)
         val alertDialog = builder.create()
 
+        alertDialog.setCancelable(false)
 
         builder.setView(dialogView)
 
+        val tvCancelAlert = dialogView.findViewById<TextView>(R.id.tvCancelAlert)
         val edtFecha = dialogView.findViewById<EditText>(R.id.edtFecha)
         val tietPrice = dialogView.findViewById<TextInputEditText>(R.id.precioEditText)
         val tietTotalCoins = dialogView.findViewById<TextInputEditText>(R.id.cantidadEditText)
@@ -120,6 +142,9 @@ class CryptoTransactionFragment : Fragment() {
             tilTextBuyOrSell.hint = "Total recibido"
         }
 
+        tvCancelAlert.setOnClickListener{
+            alertDialog.dismiss()
+        }
 
         tietPrice.setText(CryptoCurrency.formatPrice(crypto.currentPrice))
         tietTotalCoins.setText("1")
@@ -182,12 +207,14 @@ class CryptoTransactionFragment : Fragment() {
 
                 _viewmodel.addTransaction(crypto,transaction)
                 alertDialog.dismiss()
-                findNavController().navigateUp()
+                findNavController().popBackStack()
+
             }
         }
 
         alertDialog.show()
     }
+
 
     fun showDatapickerDialog(edtFecha : EditText){
         val calendar = Calendar.getInstance()
