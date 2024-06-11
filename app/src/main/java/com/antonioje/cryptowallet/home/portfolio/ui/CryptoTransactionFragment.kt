@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -72,31 +73,34 @@ class CryptoTransactionFragment : Fragment() {
 
             Picasso.get().load(crypto.image.large).into(imCryptoTransaction)
             tvCryptoName.text = crypto.cryptoName
-            val epsilon = 1E-10
 
             if(crypto.totalCoins > 1000000.0){
                 tvTotalCoinsTransaction.text = String.format("%s",
                     CryptoCurrency.formatLargeNumber(crypto.totalCoins.toLong())
                 )
+            } else if(crypto.totalCoins >= 1.0){
+                tvTotalCoinsTransaction.text = String.format("%.2f",
+                    crypto.totalCoins)
             } else {
-                tvTotalCoinsTransaction.text = String.format("%s", formatPrice(crypto.totalCoins))
+                tvTotalCoinsTransaction.text = String.format("%s",
+                    formatPrice(crypto.totalCoins)
+                )
             }
 
             tvTotalCostTransaction.text = String.format("%.2f€", crypto.initialCost)
             tvTotalValueTransaction.text =    String.format("%.2f€", crypto.currentPrice * crypto.totalCoins)
-            tvAverageCostTransaction.text =  String.format("%s€", CryptoCurrency.formatPrice(crypto.transactions.map { it.coinPrice }.average()))
+            tvAverageCostTransaction.text =  String.format("%s€", formatPrice(crypto.averageCost))
             tvCoinSymbol.text = crypto.cryptoSymbol.toUpperCase()
 
-            val profitOrLossMoney = (crypto.currentPrice * crypto.totalCoins) - crypto.initialCost
 
-            if(profitOrLossMoney >= 0){
-                tvAllTimeProfitLossTransaction.text =  String.format("%.2f€",profitOrLossMoney)
+            if(crypto.profitOrLossMoney >= 0){
+                tvAllTimeProfitLossTransaction.text =  String.format("%.2f€",crypto.profitOrLossMoney)
                 tvAllTimeProfitLossTransaction.setTextColor(Color.GREEN)
                 imvLast24H.setImageResource(R.drawable.icon_last24h_up)
                 tvAllTimeProfitLossTransactionPorcentage.text = String.format("%.2f%%",crypto.profitOrLossPorcentage).replace("+","")
                 tvAllTimeProfitLossTransactionPorcentage.setTextColor(Color.GREEN)
             } else {
-                tvAllTimeProfitLossTransaction.text =  String.format("%.2f€",profitOrLossMoney)
+                tvAllTimeProfitLossTransaction.text =  String.format("%.2f€",crypto.profitOrLossMoney)
                 tvAllTimeProfitLossTransaction.setTextColor(Color.RED)
                 imvLast24H.setImageResource(R.drawable.icon_last24h_down)
                 tvAllTimeProfitLossTransactionPorcentage.text = String.format("%.2f%%",crypto.profitOrLossPorcentage).replace("-","")
@@ -113,6 +117,7 @@ class CryptoTransactionFragment : Fragment() {
         val builder = MaterialAlertDialogBuilder(requireContext())
         val inflater = LayoutInflater.from(requireContext())
         val dialogView = inflater.inflate(R.layout.alert_crypto_transaction, null)
+        val totalCoins = _viewmodel.getCoinsFromCrypto(crypto.cryptoName)
 
         builder.setView(dialogView)
         val alertDialog = builder.create()
@@ -122,7 +127,10 @@ class CryptoTransactionFragment : Fragment() {
         builder.setView(dialogView)
 
         val tvCancelAlert = dialogView.findViewById<TextView>(R.id.tvCancelAlert)
+        val tvAllCoins = dialogView.findViewById<TextView>(R.id.tvAllCoinsTransaction)
+        val linLayCoins =dialogView.findViewById<LinearLayout>(R.id.linearLayoutTotalCoins)
         val edtFecha = dialogView.findViewById<EditText>(R.id.edtFecha)
+        val tilTotalCoins = dialogView.findViewById<TextInputLayout>(R.id.cantidadTextInputLayout)
         val tietPrice = dialogView.findViewById<TextInputEditText>(R.id.precioEditText)
         val tietTotalCoins = dialogView.findViewById<TextInputEditText>(R.id.cantidadEditText)
         val tietTotalValue = dialogView.findViewById<TextInputEditText>(R.id.totalEditText)
@@ -134,21 +142,43 @@ class CryptoTransactionFragment : Fragment() {
         rdComprar.buttonTintList = ColorStateList.valueOf(colorAmarillo)
         rdVender.buttonTintList = ColorStateList.valueOf(colorAmarillo)
 
+        if (totalCoins == 0.0){
+            rdVender.isEnabled = false
+        }
+
         rdComprar.setOnClickListener {
             tilTextBuyOrSell.hint = "Total gastado"
+            linLayCoins.visibility = View.GONE
         }
 
         rdVender.setOnClickListener {
             tilTextBuyOrSell.hint = "Total recibido"
+            linLayCoins.visibility = View.VISIBLE
+
+            if(totalCoins > 1000000.0){
+                tvAllCoins.text = String.format("%s %s",
+                    CryptoCurrency.formatLargeNumber(totalCoins.toLong()), crypto.cryptoSymbol)
+            } else if(totalCoins >= 1.0) {
+                tvAllCoins.text = String.format("%.2f %s",
+                    totalCoins,crypto.cryptoSymbol)
+            } else {
+                tvAllCoins.text = String.format("%s %s",
+                    formatPrice(totalCoins),crypto.cryptoSymbol)
+            }
         }
+
+        tvAllCoins.setOnClickListener {
+            tietTotalCoins.setText(totalCoins.toString())
+        }
+
 
         tvCancelAlert.setOnClickListener{
             alertDialog.dismiss()
         }
 
-        tietPrice.setText(CryptoCurrency.formatPrice(crypto.currentPrice))
+        tietPrice.setText(formatPrice(crypto.currentPrice))
         tietTotalCoins.setText("1")
-        tietTotalValue.setText(CryptoCurrency.formatPrice(crypto.currentPrice))
+        tietTotalValue.setText(formatPrice(crypto.currentPrice))
 
 
         tietPrice.addTextChangedListener(object : TextWatcher {
@@ -159,6 +189,7 @@ class CryptoTransactionFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 actualizarValorTotal(tietPrice, tietTotalCoins, tietTotalValue)
                 tilTextBuyOrSell.isErrorEnabled = false
+                tilTotalCoins.isErrorEnabled = false
                 tilTextBuyOrSell.setEndIconDrawable(R.drawable.icon_euro)
 
             }
@@ -173,6 +204,7 @@ class CryptoTransactionFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 actualizarValorTotal(tietPrice, tietTotalCoins, tietTotalValue)
                 tilTextBuyOrSell.setEndIconDrawable(R.drawable.icon_euro)
+                tilTotalCoins.isErrorEnabled = false
                 tilTextBuyOrSell.isErrorEnabled = false
             }
         })
@@ -191,20 +223,24 @@ class CryptoTransactionFragment : Fragment() {
 
         btnAddTransaction.setOnClickListener {
             val cost = tietTotalValue.text.toString().replace(',','.').toDoubleOrNull() ?: 0.0
+            val type = if (rdComprar.isChecked) TRANSACTIONTYPE.COMPRAR else TRANSACTIONTYPE.VENDER
             if (cost == 0.0) {
                 tilTextBuyOrSell.endIconDrawable = null
                 tilTextBuyOrSell.error = "NO PUEDE SER 0€"
                 tilTextBuyOrSell.requestFocus()
+            } else if (type == TRANSACTIONTYPE.VENDER &&  tietTotalCoins.text.toString().toDouble() > totalCoins){
+                tilTotalCoins.endIconDrawable = null
+                tilTotalCoins.error = "LA CANTIDAD NO PUEDE SER SUPERIOR AL SALDO"
+                tilTotalCoins.requestFocus()
             } else {
                 val type = if (rdComprar.isChecked) TRANSACTIONTYPE.COMPRAR else TRANSACTIONTYPE.VENDER
                 val date = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(edtFecha.text.toString())
                 val coinPrice = tietPrice.text.toString().replace(',','.').toDoubleOrNull() ?: 0.0
                 val coinQuantity = tietTotalCoins.text.toString().replace(',','.').toDoubleOrNull() ?: 0.0
 
-
                 val transaction = CryptoTransaction(type, date, coinPrice, coinQuantity, cost)
 
-
+                //AÑADIR A LA FIREBASE
                 _viewmodel.addTransaction(crypto,transaction)
                 alertDialog.dismiss()
                 findNavController().popBackStack()

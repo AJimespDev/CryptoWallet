@@ -17,4 +17,15 @@ class CryptoTransactionViewModel:ViewModel() {
 
         CryptoRepository.addTransaction(cryptoData!!,transaction)
     }
+
+    fun getCoinsFromCrypto(cryptoName: String): Double {
+        val portfolio = CryptoRepository.portfolioCrypto
+        val index =  portfolio.coinList.indexOfFirst { it.cryptoName == cryptoName }
+
+        if(index != -1) {
+            return portfolio.coinList[index].totalCoins
+        }
+
+        return 0.0
+    }
 }

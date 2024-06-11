@@ -9,9 +9,10 @@ data class Portfolio(
     var coinList: List<Crypto> = mutableListOf(),
     var totalValue: Double = 0.0,
     var allTimePrice: Double = 0.0,
-    var allTimePricePorcentage: Double = 0.0,
+    var profitOrLossMoney: Double = 0.0,
+    var profitOrLossPorcentage: Double = 0.0,
     var visibilityPublic: Boolean = false
-)
+):Serializable
 
 data class Crypto(
     var cryptoSymbol: String = "",
@@ -24,6 +25,7 @@ data class Crypto(
     var totalCoins: Double = 0.0,
     var initialCost: Double = 0.0,
     var averageCost: Double = 0.0,
+    var profitOrLossMoney:Double = 0.0,
     var profitOrLossPorcentage: Double = 0.0,
     var transactions: List<CryptoTransaction> = mutableListOf()
 ) : Serializable
@@ -34,4 +36,4 @@ data class CryptoTransaction(
     val coinPrice: Double = 0.0,
     val coinCuantity: Double = 0.0,
     val cost: Double = 0.0
-)
+):Serializable

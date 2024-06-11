@@ -77,6 +77,9 @@
         <action
             android:id="@+id/action_buscarFragment_to_cryptoDataFragment"
             app:destination="@id/cryptoDataFragment" />
+        <action
+            android:id="@+id/action_buscarFragment_to_publicPortfolioFragment"
+            app:destination="@id/publicPortfolioFragment" />
     </fragment>
 
     <fragment
@@ -107,5 +110,17 @@
         android:id="@+id/cryptoTransactionFragment"
         android:name="com.antonioje.cryptowallet.home.portfolio.ui.CryptoTransactionFragment"
         android:label="CryptoTransactionFragment" />
+    <fragment
+        android:id="@+id/publicPortfolioFragment"
+        android:name="com.antonioje.cryptowallet.home.search.ui.PublicPortfolioFragment"
+        android:label="PublicPortfolioFragment" >
+        <action
+            android:id="@+id/action_publicPortfolioFragment_to_publicPortfolioTransactionFragment"
+            app:destination="@id/publicPortfolioTransactionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/publicPortfolioTransactionFragment"
+        android:name="com.antonioje.cryptowallet.home.search.ui.PublicPortfolioTransactionFragment"
+        android:label="PublicPortfolioTransactionFragment" />
 
 </navigation>

@@ -6,6 +6,7 @@ import com.antonioje.cryptowallet.data.model.CryptoChange
 import com.antonioje.cryptowallet.data.model.CryptoCurrency
 import com.antonioje.cryptowallet.data.model.CryptoData
 import com.antonioje.cryptowallet.data.model.CryptoTransaction
+import com.antonioje.cryptowallet.data.model.Portfolio
 import com.antonioje.cryptowallet.data.repository.CryptoRepository
 import com.antonioje.cryptowallet.utils.HttpUtil
 import okhttp3.Request
@@ -13,9 +14,6 @@ import okhttp3.Request
 class CryptoDataViewModel:ViewModel() {
 
     private var state = MutableLiveData<CryptoDataState>()
-
-
-
 
     fun getState(): MutableLiveData<CryptoDataState> {
         return state
@@ -60,6 +58,24 @@ class CryptoDataViewModel:ViewModel() {
 
     fun addTransaction(crypto: CryptoData,transaction: CryptoTransaction) {
         CryptoRepository.addTransaction(crypto,transaction)
+    }
+
+    fun loadPortfolioForTransactions() {
+        CryptoRepository.getPortfolioCrypto {
+
+        }
+
+    }
+
+    fun getCoinsFromCrypto(cryptoName: String): Double {
+        val portfolio = CryptoRepository.portfolioCrypto
+        val index =  portfolio.coinList.indexOfFirst { it.cryptoName == cryptoName }
+
+        if(index != -1) {
+            return portfolio.coinList[index].totalCoins
+        }
+
+        return 0.0
     }
 
 

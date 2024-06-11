@@ -14,6 +14,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
@@ -160,6 +161,7 @@ class CryptoDataFragment : Fragment() {
         val builder = MaterialAlertDialogBuilder(requireContext())
         val inflater = LayoutInflater.from(requireContext())
         val dialogView = inflater.inflate(R.layout.alert_crypto_transaction, null)
+        val totalCoins = _viewmodel.getCoinsFromCrypto(cryptoData.name)
 
         builder.setView(dialogView)
         val alertDialog = builder.create()
@@ -169,10 +171,13 @@ class CryptoDataFragment : Fragment() {
         builder.setView(dialogView)
 
         val tvCancelAlert = dialogView.findViewById<TextView>(R.id.tvCancelAlert)
+        val tvAllCoins = dialogView.findViewById<TextView>(R.id.tvAllCoinsTransaction)
+        val linLayCoins =dialogView.findViewById<LinearLayout>(R.id.linearLayoutTotalCoins)
         val edtFecha = dialogView.findViewById<EditText>(R.id.edtFecha)
         val tietPrice = dialogView.findViewById<TextInputEditText>(R.id.precioEditText)
         val tietTotalCoins = dialogView.findViewById<TextInputEditText>(R.id.cantidadEditText)
         val tietTotalValue = dialogView.findViewById<TextInputEditText>(R.id.totalEditText)
+        val tilTotalCoins = dialogView.findViewById<TextInputLayout>(R.id.cantidadTextInputLayout)
         val tilTextBuyOrSell = dialogView.findViewById<TextInputLayout>(R.id.totalTextInputLayout)
         val rdComprar = dialogView.findViewById<RadioButton>(R.id.comprarRadioButton)
         val rdVender = dialogView.findViewById<RadioButton>(R.id.venderRadioButton)
@@ -181,12 +186,33 @@ class CryptoDataFragment : Fragment() {
         rdComprar.buttonTintList = ColorStateList.valueOf(colorAmarillo)
         rdVender.buttonTintList = ColorStateList.valueOf(colorAmarillo)
 
+        if (totalCoins == 0.0){
+            rdVender.isEnabled = false
+        }
+
         rdComprar.setOnClickListener {
             tilTextBuyOrSell.hint = "Total gastado"
+            linLayCoins.visibility = View.GONE
         }
 
         rdVender.setOnClickListener {
             tilTextBuyOrSell.hint = "Total recibido"
+            linLayCoins.visibility = View.VISIBLE
+
+            if(totalCoins > 1000000.0){
+                tvAllCoins.text = String.format("%s %s",
+                    CryptoCurrency.formatLargeNumber(totalCoins.toLong()), cryptoData.symbol)
+            } else if(totalCoins >= 1.0) {
+                tvAllCoins.text = String.format("%.2f %s",
+                    totalCoins,cryptoData.symbol)
+            } else {
+                tvAllCoins.text = String.format("%s %s",
+                    CryptoCurrency.formatPrice(totalCoins),cryptoData.symbol)
+            }
+        }
+
+        tvAllCoins.setOnClickListener {
+            tietTotalCoins.setText(totalCoins.toString())
         }
 
 
@@ -207,6 +233,7 @@ class CryptoDataFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 actualizarValorTotal(tietPrice, tietTotalCoins, tietTotalValue)
                 tilTextBuyOrSell.isErrorEnabled = false
+                tilTotalCoins.isErrorEnabled = false
                 tilTextBuyOrSell.setEndIconDrawable(R.drawable.icon_euro)
 
             }
@@ -222,6 +249,7 @@ class CryptoDataFragment : Fragment() {
                 actualizarValorTotal(tietPrice, tietTotalCoins, tietTotalValue)
                 tilTextBuyOrSell.setEndIconDrawable(R.drawable.icon_euro)
                 tilTextBuyOrSell.isErrorEnabled = false
+                tilTotalCoins.isErrorEnabled = false
             }
         })
 
@@ -239,16 +267,20 @@ class CryptoDataFragment : Fragment() {
 
         btnAddTransaction.setOnClickListener {
             val cost = tietTotalValue.text.toString().replace(',','.').toDoubleOrNull() ?: 0.0
+            val type = if (rdComprar.isChecked) TRANSACTIONTYPE.COMPRAR else TRANSACTIONTYPE.VENDER
             if (cost == 0.0) {
                 tilTextBuyOrSell.endIconDrawable = null
                 tilTextBuyOrSell.error = "NO PUEDE SER 0€"
                 tilTextBuyOrSell.requestFocus()
+            } else if (type == TRANSACTIONTYPE.VENDER &&  tietTotalCoins.text.toString().toDouble() > totalCoins){
+                tilTotalCoins.endIconDrawable = null
+                tilTotalCoins.error = "LA CANTIDAD NO PUEDE SER SUPERIOR AL SALDO"
+                tilTotalCoins.requestFocus()
             } else {
                 val type = if (rdComprar.isChecked) TRANSACTIONTYPE.COMPRAR else TRANSACTIONTYPE.VENDER
                 val date = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(edtFecha.text.toString())
                 val coinPrice = tietPrice.text.toString().replace(',','.').toDoubleOrNull() ?: 0.0
                 val coinQuantity = tietTotalCoins.text.toString().replace(',','.').toDoubleOrNull() ?: 0.0
-
 
                 val transaction = CryptoTransaction(type, date, coinPrice, coinQuantity, cost)
 
@@ -413,6 +445,7 @@ class CryptoDataFragment : Fragment() {
         cryptoData = data
         initLayout(data)
         visualizeCryptoPriceGraphic()
+        _viewmodel.loadPortfolioForTransactions()
     }
 
     private fun initLayout(data: CryptoData) {

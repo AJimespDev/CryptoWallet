@@ -2,11 +2,7 @@ package com.antonioje.cryptowallet.home.portfolio.ui
 
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,11 +19,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.antonioje.cryptowallet.R
-import com.antonioje.cryptowallet.data.enum.TRANSACTIONTYPE
 import com.antonioje.cryptowallet.data.model.Crypto
-import com.antonioje.cryptowallet.data.model.CryptoCurrency
 import com.antonioje.cryptowallet.data.model.CryptoData
-import com.antonioje.cryptowallet.data.model.CryptoTransaction
 import com.antonioje.cryptowallet.data.model.Portfolio
 import com.antonioje.cryptowallet.databinding.FragmentPortfolioBinding
 import com.antonioje.cryptowallet.home.portfolio.adapter.PortfolioAdapter
@@ -40,18 +33,10 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
-import java.net.URL
-import org.json.JSONObject
 import java.text.DecimalFormat
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 class PortfolioFragment : Fragment() {
     private var _binding:FragmentPortfolioBinding? = null
@@ -303,14 +288,14 @@ class PortfolioFragment : Fragment() {
             tvPortfolioTotalPrice.text =  String.format("%.2f€", portfolio.totalValue)
 
 
-            if(portfolio.totalValue > portfolio.allTimePrice){
+            if(portfolio.profitOrLossMoney >= 0){
                 imvLast24H.visibility = View.VISIBLE
                 tvPortfolioAllProfitPorcentage.visibility = View.VISIBLE
                 imvSeeGraphic.visibility = View.VISIBLE
-                tvPortfolioAllProfit.text = String.format("%.2f€",portfolio.totalValue - portfolio.allTimePrice)
+                tvPortfolioAllProfit.text = String.format("%.2f€",portfolio.profitOrLossMoney)
                 tvPortfolioAllProfit.setTextColor(Color.GREEN)
                 imvLast24H.setImageResource(R.drawable.icon_last24h_up)
-                tvPortfolioAllProfitPorcentage.text = String.format("%.2f%%",portfolio.allTimePricePorcentage).replace("+","")
+                tvPortfolioAllProfitPorcentage.text = String.format("%.2f%%",portfolio.profitOrLossPorcentage).replace("+","")
                 tvPortfolioAllProfitPorcentage.setTextColor(Color.GREEN)
             } else if(portfolio.totalValue == portfolio.allTimePrice){
                 tvPortfolioAllProfit.text = String.format("%.2f€",portfolio.totalValue - portfolio.allTimePrice)
@@ -323,10 +308,10 @@ class PortfolioFragment : Fragment() {
                 imvLast24H.visibility = View.VISIBLE
                 tvPortfolioAllProfitPorcentage.visibility = View.VISIBLE
                 imvSeeGraphic.visibility = View.VISIBLE
-                tvPortfolioAllProfit.text = String.format("%.2f€",portfolio.totalValue - portfolio.allTimePrice)
+                tvPortfolioAllProfit.text = String.format("%.2f€",portfolio.profitOrLossMoney)
                 tvPortfolioAllProfit.setTextColor(Color.RED)
                 imvLast24H.setImageResource(R.drawable.icon_last24h_down)
-                tvPortfolioAllProfitPorcentage.text = String.format("%.2f%%",portfolio.allTimePricePorcentage).replace("-","")
+                tvPortfolioAllProfitPorcentage.text = String.format("%.2f%%",portfolio.profitOrLossPorcentage).replace("-","")
                 tvPortfolioAllProfitPorcentage.setTextColor(Color.RED)
             }
 

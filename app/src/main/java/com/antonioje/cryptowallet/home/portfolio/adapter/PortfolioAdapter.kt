@@ -87,6 +87,8 @@ class PortfolioAdapter(private val onClick: (crypto: Crypto) -> Unit) :
 
                 if(crypto.totalCoins > 1000000.0){
                     tvTotalCoins.text = String.format("%s %s", formatLargeNumber(crypto.totalCoins.toLong()),crypto.cryptoSymbol.toUpperCase())
+                } else if(crypto.totalCoins >= 1){
+                    tvTotalCoins.text = String.format("%.2f %s", crypto.totalCoins,crypto.cryptoSymbol.toUpperCase())
                 } else {
                     tvTotalCoins.text = String.format("%s %s", formatPrice(crypto.totalCoins),crypto.cryptoSymbol.toUpperCase())
                 }

@@ -1,5 +1,6 @@
 package com.antonioje.cryptowallet.home.search.ui
 
+import android.database.DataSetObserver
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -85,14 +86,14 @@ class SearchCryptoFragment : Fragment() {
             val selectedItem = adapter.getItem(position)
             selectedItem?.let {
                 var bundle = Bundle()
-                Log.d("_________",position.toString())
                 val id = data.map { it.id }[data.map { it.name }.indexOf(it)]
                 bundle.putString(CryptoData.CRYPTO_KEY,id)
                 findNavController().navigate(R.id.action_buscarFragment_to_cryptoDataFragment, bundle)
             }
         }
-    }
 
+
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

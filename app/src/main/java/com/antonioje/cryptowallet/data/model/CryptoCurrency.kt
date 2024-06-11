@@ -81,7 +81,9 @@ data class CryptoCurrency(
                 String.format("%.3f", price)
             } else if (price < 1 && price > 0.001) {
                 String.format("%.4f", price)
-            } else {
+            } else if(price == 0.0) {
+                String.format("0.0")
+            } else{
                 String.format("%.8f", price)
             }
 

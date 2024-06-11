@@ -11,6 +11,7 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.antonioje.cryptowallet.R
 import com.antonioje.cryptowallet.data.model.CryptoData
 import com.antonioje.cryptowallet.data.model.Portfolio
@@ -90,10 +91,8 @@ class SearchPortfolioFragment : Fragment() {
             val selectedItem = adapter.getItem(position)
             selectedItem?.let {
                 var bundle = Bundle()
-                Log.d("_________",position.toString())
-                bundle.putSerializable(CryptoData.CRYPTO_KEY,it)
-                //TODO: VISUALIZAR EL PORTFOLIO
-                //findNavController().navigate(R.id.action_buscarFragment_to_cryptoDataFragment, bundle)
+                bundle.putSerializable(CryptoData.CRYPTO_KEY,portfolio[position])
+                findNavController().navigate(R.id.action_buscarFragment_to_publicPortfolioFragment, bundle)
             }
         }
     }

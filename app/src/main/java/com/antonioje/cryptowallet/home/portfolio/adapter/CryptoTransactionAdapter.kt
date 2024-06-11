@@ -77,6 +77,9 @@ class CryptoTransactionAdapter(private var cryptoSymbol:String, private val onCl
                 if(transaction.coinCuantity > 1000000.0){
                     tvNCoins.text = String.format("%s %s",
                         CryptoCurrency.formatLargeNumber(transaction.coinCuantity.toLong()),cryptoSymbol)
+                } else if(transaction.coinCuantity >= 1.0) {
+                    tvNCoins.text = String.format("%.2f %s",
+                       transaction.coinCuantity,cryptoSymbol)
                 } else {
                     tvNCoins.text = String.format("%s %s",
                         CryptoCurrency.formatPrice(transaction.coinCuantity),cryptoSymbol)
