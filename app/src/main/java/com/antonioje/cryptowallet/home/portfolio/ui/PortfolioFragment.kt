@@ -288,15 +288,24 @@ class PortfolioFragment : Fragment() {
             tvPortfolioTotalPrice.text =  String.format("%.2f€", portfolio.totalValue)
 
 
-            if(portfolio.profitOrLossMoney >= 0){
+            if(portfolio.profitOrLossPorcentage > 0) {
                 imvLast24H.visibility = View.VISIBLE
                 tvPortfolioAllProfitPorcentage.visibility = View.VISIBLE
-                imvSeeGraphic.visibility = View.VISIBLE
-                tvPortfolioAllProfit.text = String.format("%.2f€",portfolio.profitOrLossMoney)
-                tvPortfolioAllProfit.setTextColor(Color.GREEN)
                 imvLast24H.setImageResource(R.drawable.icon_last24h_up)
                 tvPortfolioAllProfitPorcentage.text = String.format("%.2f%%",portfolio.profitOrLossPorcentage).replace("+","")
                 tvPortfolioAllProfitPorcentage.setTextColor(Color.GREEN)
+            } else {
+                imvLast24H.visibility = View.VISIBLE
+                tvPortfolioAllProfitPorcentage.visibility = View.VISIBLE
+                imvLast24H.setImageResource(R.drawable.icon_last24h_down)
+                tvPortfolioAllProfitPorcentage.text = String.format("%.2f%%",portfolio.profitOrLossPorcentage).replace("-","")
+                tvPortfolioAllProfitPorcentage.setTextColor(Color.RED)
+            }
+
+            if(portfolio.profitOrLossMoney > 0){
+                imvSeeGraphic.visibility = View.VISIBLE
+                tvPortfolioAllProfit.text = String.format("%.2f€",portfolio.profitOrLossMoney)
+                tvPortfolioAllProfit.setTextColor(Color.GREEN)
             } else if(portfolio.totalValue == portfolio.allTimePrice){
                 tvPortfolioAllProfit.text = String.format("%.2f€",portfolio.totalValue - portfolio.allTimePrice)
                 if (portfolio.allTimePrice == 0.0) {
@@ -305,15 +314,13 @@ class PortfolioFragment : Fragment() {
                 imvLast24H.visibility = View.GONE
                 tvPortfolioAllProfitPorcentage.visibility = View.GONE
             } else {
-                imvLast24H.visibility = View.VISIBLE
-                tvPortfolioAllProfitPorcentage.visibility = View.VISIBLE
                 imvSeeGraphic.visibility = View.VISIBLE
                 tvPortfolioAllProfit.text = String.format("%.2f€",portfolio.profitOrLossMoney)
                 tvPortfolioAllProfit.setTextColor(Color.RED)
-                imvLast24H.setImageResource(R.drawable.icon_last24h_down)
-                tvPortfolioAllProfitPorcentage.text = String.format("%.2f%%",portfolio.profitOrLossPorcentage).replace("-","")
-                tvPortfolioAllProfitPorcentage.setTextColor(Color.RED)
+
             }
+
+
 
             tvListMonedas.setOnClickListener {
 

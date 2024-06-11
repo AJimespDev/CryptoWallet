@@ -271,7 +271,8 @@ class CryptoRepository private constructor() {
                 portfolioCrypto.totalValue = portfolioCrypto.coinList.sumByDouble { it.totalValue }
                 portfolioCrypto.allTimePrice = portfolioCrypto.coinList.sumByDouble { it.initialCost }
                 portfolioCrypto.profitOrLossMoney = portfolioCrypto.coinList.map { it.profitOrLossMoney }.sum()
-                portfolioCrypto.profitOrLossPorcentage = portfolioCrypto.coinList.map { it.profitOrLossPorcentage}.sum()
+
+                portfolioCrypto.profitOrLossPorcentage = (portfolioCrypto.profitOrLossMoney * 100) / portfolioCrypto.allTimePrice
 
                 addPortfolioCrypto(portfolioCrypto)
 
@@ -302,7 +303,7 @@ class CryptoRepository private constructor() {
             portfolioCrypto.totalValue = portfolioCrypto.coinList.sumByDouble { it.totalValue }
             portfolioCrypto.allTimePrice = portfolioCrypto.coinList.sumByDouble { it.initialCost }
             portfolioCrypto.profitOrLossMoney = portfolioCrypto.coinList.map { it.profitOrLossMoney }.sum()
-            portfolioCrypto.profitOrLossPorcentage = portfolioCrypto.coinList.map { it.profitOrLossPorcentage}.sum()
+            portfolioCrypto.profitOrLossPorcentage = (portfolioCrypto.profitOrLossMoney * 100) / portfolioCrypto.allTimePrice
         }
 
         fun actualizarPortfolio(portfolio:Portfolio): Portfolio {
@@ -327,7 +328,7 @@ class CryptoRepository private constructor() {
             portfolio.totalValue = portfolio.coinList.sumByDouble { it.totalValue }
             portfolio.allTimePrice = portfolio.coinList.sumByDouble { it.initialCost }
             portfolio.profitOrLossMoney = portfolio.coinList.map { it.profitOrLossMoney }.sum()
-            portfolio.profitOrLossPorcentage = portfolio.coinList.map { it.profitOrLossPorcentage}.sum()
+            portfolioCrypto.profitOrLossPorcentage = (portfolioCrypto.profitOrLossMoney * 100) / portfolioCrypto.allTimePrice
 
             return portfolio
         }
