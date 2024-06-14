@@ -42,15 +42,9 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_gravity="end"
-                    android:layout_marginEnd="5dp"
+                    android:layout_marginEnd="10dp"
                     android:src="@drawable/icon_graphic" />
 
-                <ImageView
-                    android:id="@+id/imvAddFavouritePortfolio"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="end"
-                    android:src="@drawable/action_favourite_off" />
             </LinearLayout>
 
             <TextView

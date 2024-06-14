@@ -55,5 +55,12 @@ class PortfolioViewModel : ViewModel() {
         return false
     }
 
+    fun resetPortfolio() {
+        if (portfolioCrypto.visibilityPublic){
+            CryptoRepository.deletePublicPortfolioCrypto()
+        }
+        CryptoRepository.addPortfolioCrypto(Portfolio())
+    }
+
 
 }

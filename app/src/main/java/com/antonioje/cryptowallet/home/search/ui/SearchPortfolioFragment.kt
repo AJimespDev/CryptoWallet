@@ -59,7 +59,7 @@ class SearchPortfolioFragment : Fragment() {
     private fun showNoData() {
         binding.searchView.visibility = View.GONE
         binding.searchView.visibility = View.GONE
-        Toast.makeText(requireContext(),getString(R.string.CryptoSearchNoData), Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(),getString(R.string.PortfolioSearchNoData), Toast.LENGTH_SHORT).show()
     }
 
     private fun onSuccess(portfolio: List<Portfolio>) {

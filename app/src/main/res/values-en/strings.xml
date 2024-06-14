@@ -15,7 +15,7 @@
     <string name="otherLogIn">Login with:</string>
     <string name="tvCreateAccountLogIn">Don\'t have an account yet? Sign up</string>
     <string name="tvSignUpTitle">Create an account</string>
-    <string name="btnSignUp">Check in</string>
+    <string name="btnSignUp">Register</string>
     <string name="otherSignUp">Register with:</string>
     <string name="EmailIsEmptyError">It cant be empty</string>
     <string name="EmailFormatError">Incorrect format</string>
@@ -90,4 +90,10 @@
     <string name="tvOthersConfig">Others:</string>
     <string name="tvContact">Contact</string>
     <string name="emailNotRegistered">Unsaved data</string>
+    <string name="tvRestartPortfolio">Reset Portfolio</string>
+    <string name="DeleteAlertTitle">Confirm deletion</string>
+    <string name="DeleteAlertMessage">Are you sure you want to restore your portfolio?</string>
+    <string name="DeleteAlertPossitive">Yes</string>
+    <string name="DeleteAlertNegative">No</string>
+    <string name="PortfolioSearchNoData">No portfolios found</string>
 </resources>

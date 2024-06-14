@@ -182,7 +182,7 @@ class CryptoRepository private constructor() {
 
         }
 
-        private fun deletePublicPortfolioCrypto() {
+        fun deletePublicPortfolioCrypto() {
             val currentUser = FirebaseAuth.getInstance().currentUser
             currentUser?.email.let { userEmail ->
                 val userFavoritesRef = db.collection("portfolios").document(userEmail.toString())
@@ -357,7 +357,6 @@ class CryptoRepository private constructor() {
 
             return crypto!!
         }
-
 
     }
 }

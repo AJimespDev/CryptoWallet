@@ -54,6 +54,7 @@ class CryptoTransactionAdapter(private var cryptoSymbol:String, private val onCl
     inner class CryptoTransactionViewHolder(private val binding: ItemCryptoTransactionBinding) :  RecyclerView.ViewHolder(binding.root) {
         fun render(transaction: CryptoTransaction){
             itemView.setOnClickListener { onClick(transaction) }
+
             with(binding){
                 tvType.text = transaction.type.toString()
                 if(transaction.type == TRANSACTIONTYPE.COMPRAR){

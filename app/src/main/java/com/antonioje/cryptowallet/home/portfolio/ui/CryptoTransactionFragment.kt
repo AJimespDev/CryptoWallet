@@ -38,6 +38,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
 
@@ -64,7 +65,7 @@ class CryptoTransactionFragment : Fragment() {
 
     private fun initVariables() {
         with(binding){
-            _adapter = CryptoTransactionAdapter (crypto.cryptoSymbol) {onClick(it) }
+            _adapter = CryptoTransactionAdapter (crypto.cryptoSymbol) { onClick(it) }
             recyclerView.adapter = _adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
             recyclerView.setHasFixedSize(true)
@@ -285,12 +286,63 @@ class CryptoTransactionFragment : Fragment() {
         val precio = if (precioText.isNotEmpty()) precioText.toDouble() else 0.0
         val cantidad = if (cantidadText.isNotEmpty()) cantidadText.toDouble() else 0.0
         val total = precio * cantidad
-        tietTotalValue.setText(CryptoCurrency.formatPrice(total))
+        tietTotalValue.setText(formatPrice(total))
     }
 
 
     private fun onClick(cryptoTransaction: CryptoTransaction) {
+        val builder = MaterialAlertDialogBuilder(requireContext())
+        val inflater = LayoutInflater.from(requireContext())
+        val dialogView = inflater.inflate(R.layout.alert_crypto_transaction, null)
 
+        builder.setView(dialogView)
+        val alertDialog = builder.create()
+
+
+        builder.setView(dialogView)
+
+        val tvCancelAlert = dialogView.findViewById<TextView>(R.id.tvCancelAlert)
+        val edtFecha = dialogView.findViewById<EditText>(R.id.edtFecha)
+        val tietPrice = dialogView.findViewById<TextInputEditText>(R.id.precioEditText)
+        val tietTotalCoins = dialogView.findViewById<TextInputEditText>(R.id.cantidadEditText)
+        val tietTotalValue = dialogView.findViewById<TextInputEditText>(R.id.totalEditText)
+        val rdComprar = dialogView.findViewById<RadioButton>(R.id.comprarRadioButton)
+        val rdVender = dialogView.findViewById<RadioButton>(R.id.venderRadioButton)
+        val btnAddTransaction = dialogView.findViewById<Button>(R.id.btnAddTransaction)
+        val colorAmarillo = ContextCompat.getColor(requireContext(), R.color.yellow)
+
+        btnAddTransaction.visibility = View.GONE
+        rdComprar.buttonTintList = ColorStateList.valueOf(colorAmarillo)
+        rdVender.buttonTintList = ColorStateList.valueOf(colorAmarillo)
+
+        if(cryptoTransaction.type == TRANSACTIONTYPE.COMPRAR){
+            rdComprar.isChecked = true
+            rdVender.isEnabled = false
+        } else{
+            rdVender.isChecked = true
+            rdComprar.isEnabled = false
+        }
+
+        tietTotalCoins.setText(cryptoTransaction.coinCuantity.toString())
+        tietTotalCoins.isEnabled = false
+
+        tietPrice.setText(formatPrice(cryptoTransaction.coinPrice))
+        tietPrice.isEnabled = false
+
+        tietTotalValue.setText(cryptoTransaction.cost.toString())
+        tietTotalValue.isEnabled = false
+
+        val sdf = SimpleDateFormat("dd/MM/yyyy")
+        val formattedDate = sdf.format(cryptoTransaction.date)
+        edtFecha.setText(formattedDate)
+        edtFecha.isEnabled = false
+
+
+        tvCancelAlert.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        alertDialog.show()
     }
 
 

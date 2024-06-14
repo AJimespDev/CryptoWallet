@@ -1,5 +1,6 @@
 package com.antonioje.cryptowallet.home.portfolio.ui
 
+import android.app.AlertDialog
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -63,6 +64,7 @@ class PortfolioFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
         }
+
 
         binding.imvConfigPortfolio.setOnClickListener {
             showConfigDialog()
@@ -287,6 +289,10 @@ class PortfolioFragment : Fragment() {
             tvPortfolioName.text = portfolio.name
             tvPortfolioTotalPrice.text =  String.format("%.2f€", portfolio.totalValue)
 
+            cardViewPortfolio.setOnLongClickListener {
+                mostrarDialogoConfirmacion()
+                true
+            }
 
             if(portfolio.profitOrLossPorcentage > 0) {
                 imvLast24H.visibility = View.VISIBLE
@@ -338,7 +344,25 @@ class PortfolioFragment : Fragment() {
     }
 
     private fun showNoData() {
-        Toast.makeText(requireContext(),"NO DATA TOAST",Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(),"NO DATA",Toast.LENGTH_SHORT).show()
+    }
+
+    private fun mostrarDialogoConfirmacion() {
+        val builder = AlertDialog.Builder(requireContext())
+
+        builder.setTitle(getString(R.string.DeleteAlertTitle))
+        builder.setMessage(getString(R.string.DeleteAlertMessage))
+
+        builder.setPositiveButton(getString((R.string.DeleteAlertPossitive))) { dialog, which ->
+            _viewmodel.resetPortfolio()
+        }
+
+        builder.setNegativeButton(getString((R.string.DeleteAlertNegative))) { dialog, which ->
+            dialog.dismiss()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 
 

@@ -50,6 +50,12 @@
     <string name="tvOthersConfig">Otros:</string>
     <string name="tvContact">Contacto</string>
     <string name="emailNotRegistered">Datos sin guardar</string>
+    <string name="tvRestartPortfolio">Restablecer Portfolio</string>
+    <string name="DeleteAlertTitle">Confirmar borrado</string>
+    <string name="DeleteAlertMessage">¿Estás seguro de que quieres restablecer tu portfolio?</string>
+    <string name="DeleteAlertPossitive">Sí</string>
+    <string name="DeleteAlertNegative">No</string>
+    <string name="PortfolioSearchNoData">No se han encontrado portfolios</string>
 
 
 </resources>

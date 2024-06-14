@@ -141,17 +141,16 @@
         android:id="@+id/cardViewLogOut"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="90dp"
         app:cardCornerRadius="16dp"
         app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardViewContacto">
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="8dp"
             android:orientation="horizontal">
@@ -179,7 +178,7 @@
         android:id="@+id/tvTitlePreferences"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="42dp"
         android:fontFamily="@font/uni_sans"
         android:text="@string/tvPreferences"
         android:textColor="@color/yellow"
@@ -236,7 +235,7 @@
         android:id="@+id/tvTitleOther"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="42dp"
         android:fontFamily="@font/uni_sans"
         android:text="@string/tvOthersConfig"
         android:textColor="@color/yellow"
