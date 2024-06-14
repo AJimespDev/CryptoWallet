@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="tvListCap">#</string>
+    <string name="tvListCap" translatable="false">#</string>
     <string name="tvListPrice">Precio</string>
-    <string name="tvListMoneda">Moneda</string>
+    <string name="tvListMoneda">Nombre</string>
     <string name="tvListLast24h">24h%</string>
-
 </resources>

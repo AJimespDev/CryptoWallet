@@ -1,8 +1,7 @@
 <resources>
     <string name="app_name">CryptoWallet</string>
-    <string name="action_settings">Settings</string>
-
-    <string name="default_web_client_id">1032483140804-v3a5sat75o9td8b3ktn456p4onrrh9g3.apps.googleusercontent.com</string>
+    <string name="action_settings">Configuración</string>
+    <string name="default_web_client_id" translatable="false">1032483140804-v3a5sat75o9td8b3ktn456p4onrrh9g3.apps.googleusercontent.com</string>
     <string name="CryptoSearchHint">Buscar criptomoneda</string>
     <string name="CryptoSearchNoData">API NOT WORKING</string>
     <string name="tvPortfolio24HChange">Cambio en 24 h</string>
@@ -12,9 +11,45 @@
     <string name="search_crypto_tab">Cryptomonedas</string>
     <string name="search_portfolio_tab">Portfolios</string>
     <string name="PortfolioSearchHint">Buscar portfolio</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tvSearchNoData">Sin resultados</string>
+    <string name="configPortfolioTitle">EDITAR PERFIL</string>
+    <string name="tietName">Nombre</string>
+    <string name="configVisibilidadTitle">VISIBILIDAD:</string>
+    <string name="rdbPrivate">Privado</string>
+    <string name="rdbPublic">Público</string>
+    <string name="btnConfirmar">CONFIRMAR</string>
+    <string name="btnCancel">Cancelar</string>
+    <string name="rdbBuy">Comprar</string>
+    <string name="rdbSell">Vender</string>
+    <string name="tietPriceCoin">Precio por moneda</string>
+    <string name="tvSaldo">SALDO:</string>
+    <string name="tietCount">Cantidad</string>
+    <string name="tietCountSpend">Total gastado</string>
+    <string name="tvDate">Fecha</string>
+    <string name="btnAddTransaction">Añadir transacción</string>
+    <string name="tvAsignaciones">ASIGNACIONES</string>
+    <string name="tvMarketCap">Capitalización de mercado</string>
+    <string name="tvTotalValue">Valor total</string>
+    <string name="tvCoins">Monedas</string>
+    <string name="tvInitialCost">Coste inicial</string>
+    <string name="tvAverageCost">Coste promedio</string>
+    <string name="tvProffitOrLoss">Ganancias/Pérdidas</string>
+    <string name="tvTransactions">Historial de transacciones</string>
+    <string name="tvWelcome">Bienvenido,</string>
+    <string name="tvMyAccount">Mi cuenta:</string>
+    <string name="tvEmail">correo:</string>
+    <string name="tvAccessMode">Método de acceso:</string>
+    <string name="tvPreferences">PREFERENCIAS:</string>
+    <string name="tvIdioma">Idioma:</string>
+    <string name="tvTheme">TEMA:</string>
+    <string name="tvSignOut">Cerrar sesión</string>
+    <string name="tvTypeTransactions">Vender</string>
+    <string name="tvDateTransaction">3 de mayo de 2024</string>
+    <string name="tvTransactionSell">Pagada:</string>
+    <string name="tvConfigProvider">Correo/contraseña</string>
+    <string name="tvOthersConfig">Otros:</string>
+    <string name="tvContact">Contacto</string>
+    <string name="emailNotRegistered">Datos sin guardar</string>
 
 
 </resources>

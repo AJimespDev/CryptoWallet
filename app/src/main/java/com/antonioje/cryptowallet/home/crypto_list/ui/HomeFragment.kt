@@ -24,12 +24,12 @@ import com.antonioje.cryptowallet.home.crypto_list.usecase.CryptoListState
 import com.antonioje.cryptowallet.home.crypto_list.usecase.CryptoListViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.runBlocking
+import java.util.Locale
 
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private lateinit var provider: String
     private lateinit var _adapter: CryptoListAdapter
     private val _viewmodel: CryptoListViewModel by viewModels()
 
@@ -146,7 +146,14 @@ class HomeFragment : Fragment() {
                 //Guardar los strings en las preferencias
                 editor?.putString(MainActivity.EMAIL, email)
                 editor?.putString(MainActivity.PROVIDER, provider)
-                this.provider = provider.toString()
+
+                var language = sharedPreferences?.getString(MainActivity.LANGUAGE, null)
+
+                if (language == null) {
+                    val currentLocale = Locale.getDefault()
+                    val language = currentLocale.language
+                    editor?.putString(MainActivity.LANGUAGE, language)
+                }
 
                 //Aplico los cambios
                 editor?.apply()

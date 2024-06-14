@@ -59,13 +59,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Valor total"
+                    android:text="@string/tvTotalValue"
                     android:fontFamily="@font/humatoheavy"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="80dp"
-                    android:text="Monedas"
+                    android:text="@string/tvCoins"
                     android:fontFamily="@font/humatoheavy"/>
             </LinearLayout>
 
@@ -114,14 +114,14 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="Coste inicial"
+                    android:text="@string/tvInitialCost"
                     android:fontFamily="@font/humatoheavy"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="80dp"
-                    android:text="Coste promedio"
+                    android:text="@string/tvAverageCost"
                     android:fontFamily="@font/humatoheavy"/>
             </LinearLayout>
 
@@ -162,7 +162,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ganancias/Pérdidas"
+                    android:text="@string/tvProffitOrLoss"
                     android:fontFamily="@font/humatoheavy"/>
             </LinearLayout>
 

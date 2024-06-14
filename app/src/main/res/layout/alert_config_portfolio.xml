@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/humatoheavy"
-        android:text="EDITAR PERFIL"
+        android:text="@string/configPortfolioTitle"
         android:textSize="24sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +27,7 @@
         android:ems="10"
         android:fontFamily="@font/humatoheavy"
         android:inputType="text"
-        android:text="Nombre"
+        android:text="@string/tietName"
         android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@+id/tvAlertConfigTitle"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:fontFamily="@font/humatoheavy"
-        android:text="VISIBILIDAD:"
+        android:text="@string/configVisibilidadTitle"
         android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@+id/edtPortfolioName"
         app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:checked="true"
             android:fontFamily="@font/uni_sans"
-            android:text="Privado" />
+            android:text="@string/rdbPrivate" />
 
         <View
             android:layout_width="50dp"
@@ -75,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/uni_sans"
-            android:text="Público" />
+            android:text="@string/rdbPublic" />
     </RadioGroup>
 
     <Button
@@ -88,7 +88,7 @@
         android:shadowColor="@android:color/black"
         android:shadowDx="1"
         android:shadowDy="1"
-        android:text="CONFIRMAR"
+        android:text="@string/btnConfirmar"
         android:textSize="13sp"
         app:layout_constraintTop_toBottomOf="@+id/tipoRadioGroup"
         app:layout_constraintStart_toStartOf="parent"
@@ -101,7 +101,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/humatoheavy"
-        android:text="Cancelar"
+        android:text="@string/btnCancel"
         android:textSize="14sp"
         app:layout_constraintTop_toBottomOf="@+id/btnAddNewConfig"
         app:layout_constraintStart_toStartOf="parent"

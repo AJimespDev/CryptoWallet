@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Vender"
+        android:text="@string/tvTypeTransactions"
         android:textStyle="bold"
         android:fontFamily="@font/uni_sans"
         app:layout_constraintStart_toEndOf="@+id/imvArrow"
@@ -35,7 +35,7 @@
         android:textSize="12dp"
         android:layout_marginTop="4dp"
         android:fontFamily="@font/uni_sans"
-        android:text="3 de mayo de 2024"
+        android:text="@string/tvDateTransaction"
         android:textColor="@color/md_theme_light_outline"
         app:layout_constraintStart_toEndOf="@+id/imvArrow"
         app:layout_constraintTop_toBottomOf="@+id/tvType" />
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="3dp"
 
-        android:text="Pagada:"
+        android:text="@string/tvTransactionSell"
         android:textSize="12dp"
         android:fontFamily="@font/uni_sans"
         app:layout_constraintBottom_toBottomOf="@+id/tvPrice"

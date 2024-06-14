@@ -16,7 +16,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:text="ASIGNACIONES"
+            android:text="@string/tvAsignaciones"
             android:fontFamily="@font/humatoheavy"
             android:textSize="24sp"/>
 

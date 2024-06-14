@@ -146,6 +146,7 @@ class CryptoDataFragment : Fragment() {
 
         var divisas = DIVISAS.values()
         var adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, divisas)
+
         binding.spCryptoDataFiat.adapter = adapter
 
         _viewmodel.getCrypto(cryptoID)

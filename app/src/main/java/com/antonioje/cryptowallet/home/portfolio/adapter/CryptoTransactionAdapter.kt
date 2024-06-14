@@ -64,6 +64,7 @@ class CryptoTransactionAdapter(private var cryptoSymbol:String, private val onCl
                     imvArrow.setImageResource(R.drawable.sell_transaction)
                 }
 
+
                 val formatter = DateTimeFormatter.ofPattern("d 'de' MMMM 'de' yyyy", Locale("es", "ES"))
                 val localDate = transaction.date.toInstant()
                     .atZone(ZoneId.systemDefault())

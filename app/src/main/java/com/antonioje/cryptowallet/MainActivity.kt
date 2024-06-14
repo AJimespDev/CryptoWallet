@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -15,6 +16,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.antonioje.cryptowallet.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
+import java.util.Locale
 
 
 class MainActivity : AppCompatActivity() {
@@ -27,6 +29,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val sharedPreferences = getSharedPreferences("usu_preferencias", Context.MODE_PRIVATE)
+        val language = sharedPreferences?.getString(LANGUAGE, null)
+
+        if (language != null) {
+            setLocale(language)
+        }
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -37,10 +46,18 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         NavigationUI.setupWithNavController(binding.bottomNavegationBar, navController)
 
+
         setAppBarGone()
         setBottomNavGone()
     }
 
+    private fun setLocale(language: String) {
+        val locale = Locale(language)
+        Locale.setDefault(locale)
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
+    }
 
     fun logOut() {
         //Obtener la instancia de SharedPreferences
@@ -59,7 +76,20 @@ class MainActivity : AppCompatActivity() {
 
         val intent = Intent(applicationContext, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+
+        val locale = Locale.getDefault()
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
         startActivity(intent)
+    }
+
+    fun restartActivity() {
+        val intent = Intent(applicationContext, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+
+        finish()
     }
 
 
@@ -103,6 +133,8 @@ class MainActivity : AppCompatActivity() {
         const val EMAIL = "email"
         const val PROVIDER = "provider"
         const val MANTENERSESION ="mantenersesion"
+        const val LANGUAGE = "español"
+        const val THEME = "theme"
         const val GOOGLE_SIGN_IN  = 100
     }
 
