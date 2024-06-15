@@ -1,5 +1,6 @@
 package com.antonioje.cryptowallet.home.portfolio.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -14,7 +15,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-class CryptoTransactionAdapter(private var cryptoSymbol:String, private val onClick: (transaction: CryptoTransaction) -> Unit): ListAdapter<CryptoTransaction, CryptoTransactionAdapter.CryptoTransactionViewHolder>(CRYPTOTRANSACTION_COMPARATOR) {
+class CryptoTransactionAdapter(private var context: Context, private var cryptoSymbol:String, private val onClick: (transaction: CryptoTransaction) -> Unit): ListAdapter<CryptoTransaction, CryptoTransactionAdapter.CryptoTransactionViewHolder>(CRYPTOTRANSACTION_COMPARATOR) {
 
     companion object {
         val CRYPTOTRANSACTION_COMPARATOR = object : DiffUtil.ItemCallback<CryptoTransaction>() {
@@ -56,17 +57,24 @@ class CryptoTransactionAdapter(private var cryptoSymbol:String, private val onCl
             itemView.setOnClickListener { onClick(transaction) }
 
             with(binding){
-                tvType.text = transaction.type.toString()
+                if(transaction.type == TRANSACTIONTYPE.COMPRAR) {
+                    tvType.text = context.getString(R.string.tvTypeComprar)
+                } else {
+                    tvType.text = context.getString(R.string.tvTypeVender)
+                }
+
+
+
                 if(transaction.type == TRANSACTIONTYPE.COMPRAR){
-                    tvTypePrice.text = "Pagado:"
+                    tvTypePrice.text = context.getString(R.string.tvTypePrice)
                     imvArrow.setImageResource(R.drawable.add_transaction)
                 }else{
-                    tvTypePrice.text = "Recibido:"
+                    tvTypePrice.text = context.getString(R.string.tvTypePriceSell)
                     imvArrow.setImageResource(R.drawable.sell_transaction)
                 }
 
 
-                val formatter = DateTimeFormatter.ofPattern("d 'de' MMMM 'de' yyyy", Locale("es", "ES"))
+                val formatter = DateTimeFormatter.ofPattern(context.getString(R.string.date_format_pattern), Locale("es", "ES"))
                 val localDate = transaction.date.toInstant()
                     .atZone(ZoneId.systemDefault())
                     .toLocalDate()

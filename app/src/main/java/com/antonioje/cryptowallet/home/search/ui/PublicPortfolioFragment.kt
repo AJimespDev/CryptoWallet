@@ -1,12 +1,17 @@
 package com.antonioje.cryptowallet.home.search.ui
 
+import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -29,6 +34,8 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.messaging.FirebaseMessaging
+import java.io.File
+import java.io.FileOutputStream
 import java.text.DecimalFormat
 
 class PublicPortfolioFragment : Fragment() {
@@ -61,6 +68,12 @@ class PublicPortfolioFragment : Fragment() {
 
             imvSeeGraphic.setOnClickListener {
                 showGraphicDialog(portfolio)
+            }
+
+            imvShare.setOnClickListener {
+                val bitmap = captureFragmentView(this@PublicPortfolioFragment)
+                val uri = saveBitmapToFile(requireContext(), bitmap)
+                shareImageWithText(requireContext(), uri, getString(R.string.share_message))
             }
 
             if(portfolio.totalValue > portfolio.allTimePrice){
@@ -223,6 +236,42 @@ class PublicPortfolioFragment : Fragment() {
             Color.rgb(255, 245, 238)  // Seashell
         )
     }
+
+
+    fun captureFragmentView(fragment: Fragment): Bitmap {
+        val view = fragment.view ?: throw IllegalStateException("Fragment view is null")
+
+        val originalBackgroundColor = view.background
+        view.setBackgroundColor(Color.WHITE)
+
+        view.isDrawingCacheEnabled = true
+        view.buildDrawingCache(true)
+        val bitmap = Bitmap.createBitmap(view.drawingCache)
+        view.isDrawingCacheEnabled = false
+
+
+        view.background = originalBackgroundColor
+        return bitmap
+    }
+    fun saveBitmapToFile(context: Context, bitmap: Bitmap): Uri {
+        val file = File(context.cacheDir, "portfolio.png")
+        FileOutputStream(file).use { out ->
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+        }
+        return FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+    }
+
+
+    fun shareImageWithText(context: Context, uri: Uri, text: String) {
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "image/png"
+            putExtra(Intent.EXTRA_STREAM, uri)
+            putExtra(Intent.EXTRA_TEXT, text)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        context.startActivity(Intent.createChooser(intent, "Share via"))
+    }
+
 
 
 }

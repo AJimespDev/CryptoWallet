@@ -38,18 +38,13 @@ class CryptoDataViewModel:ViewModel() {
     }
 
     fun isFavorite(crypto: CryptoData): Boolean {
-        val isFavorite =  CryptoRepository.isCryptoFavourite(crypto.name)
-        if(isFavorite) {
-            CryptoRepository.deleteFavouriteCrypto(crypto.name) {
-                CryptoRepository.addFavouriteCrypto(crypto)
-            }
-        }
-
-        return isFavorite
+        return  CryptoRepository.isCryptoFavourite(crypto.name)
     }
 
     fun deleteFavourite(crypto: CryptoData) {
-        CryptoRepository.deleteFavouriteCrypto(crypto.name) {}
+        CryptoRepository.deleteFavouriteCrypto(crypto.name) {
+
+        }
     }
 
     fun addFavourite(crypto: CryptoData) {

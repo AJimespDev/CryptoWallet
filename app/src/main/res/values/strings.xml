@@ -56,6 +56,13 @@
     <string name="DeleteAlertPossitive">Sí</string>
     <string name="DeleteAlertNegative">No</string>
     <string name="PortfolioSearchNoData">No se han encontrado portfolios</string>
-
-
+    <string name="errNameAlreadyExists">Este nombre ya está en uso</string>
+    <string name="share_message">"¡Hey! 😃 Acabo de encontrar un portafolio bastante interesante en la app de CryptoWallet. Descargate la app para descubrir nuevas oportunidades 📱✨          https://github.com/AJimespDev/CryptoWallet     "</string>
+    <string name="tilBuyOrSellError">NO PUEDE SER O€</string>
+    <string name="tilTotalCoinsError">LA CANTIDAD NO PUEDE SER SUPERIOR AL SALDO</string>
+    <string name="tvTypePrice">Pagado:</string>
+    <string name="tvTypePriceSell">Recibido:</string>
+    <string name="date_format_pattern">d \'de\' MMMM \'de\' yyyy</string>
+    <string name="tvTypeComprar">COMPRAR</string>
+    <string name="tvTypeVender">VENDER</string>
 </resources>

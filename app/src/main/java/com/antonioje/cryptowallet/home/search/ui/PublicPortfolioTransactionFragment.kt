@@ -46,7 +46,7 @@ class PublicPortfolioTransactionFragment : Fragment() {
 
     private fun initVariables() {
         with(binding) {
-            _adapter = CryptoTransactionAdapter(crypto.cryptoSymbol) { onClick(it) }
+            _adapter = CryptoTransactionAdapter(requireContext(),crypto.cryptoSymbol) { onClick(it) }
             recyclerView.adapter = _adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
             recyclerView.setHasFixedSize(true)

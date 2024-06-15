@@ -76,8 +76,20 @@ class CryptoRepository private constructor() {
                     .addOnSuccessListener { documents ->
                         for (document in documents) {
                             val crypto = document.toObject(CryptoCurrency::class.java)
-                            favouritesCrypto.add(crypto)
-                            addFavouriteCrypto(crypto)
+                            var newCrypto = getCurrentCrypto(crypto.id)
+
+                            val cryptoCurrency = CryptoCurrency(
+                                newCrypto.id,
+                                newCrypto.symbol,
+                                newCrypto.name,
+                                newCrypto.image.large,
+                                newCrypto.market_data.market_cap.eur.toLong(),
+                                newCrypto.market_data.current_price.eur,
+                                newCrypto.market_data.price_change_percentage_24h,
+                                newCrypto.market_cap_rank
+                            )
+                            favouritesCrypto.add(cryptoCurrency)
+                            addFavouriteCrypto(cryptoCurrency)
                         }
                         onSuccess()
                     }
@@ -167,7 +179,7 @@ class CryptoRepository private constructor() {
 
                 userFavoritesRef.delete()
                     .addOnSuccessListener {
-                        favouritesCrypto.removeIf { it.name == crypto }
+                        favouritesCrypto.removeIf { it.name == crypto}
                         onDelete()
                         Log.d("TAG", "Favorite deleted from Firestore for user: $currentUser")
                     }

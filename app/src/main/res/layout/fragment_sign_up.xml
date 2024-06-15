@@ -75,6 +75,7 @@
                 android:id="@+id/tietSignUpEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
                 android:hint="@string/tietEmailSignIn"
                 android:text="@={viewmodel.email}"
                 android:textColor="@color/white" />
@@ -141,7 +142,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="24dp"
             android:alpha="0.7"
             android:shadowColor="@color/black"
             android:shadowDx="5"
@@ -149,29 +150,24 @@
             android:shadowRadius="1"
             android:text="@string/otherSignUp"
             android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/imvGoogleLogIn"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnSignUp" />
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvOtherSignUp">
-
-            <ImageView
-                android:id="@+id/imvGoogleLogIn"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_margin="12dp"
-                android:background="@drawable/google" />
-
-        </LinearLayout>
-
+        <ImageView
+            android:id="@+id/imvGoogleLogIn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="12dp"
+            android:background="@drawable/google"
+            app:layout_constraintEnd_toEndOf="@+id/tvOtherSignUp"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/tvOtherSignUp"
+            app:layout_constraintTop_toBottomOf="@+id/tvOtherSignUp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

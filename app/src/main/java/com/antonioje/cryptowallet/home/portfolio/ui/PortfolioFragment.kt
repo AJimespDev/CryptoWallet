@@ -1,8 +1,12 @@
 package com.antonioje.cryptowallet.home.portfolio.ui
 
 import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,6 +18,7 @@ import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -37,6 +42,8 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.io.File
+import java.io.FileOutputStream
 import java.text.DecimalFormat
 
 class PortfolioFragment : Fragment() {
@@ -249,7 +256,7 @@ class PortfolioFragment : Fragment() {
 
         btnAddNewConfig.setOnClickListener {
             if(public && _viewmodel.portfolioNameAlreadyExist(edtName.text.toString(), portfolio)) {
-                edtName.setError("Este nombre ya exist")
+                edtName.setError(getString(R.string.errNameAlreadyExists))
                 edtName.requestFocus()
             } else {
                 _viewmodel.addNewPortfolioConfig(edtName.text.toString(), public)
@@ -364,8 +371,6 @@ class PortfolioFragment : Fragment() {
         val dialog = builder.create()
         dialog.show()
     }
-
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

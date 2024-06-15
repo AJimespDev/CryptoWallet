@@ -65,7 +65,7 @@ class CryptoTransactionFragment : Fragment() {
 
     private fun initVariables() {
         with(binding){
-            _adapter = CryptoTransactionAdapter (crypto.cryptoSymbol) { onClick(it) }
+            _adapter = CryptoTransactionAdapter (requireContext(),crypto.cryptoSymbol) { onClick(it) }
             recyclerView.adapter = _adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
             recyclerView.setHasFixedSize(true)
@@ -227,11 +227,11 @@ class CryptoTransactionFragment : Fragment() {
             val type = if (rdComprar.isChecked) TRANSACTIONTYPE.COMPRAR else TRANSACTIONTYPE.VENDER
             if (cost == 0.0) {
                 tilTextBuyOrSell.endIconDrawable = null
-                tilTextBuyOrSell.error = "NO PUEDE SER 0€"
+                tilTextBuyOrSell.error = getString(R.string.tilBuyOrSellError)
                 tilTextBuyOrSell.requestFocus()
             } else if (type == TRANSACTIONTYPE.VENDER &&  tietTotalCoins.text.toString().toDouble() > totalCoins){
                 tilTotalCoins.endIconDrawable = null
-                tilTotalCoins.error = "LA CANTIDAD NO PUEDE SER SUPERIOR AL SALDO"
+                tilTotalCoins.error =  getString(R.string.tilTotalCoinsError)
                 tilTotalCoins.requestFocus()
             } else {
                 val type = if (rdComprar.isChecked) TRANSACTIONTYPE.COMPRAR else TRANSACTIONTYPE.VENDER

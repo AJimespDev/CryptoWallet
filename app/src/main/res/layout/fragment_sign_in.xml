@@ -88,6 +88,7 @@
                     android:id="@+id/tietLogInEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
                     android:hint="@string/tietEmailSignIn"
                     android:text="@={viewmodel.email}"
                     android:textColor="@color/white" />
@@ -180,7 +181,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="30dp"
                 android:alpha="0.7"
                 android:shadowColor="@android:color/black"
                 android:shadowDx="5"

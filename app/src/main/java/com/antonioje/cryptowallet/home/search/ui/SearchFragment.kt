@@ -34,7 +34,6 @@ class SearchFragment : Fragment() {
 
     private fun configTabView(){
         val viewPager = binding.viewPager
-        val customFont = ResourcesCompat.getFont(requireContext(), R.font.humatoheavy)
 
         viewPager.adapter = SearchPagerAdapter(requireActivity())
 
@@ -46,41 +45,6 @@ class SearchFragment : Fragment() {
                 else -> null
             }
         }.attach()
-
-        // Método para aplicar la fuente a todas las pestañas
-        fun applyCustomFontToTabs() {
-            for (i in 0 until tabLayout.tabCount) {
-                val tab = tabLayout.getTabAt(i)
-                val tabTextView = tab?.view?.getChildAt(1) as? TextView
-                tabTextView?.typeface = customFont
-            }
-        }
-
-        // Aplicar la fuente personalizada inicialmente
-        applyCustomFontToTabs()
-
-        // Listener para aplicar la fuente cuando se selecciona/desselecciona una pestaña
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                applyCustomFontToTabs()
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-                applyCustomFontToTabs()
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-                applyCustomFontToTabs()
-            }
-        })
-
-        // Listener para aplicar la fuente cuando se cambia de página mediante deslizamiento
-        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                applyCustomFontToTabs()
-            }
-        })
     }
 
     override fun onDestroyView() {
