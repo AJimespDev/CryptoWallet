@@ -26,7 +26,7 @@ Al facilitar la creación y el intercambio de portafolios entre usuarios, se fom
 Haz clic en el logo de CryptoWallet para comenzar la descarga ⬇
 
 <div align="center">
-  <a href="link_para_descargar_la_aplicacion">
+  <a href="https://github.com/AJimespDev/CryptoWallet/raw/master/CryptoWallet.apk">
     <img src="https://github.com/AJimespDev/CryptoWallet/assets/152422892/86a368ca-689b-4f05-9e55-80b1724644c6" alt="Logo CryptoWallet" width="250">
   </a>
 </div>
