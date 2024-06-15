@@ -97,7 +97,7 @@
     <string name="DeleteAlertNegative">No</string>
     <string name="PortfolioSearchNoData">No portfolios found</string>
     <string name="errNameAlreadyExists">This name is already in use</string>
-    <string name="share_message">Hey! 😃 I just found a pretty interesting portfolio in the CryptoWallet app. Download the app to discover new opportunities 📱✨ https://github.com/AJimespDev/CryptoWallet</string>
+    <string name="share_message">Hey! 😃 I just found a pretty interesting portfolio in the CryptoWallet app. Download the app to discover new opportunities 📱✨ https://github.com/AJimespDev/CryptoWallet/raw/master/CryptoWallet.apk</string>
     <string name="tilBuyOrSellError">IT CAN\'T BE O€</string>
     <string name="tilTotalCoinsError">THE AMOUNT CANNOT BE GREATER THAN THE BALANCE</string>
     <string name="tvTypePrice">Paid:</string>
